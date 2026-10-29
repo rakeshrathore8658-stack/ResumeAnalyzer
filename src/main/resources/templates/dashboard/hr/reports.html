@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Recruitment Reports & Analytics')}"></head>
+
+<body class="dashboard-page">
+
+<div class="dashboard-layout">
+
+    <!-- Shared Sidebar -->
+    <aside th:replace="~{fragments/sidebar :: sidebar(active='reports')}"></aside>
+
+    <!-- Main Content Area -->
+    <main class="dashboard-main">
+
+        <!-- Shared Topbar -->
+        <header th:replace="~{fragments/header :: topbar}"></header>
+
+        <div class="main-content">
+
+            <!-- Breadcrumbs -->
+            <nav class="breadcrumb" style="margin-bottom: 20px;">
+                <a th:href="@{/dashboard}">Dashboard</a>
+                <span class="breadcrumb-separator">/</span>
+                <span class="breadcrumb-current">Recruitment Reports</span>
+            </nav>
+
+            <!-- Page Header -->
+            <div class="page-header-row">
+                <div>
+                    <h1 class="page-title">Recruitment Reports & Analytics</h1>
+                    <p class="page-subtitle">Track hiring pipeline conversion, applicant distribution by requisition, and AI screening efficiency.</p>
+                </div>
+                <div class="page-header-actions">
+                    <button type="button" class="btn btn-primary" id="btnExportReport">
+                        <span>📊</span> Export CSV Report
+                    </button>
+                </div>
+            </div>
+
+            <!-- Date Range Selector -->
+            <article class="card" style="margin-bottom: 24px; padding: 14px 20px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+                    <span style="font-size: 0.85rem; font-weight: 600; color: var(--text-secondary);">Reporting Period:</span>
+                    <div style="display: flex; gap: 8px;">
+                        <button class="btn btn-secondary btn-sm" style="background: var(--primary); color: #ffffff;">Last 30 Days</button>
+                        <button class="btn btn-secondary btn-sm">This Quarter</button>
+                        <button class="btn btn-secondary btn-sm">Year to Date</button>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Top Level Metrics -->
+            <section class="stats-grid-4" style="margin-bottom: 28px;">
+                <article class="stat-card">
+                    <div class="stat-top">
+                        <span class="stat-label">Total Resumes Screened</span>
+                        <span class="stat-icon icon-navy">📄</span>
+                    </div>
+                    <div class="stat-value">320</div>
+                    <span class="stat-unit">+45 this month</span>
+                </article>
+
+                <article class="stat-card">
+                    <div class="stat-top">
+                        <span class="stat-label">AI Shortlist Conversion</span>
+                        <span class="stat-icon icon-green">⭐</span>
+                    </div>
+                    <div class="stat-value" style="color: var(--success);">8.8%</div>
+                    <span class="stat-unit">28 candidates selected</span>
+                </article>
+
+                <article class="stat-card">
+                    <div class="stat-top">
+                        <span class="stat-label">Interview to Offer Rate</span>
+                        <span class="stat-icon icon-info">📈</span>
+                    </div>
+                    <div class="stat-value">35.7%</div>
+                    <span class="stat-unit">5 offers from 14 interviews</span>
+                </article>
+
+                <article class="stat-card">
+                    <div class="stat-top">
+                        <span class="stat-label">Average Time-to-Hire</span>
+                        <span class="stat-icon">⏱</span>
+                    </div>
+                    <div class="stat-value">18 Days</div>
+                    <span class="stat-unit">4 days faster than industry avg</span>
+                </article>
+            </section>
+
+            <!-- Visual Charts Grid -->
+            <div class="grid-1-1" style="gap: 24px; margin-bottom: 28px;">
+
+                <!-- Pipeline Funnel Chart -->
+                <article class="card">
+                    <div class="card-header">
+                        <div>
+                            <h2 class="card-title">Hiring Pipeline Funnel</h2>
+                            <p class="card-description">Drop-off and conversion rates per stage.</p>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; flex-direction: column; gap: 14px;">
+                        <div>
+                            <div style="display: flex; justify-content: space-between; font-size: 0.84rem; margin-bottom: 4px;">
+                                <span>1. Applied Resumes</span>
+                                <strong>320 (100%)</strong>
+                            </div>
+                            <div class="progress"><div class="progress-bar progress-bar-info" style="width: 100%;"></div></div>
+                        </div>
+
+                        <div>
+                            <div style="display: flex; justify-content: space-between; font-size: 0.84rem; margin-bottom: 4px;">
+                                <span>2. AI Match Passed (70%+)</span>
+                                <strong>198 (61.8%)</strong>
+                            </div>
+                            <div class="progress"><div class="progress-bar" style="width: 61.8%;"></div></div>
+                        </div>
+
+                        <div>
+                            <div style="display: flex; justify-content: space-between; font-size: 0.84rem; margin-bottom: 4px;">
+                                <span>3. Shortlisted for Phone Screen</span>
+                                <strong>28 (8.8%)</strong>
+                            </div>
+                            <div class="progress"><div class="progress-bar progress-bar-warning" style="width: 8.8%;"></div></div>
+                        </div>
+
+                        <div>
+                            <div style="display: flex; justify-content: space-between; font-size: 0.84rem; margin-bottom: 4px;">
+                                <span>4. Technical Interviews</span>
+                                <strong>14 (4.4%)</strong>
+                            </div>
+                            <div class="progress"><div class="progress-bar progress-bar-warning" style="width: 4.4%;"></div></div>
+                        </div>
+
+                        <div>
+                            <div style="display: flex; justify-content: space-between; font-size: 0.84rem; margin-bottom: 4px;">
+                                <span>5. Offers Extended & Accepted</span>
+                                <strong>3 (1.0%)</strong>
+                            </div>
+                            <div class="progress"><div class="progress-bar progress-bar-success" style="width: 3.5%;"></div></div>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Applicant Distribution by Requisition -->
+                <article class="card">
+                    <div class="card-header">
+                        <div>
+                            <h2 class="card-title">Applicants by Vacancy</h2>
+                            <p class="card-description">Volume of applicants per active role.</p>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; flex-direction: column; gap: 14px;">
+                        <div>
+                            <div style="display: flex; justify-content: space-between; font-size: 0.84rem; margin-bottom: 4px;">
+                                <span>Senior Java Developer</span>
+                                <strong>48 applicants</strong>
+                            </div>
+                            <div class="progress"><div class="progress-bar" style="width: 85%;"></div></div>
+                        </div>
+
+                        <div>
+                            <div style="display: flex; justify-content: space-between; font-size: 0.84rem; margin-bottom: 4px;">
+                                <span>Full Stack MERN Developer</span>
+                                <strong>52 applicants</strong>
+                            </div>
+                            <div class="progress"><div class="progress-bar progress-bar-info" style="width: 95%;"></div></div>
+                        </div>
+
+                        <div>
+                            <div style="display: flex; justify-content: space-between; font-size: 0.84rem; margin-bottom: 4px;">
+                                <span>DevOps / Cloud Engineer</span>
+                                <strong>28 applicants</strong>
+                            </div>
+                            <div class="progress"><div class="progress-bar progress-bar-warning" style="width: 50%;"></div></div>
+                        </div>
+
+                        <div>
+                            <div style="display: flex; justify-content: space-between; font-size: 0.84rem; margin-bottom: 4px;">
+                                <span>Data Analyst</span>
+                                <strong>31 applicants</strong>
+                            </div>
+                            <div class="progress"><div class="progress-bar progress-bar-success" style="width: 55%;"></div></div>
+                        </div>
+                    </div>
+                </article>
+
+            </div>
+
+            <!-- Detailed Report Data Table -->
+            <article class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Requisition Breakdown Summary</h2>
+                </div>
+                <div class="table-wrapper">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Job Requisition</th>
+                            <th>Department</th>
+                            <th>Total Applications</th>
+                            <th>Shortlisted</th>
+                            <th>Interviews</th>
+                            <th>Hired</th>
+                            <th>Avg Match Score</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td><strong>Senior Java Developer</strong></td>
+                            <td>Engineering</td>
+                            <td>48</td>
+                            <td>12</td>
+                            <td>6</td>
+                            <td>1</td>
+                            <td><span class="score-badge score-high">84%</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Full Stack MERN Developer</strong></td>
+                            <td>Product</td>
+                            <td>52</td>
+                            <td>14</td>
+                            <td>5</td>
+                            <td>1</td>
+                            <td><span class="score-badge score-high">81%</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>DevOps / Cloud Engineer</strong></td>
+                            <td>Infrastructure</td>
+                            <td>28</td>
+                            <td>7</td>
+                            <td>3</td>
+                            <td>1</td>
+                            <td><span class="score-badge score-high">88%</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Data Analyst</strong></td>
+                            <td>Data & BI</td>
+                            <td>31</td>
+                            <td>9</td>
+                            <td>4</td>
+                            <td>0</td>
+                            <td><span class="score-badge score-mid">76%</span></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </article>
+
+        </div>
+
+        <!-- Shared Footer -->
+        <footer th:replace="~{fragments/footer :: footer}"></footer>
+
+    </main>
+
+</div>
+
+</body>
+</html>

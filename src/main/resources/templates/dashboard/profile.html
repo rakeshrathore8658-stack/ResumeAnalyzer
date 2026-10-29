@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('My Profile')}"></head>
+
+<body class="dashboard-page">
+
+<div class="dashboard-layout">
+
+    <!-- Shared Sidebar -->
+    <aside th:replace="~{fragments/sidebar :: sidebar(active='profile')}"></aside>
+
+    <!-- Main Content Area -->
+    <main class="dashboard-main">
+
+        <!-- Shared Topbar -->
+        <header th:replace="~{fragments/header :: topbar}"></header>
+
+        <div class="main-content">
+
+            <!-- Breadcrumbs -->
+            <nav class="breadcrumb" style="margin-bottom: 20px;">
+                <a th:href="@{/dashboard}">Dashboard</a>
+                <span class="breadcrumb-separator">/</span>
+                <span class="breadcrumb-current">My Profile</span>
+            </nav>
+
+            <!-- Page Header -->
+            <div class="page-header-row">
+                <div>
+                    <h1 class="page-title">Personal & Professional Profile</h1>
+                    <p class="page-subtitle">Manage your contact details, career preferences, verified skills, and resume attachments.</p>
+                </div>
+            </div>
+
+            <div class="grid-2-1">
+
+                <!-- Left Column: Profile Details Form -->
+                <article class="card">
+                    <form id="profileForm" th:action="@{/dashboard/profile}" method="post">
+
+                        <div style="display: flex; align-items: center; gap: 20px; margin-bottom: 28px; padding-bottom: 20px; border-bottom: 1px solid var(--border-color);">
+                            <div class="profile-avatar" style="width: 72px; height: 72px; font-size: 1.8rem; background: var(--primary);">
+                                <span th:text="${userName != null and !#strings.isEmpty(userName) ? #strings.substring(userName, 0, 1).toUpperCase() : 'A'}">A</span>
+                            </div>
+                            <div>
+                                <h3 style="margin: 0 0 4px; font-size: 1.1rem; color: var(--text-primary);" th:text="${userName != null ? userName : 'Alex Morgan'}">Alex Morgan</h3>
+                                <p style="margin: 0 0 8px; font-size: 0.8rem; color: var(--text-muted);" th:text="${userEmail != null ? userEmail : 'alex.morgan@email.com'}">alex.morgan@email.com</p>
+                                <button type="button" class="btn btn-secondary btn-sm" onclick="alert('Avatar upload dialog (frontend demonstration)')">
+                                    📷 Change Avatar
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Basic Information -->
+                        <h3 style="font-size: 0.95rem; font-weight: 700; margin-bottom: 16px;">Basic Information</h3>
+                        <div class="grid-1-1" style="gap: 16px; margin-bottom: 16px;">
+                            <div class="form-group">
+                                <label style="display: block; font-size: 0.82rem; font-weight: 600; margin-bottom: 6px;">Full Name</label>
+                                <input type="text" name="fullName" class="form-control" th:value="${userName != null ? userName : 'Alex Morgan'}" required style="width: 100%; padding: 10px 14px; border: 1px solid var(--border-strong); border-radius: var(--radius-md); background: var(--bg-input); color: var(--text-primary); font-size: 0.88rem;">
+                            </div>
+                            <div class="form-group">
+                                <label style="display: block; font-size: 0.82rem; font-weight: 600; margin-bottom: 6px;">Email Address</label>
+                                <input type="email" name="email" class="form-control" th:value="${userEmail != null ? userEmail : 'alex.morgan@email.com'}" required style="width: 100%; padding: 10px 14px; border: 1px solid var(--border-strong); border-radius: var(--radius-md); background: var(--bg-input); color: var(--text-primary); font-size: 0.88rem;">
+                            </div>
+                        </div>
+
+                        <div class="grid-1-1" style="gap: 16px; margin-bottom: 24px;">
+                            <div class="form-group">
+                                <label style="display: block; font-size: 0.82rem; font-weight: 600; margin-bottom: 6px;">Phone Number</label>
+                                <input type="tel" name="phone" class="form-control" value="+1 (555) 234-5678" style="width: 100%; padding: 10px 14px; border: 1px solid var(--border-strong); border-radius: var(--radius-md); background: var(--bg-input); color: var(--text-primary); font-size: 0.88rem;">
+                            </div>
+                            <div class="form-group">
+                                <label style="display: block; font-size: 0.82rem; font-weight: 600; margin-bottom: 6px;">Location</label>
+                                <input type="text" name="location" class="form-control" value="San Francisco, CA / Remote" style="width: 100%; padding: 10px 14px; border: 1px solid var(--border-strong); border-radius: var(--radius-md); background: var(--bg-input); color: var(--text-primary); font-size: 0.88rem;">
+                            </div>
+                        </div>
+
+                        <!-- Professional Details -->
+                        <h3 style="font-size: 0.95rem; font-weight: 700; margin-bottom: 16px;">Career & Preferences</h3>
+                        <div class="form-group" style="margin-bottom: 16px;">
+                            <label style="display: block; font-size: 0.82rem; font-weight: 600; margin-bottom: 6px;">Professional Headline</label>
+                            <input type="text" name="headline" class="form-control" value="Java & Spring Boot Backend Engineer | Microservices Specialist" style="width: 100%; padding: 10px 14px; border: 1px solid var(--border-strong); border-radius: var(--radius-md); background: var(--bg-input); color: var(--text-primary); font-size: 0.88rem;">
+                        </div>
+
+                        <div class="grid-1-1" style="gap: 16px; margin-bottom: 24px;">
+                            <div class="form-group">
+                                <label style="display: block; font-size: 0.82rem; font-weight: 600; margin-bottom: 6px;">Target Career Role</label>
+                                <select name="careerRole" class="form-control" style="width: 100%; padding: 10px 14px; border: 1px solid var(--border-strong); border-radius: var(--radius-md); background: var(--bg-input); color: var(--text-primary); font-size: 0.88rem;">
+                                    <option value="Java Developer" selected>Java Developer</option>
+                                    <option value="Spring Boot Developer">Spring Boot Developer</option>
+                                    <option value="Full Stack Developer">Full Stack Developer</option>
+                                    <option value="DevOps Engineer">DevOps Engineer</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label style="display: block; font-size: 0.82rem; font-weight: 600; margin-bottom: 6px;">Experience Level</label>
+                                <select name="experienceLevel" class="form-control" style="width: 100%; padding: 10px 14px; border: 1px solid var(--border-strong); border-radius: var(--radius-md); background: var(--bg-input); color: var(--text-primary); font-size: 0.88rem;">
+                                    <option value="Entry">Entry Level (0-2 years)</option>
+                                    <option value="Mid" selected>Mid Level (3-5 years)</option>
+                                    <option value="Senior">Senior Level (5-8 years)</option>
+                                    <option value="Lead">Lead / Architect (8+ years)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Skills Chips -->
+                        <div class="form-group" style="margin-bottom: 28px;">
+                            <label style="display: block; font-size: 0.82rem; font-weight: 600; margin-bottom: 6px;">Key Competencies</label>
+                            <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                                <span class="badge badge-primary">Java 17 ✕</span>
+                                <span class="badge badge-primary">Spring Boot 3 ✕</span>
+                                <span class="badge badge-primary">REST APIs ✕</span>
+                                <span class="badge badge-primary">MySQL ✕</span>
+                                <span class="badge badge-primary">Hibernate/JPA ✕</span>
+                                <span class="badge badge-primary">Git ✕</span>
+                                <button type="button" class="btn btn-secondary btn-sm" style="padding: 2px 8px; font-size: 0.72rem;">+ Add Skill</button>
+                            </div>
+                        </div>
+
+                        <!-- Form Actions -->
+                        <div style="display: flex; justify-content: flex-end; gap: 12px;">
+                            <button type="reset" class="btn btn-secondary">Cancel</button>
+                            <button type="submit" class="btn btn-primary" onclick="alert('Profile changes saved successfully! (Frontend demonstration)')">Save Changes</button>
+                        </div>
+
+                    </form>
+                </article>
+
+                <!-- Right Column: Profile Completion & Attached Resume -->
+                <aside style="display: flex; flex-direction: column; gap: 20px;">
+                    <article class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Profile Strength</h2>
+                            <span class="badge badge-success">85% Complete</span>
+                        </div>
+                        <div class="progress" style="margin-bottom: 14px;">
+                            <div class="progress-bar progress-bar-success" style="width: 85%;"></div>
+                        </div>
+                        <ul class="insight-bullet-list">
+                            <li><strong style="color: var(--success);">✓</strong> Basic information verified</li>
+                            <li><strong style="color: var(--success);">✓</strong> Target role configured</li>
+                            <li><strong style="color: var(--warning);">!</strong> Add LinkedIn or GitHub link</li>
+                        </ul>
+                    </article>
+
+                    <article class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Active Resume Attachment</h2>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 12px; padding: 12px; background: var(--bg-secondary); border-radius: var(--radius-md); margin-bottom: 14px;">
+                            <span style="font-size: 1.8rem;">📄</span>
+                            <div>
+                                <strong style="display: block; font-size: 0.88rem; color: var(--text-primary);">AlexMorgan_JavaResume_v3.pdf</strong>
+                                <small style="color: var(--text-muted); font-size: 0.75rem;">Analyzed on 28 Oct 2026 · ATS Score 88%</small>
+                            </div>
+                        </div>
+                        <a th:href="@{/dashboard/resumeanalyzer}" class="btn btn-secondary btn-sm btn-block">Upload Replacement →</a>
+                    </article>
+                </aside>
+
+            </div>
+
+        </div>
+
+        <!-- Shared Footer -->
+        <footer th:replace="~{fragments/footer :: footer}"></footer>
+
+    </main>
+
+</div>
+
+</body>
+</html>

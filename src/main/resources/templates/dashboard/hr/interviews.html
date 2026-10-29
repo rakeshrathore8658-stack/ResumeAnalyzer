@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Interview Management')}"></head>
+
+<body class="dashboard-page">
+
+<div class="dashboard-layout">
+
+    <!-- Shared Sidebar -->
+    <aside th:replace="~{fragments/sidebar :: sidebar(active='interviews')}"></aside>
+
+    <!-- Main Content Area -->
+    <main class="dashboard-main">
+
+        <!-- Shared Topbar -->
+        <header th:replace="~{fragments/header :: topbar}"></header>
+
+        <div class="main-content">
+
+            <!-- Breadcrumbs -->
+            <nav class="breadcrumb" style="margin-bottom: 20px;">
+                <a th:href="@{/dashboard}">Dashboard</a>
+                <span class="breadcrumb-separator">/</span>
+                <span class="breadcrumb-current">Interview Management</span>
+            </nav>
+
+            <!-- Page Header -->
+            <div class="page-header-row">
+                <div>
+                    <h1 class="page-title">Interviews & Candidate Evaluation</h1>
+                    <p class="page-subtitle">Coordinate technical rounds, assign interviewers, and collect structured hiring feedback.</p>
+                </div>
+                <div class="page-header-actions">
+                    <button type="button" class="btn btn-primary" data-open-schedule-modal data-candidate-name="Vikram Sharma" data-job-title="Senior Java Developer">
+                        <span>+</span> Schedule Interview
+                    </button>
+                </div>
+            </div>
+
+            <!-- Interview Status Filter Tabs -->
+            <div style="display: flex; gap: 8px; margin-bottom: 20px;">
+                <button class="btn btn-secondary btn-sm" style="background: var(--primary); color: #ffffff;">Upcoming (3)</button>
+                <button class="btn btn-secondary btn-sm">Completed (8)</button>
+                <button class="btn btn-secondary btn-sm">Needs Feedback (2)</button>
+            </div>
+
+            <!-- Interview Cards List -->
+            <div style="display: flex; flex-direction: column; gap: 14px;">
+
+                <!-- Interview Item 1 -->
+                <article class="card" style="padding: 20px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+                        <div style="display: flex; align-items: center; gap: 16px;">
+                            <div class="interview-date-box" style="padding: 8px 14px; min-width: 64px;">
+                                <span class="interview-date-day">29</span>
+                                <span class="interview-date-month">OCT</span>
+                            </div>
+
+                            <div>
+                                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+                                    <h3 style="margin: 0; font-size: 1.05rem; color: var(--text-primary);">Vikram Sharma</h3>
+                                    <span class="badge badge-primary">Technical Round 1</span>
+                                    <span class="badge badge-success">Confirmed</span>
+                                </div>
+                                <p style="margin: 0 0 4px; font-size: 0.84rem; color: var(--text-secondary);">
+                                    Position: <strong>Senior Java Developer (REQ-1042)</strong> · 11:00 AM – 12:00 PM EST
+                                </p>
+                                <div style="display: flex; gap: 14px; font-size: 0.78rem; color: var(--text-muted);">
+                                    <span>👤 Interviewer: Alex Carter (Lead Architect)</span>
+                                    <span>🌐 Google Meet (https://meet.google.com/xyz-demo)</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="display: flex; gap: 8px;">
+                            <a th:href="@{/dashboard/feedback}" class="btn btn-secondary btn-sm">Submit Feedback</a>
+                            <button type="button" class="btn btn-ghost btn-sm" onclick="alert('Interview rescheduled. (Frontend demonstration)')">Reschedule</button>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Interview Item 2 -->
+                <article class="card" style="padding: 20px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+                        <div style="display: flex; align-items: center; gap: 16px;">
+                            <div class="interview-date-box" style="padding: 8px 14px; min-width: 64px;">
+                                <span class="interview-date-day">30</span>
+                                <span class="interview-date-month">OCT</span>
+                            </div>
+
+                            <div>
+                                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+                                    <h3 style="margin: 0; font-size: 1.05rem; color: var(--text-primary);">Priya Patel</h3>
+                                    <span class="badge badge-info">System Design</span>
+                                    <span class="badge badge-success">Confirmed</span>
+                                </div>
+                                <p style="margin: 0 0 4px; font-size: 0.84rem; color: var(--text-secondary);">
+                                    Position: <strong>Full Stack MERN Developer (REQ-1043)</strong> · 2:30 PM – 3:30 PM EST
+                                </p>
+                                <div style="display: flex; gap: 14px; font-size: 0.78rem; color: var(--text-muted);">
+                                    <span>👤 Interviewer: Elena Rostova (Staff Engineer)</span>
+                                    <span>🌐 Microsoft Teams</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="display: flex; gap: 8px;">
+                            <a th:href="@{/dashboard/feedback}" class="btn btn-secondary btn-sm">Submit Feedback</a>
+                            <button type="button" class="btn btn-ghost btn-sm" onclick="alert('Interview rescheduled. (Frontend demonstration)')">Reschedule</button>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Interview Item 3 -->
+                <article class="card" style="padding: 20px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+                        <div style="display: flex; align-items: center; gap: 16px;">
+                            <div class="interview-date-box" style="padding: 8px 14px; min-width: 64px; background: var(--bg-tertiary); color: var(--text-muted);">
+                                <span class="interview-date-day">02</span>
+                                <span class="interview-date-month">NOV</span>
+                            </div>
+
+                            <div>
+                                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+                                    <h3 style="margin: 0; font-size: 1.05rem; color: var(--text-primary);">Rohan Mehta</h3>
+                                    <span class="badge badge-neutral">Culture & Fit</span>
+                                    <span class="badge badge-neutral">Tentative</span>
+                                </div>
+                                <p style="margin: 0 0 4px; font-size: 0.84rem; color: var(--text-secondary);">
+                                    Position: <strong>DevOps Engineer (REQ-1044)</strong> · 10:00 AM – 10:45 AM EST
+                                </p>
+                                <div style="display: flex; gap: 14px; font-size: 0.78rem; color: var(--text-muted);">
+                                    <span>👤 Interviewer: Sarah Jenkins (HR Director)</span>
+                                    <span>🏢 On-site Conference Room B</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="display: flex; gap: 8px;">
+                            <a th:href="@{/dashboard/feedback}" class="btn btn-secondary btn-sm">Submit Feedback</a>
+                            <button type="button" class="btn btn-ghost btn-sm" onclick="alert('Interview rescheduled. (Frontend demonstration)')">Reschedule</button>
+                        </div>
+                    </div>
+                </article>
+
+            </div>
+
+        </div>
+
+        <!-- Shared Footer -->
+        <footer th:replace="~{fragments/footer :: footer}"></footer>
+
+    </main>
+
+</div>
+
+</body>
+</html>

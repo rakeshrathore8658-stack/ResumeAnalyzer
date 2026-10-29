@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Applications Tracker')}"></head>
+
+<body class="dashboard-page">
+
+<div class="dashboard-layout">
+
+    <!-- Shared Sidebar -->
+    <aside th:replace="~{fragments/sidebar :: sidebar(active='applications')}"></aside>
+
+    <!-- Main Content Area -->
+    <main class="dashboard-main">
+
+        <!-- Shared Topbar -->
+        <header th:replace="~{fragments/header :: topbar}"></header>
+
+        <div class="main-content">
+
+            <!-- Breadcrumbs -->
+            <nav class="breadcrumb" style="margin-bottom: 20px;">
+                <a th:href="@{/dashboard}">Dashboard</a>
+                <span class="breadcrumb-separator">/</span>
+                <span class="breadcrumb-current">Applications</span>
+            </nav>
+
+            <!-- Page Header -->
+            <div class="page-header-row">
+                <div>
+                    <h1 class="page-title">Candidate Applications Pipeline</h1>
+                    <p class="page-subtitle">Track multi-stage candidate applications across active requisitions with live status updates.</p>
+                </div>
+            </div>
+
+            <!-- Pipeline Funnel Counters -->
+            <div class="pipeline-funnel-grid">
+                <div class="funnel-stage-card">
+                    <span class="funnel-count">320</span>
+                    <span class="funnel-label">Applied</span>
+                </div>
+                <div class="funnel-stage-card">
+                    <span class="funnel-count">198</span>
+                    <span class="funnel-label">Under Review</span>
+                </div>
+                <div class="funnel-stage-card">
+                    <span class="funnel-count">28</span>
+                    <span class="funnel-label">Shortlisted</span>
+                </div>
+                <div class="funnel-stage-card">
+                    <span class="funnel-count">14</span>
+                    <span class="funnel-label">Interview</span>
+                </div>
+                <div class="funnel-stage-card">
+                    <span class="funnel-count">5</span>
+                    <span class="funnel-label">Offered</span>
+                </div>
+                <div class="funnel-stage-card">
+                    <span class="funnel-count">3</span>
+                    <span class="funnel-label">Hired</span>
+                </div>
+            </div>
+
+            <!-- Applications Table -->
+            <article class="card">
+                <div class="table-wrapper">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Candidate</th>
+                            <th>Applied Requisition</th>
+                            <th>Applied Date</th>
+                            <th>Match Score</th>
+                            <th>Current Stage</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>
+                                <strong>Vikram Sharma</strong>
+                                <small style="display: block; color: var(--text-muted); font-size: 0.72rem;">vikram.s@email.com</small>
+                            </td>
+                            <td><span class="badge badge-primary">Senior Java Dev</span></td>
+                            <td><span>20 Oct 2026</span></td>
+                            <td><span class="score-badge score-high">94%</span></td>
+                            <td>
+                                <select class="form-control" style="padding: 4px 8px; font-size: 0.78rem; border-radius: 6px; border: 1px solid var(--border-color);">
+                                    <option value="Shortlisted" selected>Shortlisted</option>
+                                    <option value="Interviewing">Interviewing</option>
+                                    <option value="Offered">Offered</option>
+                                    <option value="Rejected">Rejected</option>
+                                </select>
+                            </td>
+                            <td><a th:href="@{/dashboard/candidates/1}" class="btn btn-secondary btn-sm">Profile</a></td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <strong>Priya Patel</strong>
+                                <small style="display: block; color: var(--text-muted); font-size: 0.72rem;">priya.p@email.com</small>
+                            </td>
+                            <td><span class="badge badge-primary">Full Stack MERN</span></td>
+                            <td><span>21 Oct 2026</span></td>
+                            <td><span class="score-badge score-high">89%</span></td>
+                            <td>
+                                <select class="form-control" style="padding: 4px 8px; font-size: 0.78rem; border-radius: 6px; border: 1px solid var(--border-color);">
+                                    <option value="Shortlisted">Shortlisted</option>
+                                    <option value="Interviewing" selected>Interviewing</option>
+                                    <option value="Offered">Offered</option>
+                                    <option value="Rejected">Rejected</option>
+                                </select>
+                            </td>
+                            <td><a th:href="@{/dashboard/candidates/2}" class="btn btn-secondary btn-sm">Profile</a></td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <strong>Rohan Mehta</strong>
+                                <small style="display: block; color: var(--text-muted); font-size: 0.72rem;">rohan.m@email.com</small>
+                            </td>
+                            <td><span class="badge badge-info">DevOps Engineer</span></td>
+                            <td><span>22 Oct 2026</span></td>
+                            <td><span class="score-badge score-high">86%</span></td>
+                            <td>
+                                <select class="form-control" style="padding: 4px 8px; font-size: 0.78rem; border-radius: 6px; border: 1px solid var(--border-color);">
+                                    <option value="Under Review" selected>Under Review</option>
+                                    <option value="Shortlisted">Shortlisted</option>
+                                    <option value="Rejected">Rejected</option>
+                                </select>
+                            </td>
+                            <td><a th:href="@{/dashboard/candidates/3}" class="btn btn-secondary btn-sm">Profile</a></td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <strong>Ananya Kapoor</strong>
+                                <small style="display: block; color: var(--text-muted); font-size: 0.72rem;">ananya.k@email.com</small>
+                            </td>
+                            <td><span class="badge badge-neutral">Data Analyst</span></td>
+                            <td><span>24 Oct 2026</span></td>
+                            <td><span class="score-badge score-mid">72%</span></td>
+                            <td>
+                                <select class="form-control" style="padding: 4px 8px; font-size: 0.78rem; border-radius: 6px; border: 1px solid var(--border-color);">
+                                    <option value="Under Review" selected>Under Review</option>
+                                    <option value="Shortlisted">Shortlisted</option>
+                                    <option value="Rejected">Rejected</option>
+                                </select>
+                            </td>
+                            <td><a th:href="@{/dashboard/candidates/4}" class="btn btn-secondary btn-sm">Profile</a></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </article>
+
+        </div>
+
+        <!-- Shared Footer -->
+        <footer th:replace="~{fragments/footer :: footer}"></footer>
+
+    </main>
+
+</div>
+
+</body>
+</html>

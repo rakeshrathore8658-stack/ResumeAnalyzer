@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Job Roles & Career Profiles')}"></head>
+
+<body class="dashboard-page">
+
+<div class="dashboard-layout">
+
+    <!-- Shared Sidebar -->
+    <aside th:replace="~{fragments/sidebar :: sidebar(active='jobroles')}"></aside>
+
+    <!-- Main Content Area -->
+    <main class="dashboard-main">
+
+        <!-- Shared Topbar -->
+        <header th:replace="~{fragments/header :: topbar}"></header>
+
+        <div class="main-content">
+
+            <!-- Breadcrumbs -->
+            <nav class="breadcrumb" style="margin-bottom: 20px;">
+                <a th:href="@{/dashboard}">Dashboard</a>
+                <span class="breadcrumb-separator">/</span>
+                <span class="breadcrumb-current">Job Roles</span>
+            </nav>
+
+            <!-- Page Header -->
+            <div class="page-header-row">
+                <div>
+                    <h1 class="page-title">Explore Career Profiles</h1>
+                    <p class="page-subtitle">Benchmark your resume against industry-standard skill taxonomies across technology, data, and management domains.</p>
+                </div>
+                <div class="page-header-actions">
+                    <a class="btn btn-primary" th:href="@{/dashboard/resumeanalyzer}">
+                        <span>✦</span> Start Resume Scan
+                    </a>
+                </div>
+            </div>
+
+            <!-- Category Filter Tabs & Search Bar -->
+            <article class="card" style="margin-bottom: 28px; padding: 18px 20px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+                    <!-- Filter Pills -->
+                    <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                        <button class="btn btn-secondary btn-sm active-tab" data-filter="all" style="background: var(--primary); color: #ffffff;">All Domains</button>
+                        <button class="btn btn-secondary btn-sm" data-filter="software">Software Engineering</button>
+                        <button class="btn btn-secondary btn-sm" data-filter="data">Data & AI</button>
+                        <button class="btn btn-secondary btn-sm" data-filter="cloud">Cloud & DevOps</button>
+                        <button class="btn btn-secondary btn-sm" data-filter="business">Product & Business</button>
+                        <button class="btn btn-secondary btn-sm" data-filter="marketing">Marketing & Design</button>
+                    </div>
+
+                    <!-- Search Input -->
+                    <div style="min-width: 240px;">
+                        <input type="search" id="roleSearch" placeholder="Search roles by title or skill..." style="width: 100%; padding: 8px 14px; border: 1px solid var(--border-color); border-radius: var(--radius-md); background: var(--bg-input); color: var(--text-primary); font-size: 0.85rem;">
+                    </div>
+                </div>
+            </article>
+
+            <!-- Job Roles Card Grid -->
+            <div class="grid-1-1" id="rolesGrid" style="grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 20px;">
+
+                <!-- Role 1: Java Developer -->
+                <article class="card role-card" data-domain="software">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+                        <span class="badge badge-primary">Software Engineering</span>
+                        <span class="badge badge-success">High Demand</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 14px;">
+                        <span style="font-size: 2rem;">☕</span>
+                        <div>
+                            <h2 style="font-size: 1.15rem; font-weight: 800; margin: 0; color: var(--text-primary);">Java Developer</h2>
+                            <small style="color: var(--text-muted); font-size: 0.78rem;">Target ATS Score: 80%+</small>
+                        </div>
+                    </div>
+                    <p style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 14px;">
+                        Designs and builds enterprise backends, scalable REST services, and database-driven business logic using modern Java ecosystems.
+                    </p>
+                    <div style="margin-bottom: 14px;">
+                        <strong style="display: block; font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px;">Must-Have Skills:</strong>
+                        <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+                            <span class="skill-tag skill-matched" style="padding: 3px 8px; font-size: 0.75rem;">Java 17/21</span>
+                            <span class="skill-tag skill-matched" style="padding: 3px 8px; font-size: 0.75rem;">Spring Boot</span>
+                            <span class="skill-tag skill-matched" style="padding: 3px 8px; font-size: 0.75rem;">REST APIs</span>
+                            <span class="skill-tag skill-matched" style="padding: 3px 8px; font-size: 0.75rem;">SQL / JPA</span>
+                            <span class="skill-tag skill-matched" style="padding: 3px 8px; font-size: 0.75rem;">Git</span>
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 10px; margin-top: auto; padding-top: 14px; border-top: 1px solid var(--border-color);">
+                        <a th:href="@{/dashboard/resumeanalyzer}" class="btn btn-primary btn-sm btn-block">Analyze Against Role</a>
+                        <a th:href="@{/dashboard/skillsgap}" class="btn btn-secondary btn-sm">Skills Gap</a>
+                    </div>
+                </article>
+
+                <!-- Role 2: Full Stack MERN Developer -->
+                <article class="card role-card" data-domain="software">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+                        <span class="badge badge-primary">Software Engineering</span>
+                        <span class="badge badge-success">High Demand</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 14px;">
+                        <span style="font-size: 2rem;">⚡</span>
+                        <div>
+                            <h2 style="font-size: 1.15rem; font-weight: 800; margin: 0; color: var(--text-primary);">MERN Stack Developer</h2>
+                            <small style="color: var(--text-muted); font-size: 0.78rem;">Target ATS Score: 78%+</small>
+                        </div>
+                    </div>
+                    <p style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 14px;">
+                        Develops end-to-end web applications with interactive React frontends, robust Node/Express APIs, and NoSQL databases.
+                    </p>
+                    <div style="margin-bottom: 14px;">
+                        <strong style="display: block; font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px;">Must-Have Skills:</strong>
+                        <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+                            <span class="skill-tag skill-matched" style="padding: 3px 8px; font-size: 0.75rem;">React.js</span>
+                            <span class="skill-tag skill-matched" style="padding: 3px 8px; font-size: 0.75rem;">Node.js</span>
+                            <span class="skill-tag skill-matched" style="padding: 3px 8px; font-size: 0.75rem;">Express</span>
+                            <span class="skill-tag skill-matched" style="padding: 3px 8px; font-size: 0.75rem;">MongoDB</span>
+                            <span class="skill-tag skill-matched" style="padding: 3px 8px; font-size: 0.75rem;">TypeScript</span>
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 10px; margin-top: auto; padding-top: 14px; border-top: 1px solid var(--border-color);">
+                        <a th:href="@{/dashboard/resumeanalyzer}" class="btn btn-primary btn-sm btn-block">Analyze Against Role</a>
+                        <a th:href="@{/dashboard/skillsgap}" class="btn btn-secondary btn-sm">Skills Gap</a>
+                    </div>
+                </article>
+
+                <!-- Role 3: DevOps & Cloud Engineer -->
+                <article class="card role-card" data-domain="cloud">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+                        <span class="badge badge-info">Cloud & Infrastructure</span>
+                        <span class="badge badge-success">Fast Growing</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 14px;">
+                        <span style="font-size: 2rem;">☁</span>
+                        <div>
+                            <h2 style="font-size: 1.15rem; font-weight: 800; margin: 0; color: var(--text-primary);">DevOps Engineer</h2>
+                            <small style="color: var(--text-muted); font-size: 0.78rem;">Target ATS Score: 82%+</small>
+                        </div>
+                    </div>
+                    <p style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 14px;">
+                        Automates continuous deployment pipelines, manages Kubernetes clusters, and provisions cloud infrastructure as code.
+                    </p>
+                    <div style="margin-bottom: 14px;">
+                        <strong style="display: block; font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px;">Must-Have Skills:</strong>
+                        <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+                            <span class="skill-tag skill-matched" style="padding: 3px 8px; font-size: 0.75rem;">Docker</span>
+                            <span class="skill-tag skill-matched" style="padding: 3px 8px; font-size: 0.75rem;">Kubernetes</span>
+                            <span class="skill-tag skill-matched" style="padding: 3px 8px; font-size: 0.75rem;">AWS / Azure</span>
+                            <span class="skill-tag skill-matched" style="padding: 3px 8px; font-size: 0.75rem;">CI/CD Pipelines</span>
+                            <span class="skill-tag skill-matched" style="padding: 3px 8px; font-size: 0.75rem;">Terraform</span>
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 10px; margin-top: auto; padding-top: 14px; border-top: 1px solid var(--border-color);">
+                        <a th:href="@{/dashboard/resumeanalyzer}" class="btn btn-primary btn-sm btn-block">Analyze Against Role</a>
+                        <a th:href="@{/dashboard/skillsgap}" class="btn btn-secondary btn-sm">Skills Gap</a>
+                    </div>
+                </article>
+
+                <!-- Role 4: Data Analyst & Scientist -->
+                <article class="card role-card" data-domain="data">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+                        <span class="badge badge-neutral">Data & Analytics</span>
+                        <span class="badge badge-success">High Demand</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 14px;">
+                        <span style="font-size: 2rem;">📊</span>
+                        <div>
+                            <h2 style="font-size: 1.15rem; font-weight: 800; margin: 0; color: var(--text-primary);">Data Analyst</h2>
+                            <small style="color: var(--text-muted); font-size: 0.78rem;">Target ATS Score: 75%+</small>
+                        </div>
+                    </div>
+                    <p style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 14px;">
+                        Transforms business data into actionable dashboards, performs statistical queries, and generates automated executive reports.
+                    </p>
+                    <div style="margin-bottom: 14px;">
+                        <strong style="display: block; font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px;">Must-Have Skills:</strong>
+                        <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+                            <span class="skill-tag skill-matched" style="padding: 3px 8px; font-size: 0.75rem;">Python / Pandas</span>
+                            <span class="skill-tag skill-matched" style="padding: 3px 8px; font-size: 0.75rem;">Advanced SQL</span>
+                            <span class="skill-tag skill-matched" style="padding: 3px 8px; font-size: 0.75rem;">Power BI / Tableau</span>
+                            <span class="skill-tag skill-matched" style="padding: 3px 8px; font-size: 0.75rem;">Statistics</span>
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 10px; margin-top: auto; padding-top: 14px; border-top: 1px solid var(--border-color);">
+                        <a th:href="@{/dashboard/resumeanalyzer}" class="btn btn-primary btn-sm btn-block">Analyze Against Role</a>
+                        <a th:href="@{/dashboard/skillsgap}" class="btn btn-secondary btn-sm">Skills Gap</a>
+                    </div>
+                </article>
+
+                <!-- Role 5: Business Analyst / Product Manager -->
+                <article class="card role-card" data-domain="business">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+                        <span class="badge badge-warning">Product & Strategy</span>
+                        <span class="badge badge-neutral">Standard</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 14px;">
+                        <span style="font-size: 2rem;">📋</span>
+                        <div>
+                            <h2 style="font-size: 1.15rem; font-weight: 800; margin: 0; color: var(--text-primary);">Business Analyst</h2>
+                            <small style="color: var(--text-muted); font-size: 0.78rem;">Target ATS Score: 78%+</small>
+                        </div>
+                    </div>
+                    <p style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 14px;">
+                        Bridges business stakeholders and development squads, drafts functional specifications, user stories, and process flow diagrams.
+                    </p>
+                    <div style="margin-bottom: 14px;">
+                        <strong style="display: block; font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px;">Must-Have Skills:</strong>
+                        <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+                            <span class="skill-tag skill-matched" style="padding: 3px 8px; font-size: 0.75rem;">Agile / Scrum</span>
+                            <span class="skill-tag skill-matched" style="padding: 3px 8px; font-size: 0.75rem;">User Stories / BRD</span>
+                            <span class="skill-tag skill-matched" style="padding: 3px 8px; font-size: 0.75rem;">Jira / Confluence</span>
+                            <span class="skill-tag skill-matched" style="padding: 3px 8px; font-size: 0.75rem;">UML / Wireframes</span>
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 10px; margin-top: auto; padding-top: 14px; border-top: 1px solid var(--border-color);">
+                        <a th:href="@{/dashboard/resumeanalyzer}" class="btn btn-primary btn-sm btn-block">Analyze Against Role</a>
+                        <a th:href="@{/dashboard/skillsgap}" class="btn btn-secondary btn-sm">Skills Gap</a>
+                    </div>
+                </article>
+
+                <!-- Role 6: UI/UX & Design -->
+                <article class="card role-card" data-domain="marketing">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+                        <span class="badge badge-primary">Design & Creative</span>
+                        <span class="badge badge-success">Growing</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 14px;">
+                        <span style="font-size: 2rem;">🎨</span>
+                        <div>
+                            <h2 style="font-size: 1.15rem; font-weight: 800; margin: 0; color: var(--text-primary);">UI/UX Designer</h2>
+                            <small style="color: var(--text-muted); font-size: 0.78rem;">Target ATS Score: 76%+</small>
+                        </div>
+                    </div>
+                    <p style="font-size: 0.84rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 14px;">
+                        Conducts user research, designs wireframes and high-fidelity interactive prototypes in Figma, maintaining design design systems.
+                    </p>
+                    <div style="margin-bottom: 14px;">
+                        <strong style="display: block; font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px;">Must-Have Skills:</strong>
+                        <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+                            <span class="skill-tag skill-matched" style="padding: 3px 8px; font-size: 0.75rem;">Figma</span>
+                            <span class="skill-tag skill-matched" style="padding: 3px 8px; font-size: 0.75rem;">Design Systems</span>
+                            <span class="skill-tag skill-matched" style="padding: 3px 8px; font-size: 0.75rem;">User Research</span>
+                            <span class="skill-tag skill-matched" style="padding: 3px 8px; font-size: 0.75rem;">Prototyping</span>
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 10px; margin-top: auto; padding-top: 14px; border-top: 1px solid var(--border-color);">
+                        <a th:href="@{/dashboard/resumeanalyzer}" class="btn btn-primary btn-sm btn-block">Analyze Against Role</a>
+                        <a th:href="@{/dashboard/skillsgap}" class="btn btn-secondary btn-sm">Skills Gap</a>
+                    </div>
+                </article>
+
+            </div>
+
+        </div>
+
+        <!-- Shared Footer -->
+        <footer th:replace="~{fragments/footer :: footer}"></footer>
+
+    </main>
+
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const filterButtons = document.querySelectorAll("[data-filter]");
+        const roleCards = document.querySelectorAll(".role-card");
+        const searchInput = document.getElementById("roleSearch");
+
+        filterButtons.forEach(btn => {
+            btn.addEventListener("click", () => {
+                filterButtons.forEach(b => {
+                    b.style.background = "var(--bg-secondary)";
+                    b.style.color = "var(--text-primary)";
+                });
+                btn.style.background = "var(--primary)";
+                btn.style.color = "#ffffff";
+
+                const filter = btn.getAttribute("data-filter");
+                roleCards.forEach(card => {
+                    if (filter === "all" || card.getAttribute("data-domain") === filter) {
+                        card.hidden = false;
+                    } else {
+                        card.hidden = true;
+                    }
+                });
+            });
+        });
+
+        if (searchInput) {
+            searchInput.addEventListener("input", () => {
+                const query = searchInput.value.toLowerCase().trim();
+                roleCards.forEach(card => {
+                    const text = card.textContent.toLowerCase();
+                    card.hidden = !text.includes(query);
+                });
+            });
+        }
+    });
+</script>
+
+</body>
+</html>

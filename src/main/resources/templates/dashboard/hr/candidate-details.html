@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Candidate Profile - Vikram Sharma')}"></head>
+
+<body class="dashboard-page">
+
+<div class="dashboard-layout">
+
+    <!-- Shared Sidebar -->
+    <aside th:replace="~{fragments/sidebar :: sidebar(active='candidates')}"></aside>
+
+    <!-- Main Content Area -->
+    <main class="dashboard-main">
+
+        <!-- Shared Topbar -->
+        <header th:replace="~{fragments/header :: topbar}"></header>
+
+        <div class="main-content">
+
+            <!-- Breadcrumbs -->
+            <nav class="breadcrumb" style="margin-bottom: 20px;">
+                <a th:href="@{/dashboard}">Dashboard</a>
+                <span class="breadcrumb-separator">/</span>
+                <a th:href="@{/dashboard/candidates}">Candidates</a>
+                <span class="breadcrumb-separator">/</span>
+                <span class="breadcrumb-current">Vikram Sharma</span>
+            </nav>
+
+            <!-- Candidate Profile Header -->
+            <article class="card" style="margin-bottom: 28px; padding: 24px 28px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;">
+                    <div style="display: flex; align-items: center; gap: 20px;">
+                        <div class="profile-avatar" style="width: 72px; height: 72px; font-size: 1.8rem; background: var(--primary);">
+                            VS
+                        </div>
+                        <div>
+                            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 4px;">
+                                <h1 style="margin: 0; font-size: 1.4rem; font-weight: 800; color: var(--text-primary);">Vikram Sharma</h1>
+                                <span class="badge badge-success">Shortlisted</span>
+                                <span class="score-badge score-high">94% Match</span>
+                            </div>
+                            <p style="margin: 0 0 6px; font-size: 0.88rem; color: var(--text-secondary);">
+                                Applied for: <strong style="color: var(--primary);">Senior Java Developer (REQ-1042)</strong> · 5.5 Years Experience
+                            </p>
+                            <div style="display: flex; gap: 16px; font-size: 0.8rem; color: var(--text-muted); flex-wrap: wrap;">
+                                <span>📧 vikram.s@email.com</span>
+                                <span>📞 +1 (555) 789-0123</span>
+                                <span>📍 San Francisco, CA / Remote</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Action Buttons -->
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                        <button type="button" class="btn btn-secondary btn-sm" onclick="alert('Resume PDF download started. (Frontend demonstration)')">
+                            📥 Download Resume
+                        </button>
+                        <button type="button" class="btn btn-secondary btn-sm" data-open-schedule-modal data-candidate-name="Vikram Sharma" data-job-title="Senior Java Developer">
+                            📅 Schedule Interview
+                        </button>
+                        <button type="button" class="btn btn-primary btn-sm" onclick="alert('Candidate status updated! (Frontend demonstration)')">
+                            ✓ Advance to Offer
+                        </button>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Shared AI Resume Matching Analysis Result for HR -->
+            <div th:replace="~{fragments/analysis-result :: analysisResult('hr', 94, null, null, null, null)}"></div>
+
+            <!-- Two Column: Extracted Resume Background & Internal Recruiter Notes -->
+            <div class="grid-2-1" style="margin-top: 28px;">
+
+                <!-- Extracted Experience & Background -->
+                <div style="display: flex; flex-direction: column; gap: 20px;">
+                    <article class="card">
+                        <div class="card-header">
+                            <h2 class="card-title"><span>💼</span> Parsed Work History</h2>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 18px;">
+                            <div style="border-left: 3px solid var(--accent); padding-left: 14px;">
+                                <strong style="font-size: 0.95rem; color: var(--text-primary); display: block;">Senior Software Engineer · FinTech Payments Lab</strong>
+                                <small style="color: var(--text-muted); font-size: 0.75rem;">Jan 2022 – Present (2.8 yrs)</small>
+                                <p style="font-size: 0.84rem; color: var(--text-secondary); margin: 6px 0 0; line-height: 1.5;">
+                                    Led backend engineering team of 5 in migrating core payments gateway to Spring Boot microservices. Reduced transaction latency by 40% with Redis caching and Kafka queue processing.
+                                </p>
+                            </div>
+
+                            <div style="border-left: 3px solid var(--border-strong); padding-left: 14px;">
+                                <strong style="font-size: 0.95rem; color: var(--text-primary); display: block;">Java Developer · CloudSoft Technologies</strong>
+                                <small style="color: var(--text-muted); font-size: 0.75rem;">Aug 2019 – Dec 2021 (2.4 yrs)</small>
+                                <p style="font-size: 0.84rem; color: var(--text-secondary); margin: 6px 0 0; line-height: 1.5;">
+                                    Designed RESTful APIs using Spring Boot, Hibernate ORM, and MySQL. Implemented OAuth2 and JWT authentication across customer-facing portals.
+                                </p>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="card">
+                        <div class="card-header">
+                            <h2 class="card-title"><span>🎓</span> Education & Certifications</h2>
+                        </div>
+                        <ul class="insight-bullet-list">
+                            <li>
+                                <strong>B.Tech in Computer Science & Engineering:</strong> State Technological University, 2019 (GPA 3.8/4.0).
+                            </li>
+                            <li>
+                                <strong>AWS Certified Solutions Architect – Associate:</strong> Issued Nov 2023.
+                            </li>
+                        </ul>
+                    </article>
+                </div>
+
+                <!-- Recruiter Internal Notes & History -->
+                <aside style="display: flex; flex-direction: column; gap: 20px;">
+                    <article class="card">
+                        <div class="card-header">
+                            <h2 class="card-title"><span>📝</span> Recruiter Notes</h2>
+                        </div>
+
+                        <!-- Add Note Form -->
+                        <form onsubmit="event.preventDefault(); alert('Note saved to candidate record! (Frontend demonstration)'); this.reset();" style="margin-bottom: 18px;">
+                            <textarea rows="3" class="form-control" placeholder="Add confidential recruiter note..." required style="width: 100%; padding: 10px 12px; border: 1px solid var(--border-strong); border-radius: var(--radius-md); background: var(--bg-input); color: var(--text-primary); font-size: 0.85rem; resize: vertical; box-sizing: border-box;"></textarea>
+                            <button type="submit" class="btn btn-secondary btn-sm" style="margin-top: 8px; width: 100%;">Save Note</button>
+                        </form>
+
+                        <!-- Existing Notes -->
+                        <div style="display: flex; flex-direction: column; gap: 10px;">
+                            <div style="background: var(--bg-secondary); padding: 10px 12px; border-radius: var(--radius-sm); border: 1px solid var(--border-color); font-size: 0.82rem;">
+                                <strong style="display: block; color: var(--text-primary); margin-bottom: 2px;">Sarah (Lead Recruiter) · 24 Oct</strong>
+                                <p style="margin: 0; color: var(--text-secondary);">Excellent communication during initial phone screen. Ready for immediate technical round.</p>
+                            </div>
+                            <div style="background: var(--bg-secondary); padding: 10px 12px; border-radius: var(--radius-sm); border: 1px solid var(--border-color); font-size: 0.82rem;">
+                                <strong style="display: block; color: var(--text-primary); margin-bottom: 2px;">AI Screening Engine · 20 Oct</strong>
+                                <p style="margin: 0; color: var(--text-secondary);">Automatic candidate match score verified at 94% with 6 must-have criteria detected.</p>
+                            </div>
+                        </div>
+                    </article>
+                </aside>
+
+            </div>
+
+        </div>
+
+        <!-- Shared Footer -->
+        <footer th:replace="~{fragments/footer :: footer}"></footer>
+
+    </main>
+
+</div>
+
+</body>
+</html>

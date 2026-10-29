@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Shortlisted Candidates & Comparison')}"></head>
+
+<body class="dashboard-page">
+
+<div class="dashboard-layout">
+
+    <!-- Shared Sidebar -->
+    <aside th:replace="~{fragments/sidebar :: sidebar(active='shortlist')}"></aside>
+
+    <!-- Main Content Area -->
+    <main class="dashboard-main">
+
+        <!-- Shared Topbar -->
+        <header th:replace="~{fragments/header :: topbar}"></header>
+
+        <div class="main-content">
+
+            <!-- Breadcrumbs -->
+            <nav class="breadcrumb" style="margin-bottom: 20px;">
+                <a th:href="@{/dashboard}">Dashboard</a>
+                <span class="breadcrumb-separator">/</span>
+                <span class="breadcrumb-current">Shortlisted Candidates</span>
+            </nav>
+
+            <!-- Page Header -->
+            <div class="page-header-row">
+                <div>
+                    <h1 class="page-title">Shortlisted Candidates</h1>
+                    <p class="page-subtitle">Select up to 3 candidates to compare their skills and experience side-by-side before interview rounds.</p>
+                </div>
+                <div class="page-header-actions">
+                    <button type="button" class="btn btn-primary" id="btnCompareCandidates" disabled>
+                        <span>⚖</span> Compare Selected (0)
+                    </button>
+                </div>
+            </div>
+
+            <!-- Shortlist Table -->
+            <article class="card">
+                <div class="table-wrapper">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th style="width: 40px;">Select</th>
+                            <th>Candidate</th>
+                            <th>Target Requisition</th>
+                            <th>Match Score</th>
+                            <th>Experience</th>
+                            <th>Extracted Core Skills</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>
+                                <input type="checkbox" class="candidate-compare-checkbox" data-candidate-id="1" style="transform: scale(1.2); cursor: pointer;">
+                            </td>
+                            <td>
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <div class="profile-avatar" style="width: 36px; height: 36px; font-size: 0.9rem;">VS</div>
+                                    <div>
+                                        <strong>Vikram Sharma</strong>
+                                        <small style="display: block; color: var(--text-muted); font-size: 0.72rem;">vikram.s@email.com</small>
+                                    </div>
+                                </div>
+                            </td>
+                            <td><span class="badge badge-primary">Senior Java Dev</span></td>
+                            <td><span class="score-badge score-high">94%</span></td>
+                            <td>5.5 yrs</td>
+                            <td>
+                                <span class="skill-tag skill-matched" style="padding: 2px 6px; font-size: 0.7rem;">Java 21</span>
+                                <span class="skill-tag skill-matched" style="padding: 2px 6px; font-size: 0.7rem;">Spring Boot</span>
+                                <span class="skill-tag skill-matched" style="padding: 2px 6px; font-size: 0.7rem;">Docker</span>
+                            </td>
+                            <td>
+                                <div style="display: flex; gap: 6px;">
+                                    <button type="button" class="btn btn-secondary btn-sm" data-open-schedule-modal data-candidate-name="Vikram Sharma" data-job-title="Senior Java Developer">📅 Interview</button>
+                                    <a th:href="@{/dashboard/candidates/1}" class="btn btn-ghost btn-sm">Profile</a>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <input type="checkbox" class="candidate-compare-checkbox" data-candidate-id="2" style="transform: scale(1.2); cursor: pointer;">
+                            </td>
+                            <td>
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <div class="profile-avatar" style="width: 36px; height: 36px; font-size: 0.9rem; background: var(--accent);">PP</div>
+                                    <div>
+                                        <strong>Priya Patel</strong>
+                                        <small style="display: block; color: var(--text-muted); font-size: 0.72rem;">priya.p@email.com</small>
+                                    </div>
+                                </div>
+                            </td>
+                            <td><span class="badge badge-primary">Full Stack MERN</span></td>
+                            <td><span class="score-badge score-high">89%</span></td>
+                            <td>4 yrs</td>
+                            <td>
+                                <span class="skill-tag skill-matched" style="padding: 2px 6px; font-size: 0.7rem;">React</span>
+                                <span class="skill-tag skill-matched" style="padding: 2px 6px; font-size: 0.7rem;">Node.js</span>
+                                <span class="skill-tag skill-matched" style="padding: 2px 6px; font-size: 0.7rem;">MongoDB</span>
+                            </td>
+                            <td>
+                                <div style="display: flex; gap: 6px;">
+                                    <button type="button" class="btn btn-secondary btn-sm" data-open-schedule-modal data-candidate-name="Priya Patel" data-job-title="Full Stack MERN Developer">📅 Interview</button>
+                                    <a th:href="@{/dashboard/candidates/2}" class="btn btn-ghost btn-sm">Profile</a>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <input type="checkbox" class="candidate-compare-checkbox" data-candidate-id="3" style="transform: scale(1.2); cursor: pointer;">
+                            </td>
+                            <td>
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <div class="profile-avatar" style="width: 36px; height: 36px; font-size: 0.9rem;">RM</div>
+                                    <div>
+                                        <strong>Rohan Mehta</strong>
+                                        <small style="display: block; color: var(--text-muted); font-size: 0.72rem;">rohan.m@email.com</small>
+                                    </div>
+                                </div>
+                            </td>
+                            <td><span class="badge badge-info">DevOps Engineer</span></td>
+                            <td><span class="score-badge score-high">86%</span></td>
+                            <td>3.5 yrs</td>
+                            <td>
+                                <span class="skill-tag skill-matched" style="padding: 2px 6px; font-size: 0.7rem;">Kubernetes</span>
+                                <span class="skill-tag skill-matched" style="padding: 2px 6px; font-size: 0.7rem;">AWS</span>
+                                <span class="skill-tag skill-matched" style="padding: 2px 6px; font-size: 0.7rem;">Terraform</span>
+                            </td>
+                            <td>
+                                <div style="display: flex; gap: 6px;">
+                                    <button type="button" class="btn btn-secondary btn-sm" data-open-schedule-modal data-candidate-name="Rohan Mehta" data-job-title="DevOps Engineer">📅 Interview</button>
+                                    <a th:href="@{/dashboard/candidates/3}" class="btn btn-ghost btn-sm">Profile</a>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </article>
+
+        </div>
+
+        <!-- Shared Footer -->
+        <footer th:replace="~{fragments/footer :: footer}"></footer>
+
+    </main>
+
+</div>
+
+<!-- ================= SIDE-BY-SIDE CANDIDATE COMPARISON MODAL ================= -->
+<div class="modal-overlay" id="compareModal" hidden>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-header">
+            <h3 class="modal-title">Candidate Side-by-Side Comparison</h3>
+            <button type="button" class="modal-close" data-close-modal aria-label="Close modal">✕</button>
+        </div>
+        <div class="modal-body" style="padding: 0;">
+            <div class="comparison-table-wrapper">
+                <table class="comparison-table">
+                    <thead>
+                    <tr>
+                        <th>Criteria</th>
+                        <td class="candidate-header-cell">
+                            <div class="avatar">VS</div>
+                            <h4>Vikram Sharma</h4>
+                            <span class="badge badge-success">94% Match</span>
+                        </td>
+                        <td class="candidate-header-cell">
+                            <div class="avatar" style="background: var(--accent);">PP</div>
+                            <h4>Priya Patel</h4>
+                            <span class="badge badge-success">89% Match</span>
+                        </td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <th>Total Experience</th>
+                        <td><strong>5.5 Years</strong></td>
+                        <td><strong>4.0 Years</strong></td>
+                    </tr>
+                    <tr>
+                        <th>Core Competencies</th>
+                        <td>
+                            <span class="skill-tag skill-matched">Java 21</span>
+                            <span class="skill-tag skill-matched">Spring Boot</span>
+                            <span class="skill-tag skill-matched">Docker</span>
+                            <span class="skill-tag skill-matched">Kafka</span>
+                        </td>
+                        <td>
+                            <span class="skill-tag skill-matched">React.js</span>
+                            <span class="skill-tag skill-matched">Node.js</span>
+                            <span class="skill-tag skill-matched">TypeScript</span>
+                            <span class="skill-tag skill-matched">MongoDB</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>ATS Readability Score</th>
+                        <td><span class="score-badge score-high">96/100</span></td>
+                        <td><span class="score-badge score-high">90/100</span></td>
+                    </tr>
+                    <tr>
+                        <th>Cloud & DevOps</th>
+                        <td>AWS Certified, Docker, CI/CD</td>
+                        <td>Docker, Heroku, AWS S3</td>
+                    </tr>
+                    <tr>
+                        <th>Education</th>
+                        <td>B.Tech Computer Science (2019)</td>
+                        <td>B.S. Software Engineering (2020)</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-close-modal>Close Comparison</button>
+            <button type="button" class="btn btn-primary" onclick="alert('Interview sequence scheduled. (Frontend demonstration)')">Proceed to Schedule Interviews</button>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

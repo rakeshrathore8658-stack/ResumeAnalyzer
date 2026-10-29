@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Job Management')}"></head>
+
+<body class="dashboard-page">
+
+<div class="dashboard-layout">
+
+    <!-- Shared Sidebar -->
+    <aside th:replace="~{fragments/sidebar :: sidebar(active='jobs')}"></aside>
+
+    <!-- Main Content Area -->
+    <main class="dashboard-main">
+
+        <!-- Shared Topbar -->
+        <header th:replace="~{fragments/header :: topbar}"></header>
+
+        <div class="main-content">
+
+            <!-- Breadcrumbs -->
+            <nav class="breadcrumb" style="margin-bottom: 20px;">
+                <a th:href="@{/dashboard}">Dashboard</a>
+                <span class="breadcrumb-separator">/</span>
+                <span class="breadcrumb-current">Job Management</span>
+            </nav>
+
+            <!-- Page Header -->
+            <div class="page-header-row">
+                <div>
+                    <h1 class="page-title">Job Vacancies & Requisitions</h1>
+                    <p class="page-subtitle">Create, monitor, and manage open job positions and candidate application pipelines.</p>
+                </div>
+                <div class="page-header-actions">
+                    <a class="btn btn-primary" th:href="@{/dashboard/jobs/create}">
+                        <span>+</span> Post New Job
+                    </a>
+                </div>
+            </div>
+
+            <!-- Job Filters & Search Toolbar -->
+            <article class="card" style="margin-bottom: 24px; padding: 16px 20px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px;">
+                    <div style="display: flex; align-items: center; gap: 12px; flex: 1; min-width: 280px;">
+                        <input type="search" id="jobSearch" placeholder="Search by title, department, or location..." style="width: 100%; padding: 9px 14px; border: 1px solid var(--border-color); border-radius: var(--radius-md); background: var(--bg-input); color: var(--text-primary); font-size: 0.88rem;">
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                        <select id="statusFilter" style="padding: 9px 12px; border: 1px solid var(--border-color); border-radius: var(--radius-md); background: var(--bg-input); color: var(--text-primary); font-size: 0.85rem;">
+                            <option value="">All Statuses</option>
+                            <option value="Open">Open (Active)</option>
+                            <option value="Draft">Draft</option>
+                            <option value="Closed">Closed</option>
+                        </select>
+
+                        <select id="deptFilter" style="padding: 9px 12px; border: 1px solid var(--border-color); border-radius: var(--radius-md); background: var(--bg-input); color: var(--text-primary); font-size: 0.85rem;">
+                            <option value="">All Departments</option>
+                            <option value="Engineering">Engineering</option>
+                            <option value="Product">Product</option>
+                            <option value="Data">Data & BI</option>
+                            <option value="Infrastructure">Infrastructure</option>
+                        </select>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Job Vacancies Table -->
+            <article class="card">
+                <div class="table-wrapper">
+                    <table class="table" id="jobsTable">
+                        <thead>
+                        <tr>
+                            <th>Job Title & ID</th>
+                            <th>Department & Location</th>
+                            <th>Experience</th>
+                            <th>Applicants</th>
+                            <th>Shortlisted</th>
+                            <th>Status</th>
+                            <th>Date Posted</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>
+                                <strong>Senior Java Developer</strong>
+                                <small style="display: block; color: var(--text-muted); font-size: 0.72rem;">REQ-1042 · Full-time</small>
+                            </td>
+                            <td>
+                                <span>Engineering</span>
+                                <small style="display: block; color: var(--text-muted); font-size: 0.72rem;">Remote / Hybrid</small>
+                            </td>
+                            <td>4 – 7 yrs</td>
+                            <td><strong style="color: var(--primary);">48</strong></td>
+                            <td><span class="badge badge-success">12</span></td>
+                            <td><span class="badge badge-success">Open</span></td>
+                            <td><span>18 Oct 2026</span></td>
+                            <td>
+                                <div style="display: flex; gap: 6px;">
+                                    <a th:href="@{/dashboard/jobs/1}" class="btn btn-secondary btn-sm">Details</a>
+                                    <a th:href="@{/dashboard/jobs/create}" class="btn btn-ghost btn-sm">Edit</a>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <strong>Full Stack MERN Developer</strong>
+                                <small style="display: block; color: var(--text-muted); font-size: 0.72rem;">REQ-1043 · Full-time</small>
+                            </td>
+                            <td>
+                                <span>Product & Web</span>
+                                <small style="display: block; color: var(--text-muted); font-size: 0.72rem;">San Francisco, CA</small>
+                            </td>
+                            <td>3 – 5 yrs</td>
+                            <td><strong style="color: var(--primary);">52</strong></td>
+                            <td><span class="badge badge-success">14</span></td>
+                            <td><span class="badge badge-success">Open</span></td>
+                            <td><span>20 Oct 2026</span></td>
+                            <td>
+                                <div style="display: flex; gap: 6px;">
+                                    <a th:href="@{/dashboard/jobs/1}" class="btn btn-secondary btn-sm">Details</a>
+                                    <a th:href="@{/dashboard/jobs/create}" class="btn btn-ghost btn-sm">Edit</a>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <strong>DevOps / Cloud Engineer</strong>
+                                <small style="display: block; color: var(--text-muted); font-size: 0.72rem;">REQ-1044 · Full-time</small>
+                            </td>
+                            <td>
+                                <span>Infrastructure</span>
+                                <small style="display: block; color: var(--text-muted); font-size: 0.72rem;">Remote</small>
+                            </td>
+                            <td>3 – 6 yrs</td>
+                            <td><strong style="color: var(--primary);">28</strong></td>
+                            <td><span class="badge badge-success">7</span></td>
+                            <td><span class="badge badge-success">Open</span></td>
+                            <td><span>22 Oct 2026</span></td>
+                            <td>
+                                <div style="display: flex; gap: 6px;">
+                                    <a th:href="@{/dashboard/jobs/1}" class="btn btn-secondary btn-sm">Details</a>
+                                    <a th:href="@{/dashboard/jobs/create}" class="btn btn-ghost btn-sm">Edit</a>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <strong>Spring Boot Backend Specialist</strong>
+                                <small style="display: block; color: var(--text-muted); font-size: 0.72rem;">REQ-1045 · Contract</small>
+                            </td>
+                            <td>
+                                <span>Engineering</span>
+                                <small style="display: block; color: var(--text-muted); font-size: 0.72rem;">Remote</small>
+                            </td>
+                            <td>2 – 4 yrs</td>
+                            <td><strong style="color: var(--primary);">0</strong></td>
+                            <td><span class="badge badge-neutral">0</span></td>
+                            <td><span class="badge badge-neutral">Draft</span></td>
+                            <td><span>26 Oct 2026</span></td>
+                            <td>
+                                <div style="display: flex; gap: 6px;">
+                                    <a th:href="@{/dashboard/jobs/1}" class="btn btn-secondary btn-sm">Details</a>
+                                    <a th:href="@{/dashboard/jobs/create}" class="btn btn-ghost btn-sm">Edit</a>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </article>
+
+        </div>
+
+        <!-- Shared Footer -->
+        <footer th:replace="~{fragments/footer :: footer}"></footer>
+
+    </main>
+
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const searchInput = document.getElementById("jobSearch");
+        const statusFilter = document.getElementById("statusFilter");
+        const deptFilter = document.getElementById("deptFilter");
+        const rows = document.querySelectorAll("#jobsTable tbody tr");
+
+        function filterJobs() {
+            const query = searchInput ? searchInput.value.toLowerCase().trim() : "";
+            const status = statusFilter ? statusFilter.value : "";
+            const dept = deptFilter ? deptFilter.value : "";
+
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                const matchesQuery = !query || text.includes(query);
+                const matchesStatus = !status || text.includes(status.toLowerCase());
+                const matchesDept = !dept || text.includes(dept.toLowerCase());
+                row.hidden = !(matchesQuery && matchesStatus && matchesDept);
+            });
+        }
+
+        if (searchInput) searchInput.addEventListener("input", filterJobs);
+        if (statusFilter) statusFilter.addEventListener("change", filterJobs);
+        if (deptFilter) deptFilter.addEventListener("change", filterJobs);
+    });
+</script>
+
+</body>
+</html>

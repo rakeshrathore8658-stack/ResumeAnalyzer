@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Job Details - Senior Java Developer')}"></head>
+
+<body class="dashboard-page">
+
+<div class="dashboard-layout">
+
+    <!-- Shared Sidebar -->
+    <aside th:replace="~{fragments/sidebar :: sidebar(active='jobs')}"></aside>
+
+    <!-- Main Content Area -->
+    <main class="dashboard-main">
+
+        <!-- Shared Topbar -->
+        <header th:replace="~{fragments/header :: topbar}"></header>
+
+        <div class="main-content">
+
+            <!-- Breadcrumbs -->
+            <nav class="breadcrumb" style="margin-bottom: 20px;">
+                <a th:href="@{/dashboard}">Dashboard</a>
+                <span class="breadcrumb-separator">/</span>
+                <a th:href="@{/dashboard/jobs}">Jobs</a>
+                <span class="breadcrumb-separator">/</span>
+                <span class="breadcrumb-current">REQ-1042 · Senior Java Developer</span>
+            </nav>
+
+            <!-- Page Header -->
+            <div class="page-header-row">
+                <div>
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 6px;">
+                        <span class="badge badge-success">Open & Active</span>
+                        <span class="badge badge-primary">Engineering</span>
+                        <span style="color: var(--text-muted); font-size: 0.8rem;">REQ-1042</span>
+                    </div>
+                    <h1 class="page-title">Senior Java Developer</h1>
+                    <p class="page-subtitle">Full-time · Hybrid / San Francisco · 4 – 7 Years Experience · Posted on 18 Oct 2026</p>
+                </div>
+                <div class="page-header-actions">
+                    <a class="btn btn-secondary" th:href="@{/dashboard/jobs/create}">
+                        <span>✏</span> Edit Job
+                    </a>
+                    <a class="btn btn-primary" th:href="@{/dashboard/candidates}">
+                        <span>👥</span> Candidate Pool (48)
+                    </a>
+                </div>
+            </div>
+
+            <!-- Pipeline Mini Funnel -->
+            <section class="stats-grid-6" style="margin-bottom: 24px;">
+                <article class="stat-card">
+                    <span class="stat-label">Total Applied</span>
+                    <div class="stat-value">48</div>
+                </article>
+                <article class="stat-card">
+                    <span class="stat-label">AI Screened</span>
+                    <div class="stat-value">36</div>
+                </article>
+                <article class="stat-card">
+                    <span class="stat-label">Shortlisted</span>
+                    <div class="stat-value" style="color: var(--accent);">12</div>
+                </article>
+                <article class="stat-card">
+                    <span class="stat-label">Interviewing</span>
+                    <div class="stat-value">6</div>
+                </article>
+                <article class="stat-card">
+                    <span class="stat-label">Offer Extended</span>
+                    <div class="stat-value">2</div>
+                </article>
+                <article class="stat-card">
+                    <span class="stat-label">Hired</span>
+                    <div class="stat-value" style="color: var(--success);">1</div>
+                </article>
+            </section>
+
+            <!-- Grid: Job Criteria & Associated Candidates -->
+            <div class="grid-2-1">
+
+                <!-- Associated Candidates Table -->
+                <article class="card">
+                    <div class="card-header">
+                        <div>
+                            <h2 class="card-title">Associated Candidates</h2>
+                            <p class="card-description">Screened applicants ranked by AI match score.</p>
+                        </div>
+                        <a th:href="@{/dashboard/candidates}" class="btn btn-ghost btn-sm">View full list →</a>
+                    </div>
+
+                    <div class="table-wrapper">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>Candidate</th>
+                                <th>Match Score</th>
+                                <th>Experience</th>
+                                <th>Stage</th>
+                                <th>Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>
+                                    <strong>Vikram Sharma</strong>
+                                    <small style="display: block; color: var(--text-muted); font-size: 0.72rem;">vikram.s@email.com</small>
+                                </td>
+                                <td><span class="score-badge score-high">94%</span></td>
+                                <td>5.5 yrs</td>
+                                <td><span class="badge badge-success">Shortlisted</span></td>
+                                <td><a th:href="@{/dashboard/candidates/1}" class="btn btn-secondary btn-sm">Profile</a></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>Sarah Jenkins</strong>
+                                    <small style="display: block; color: var(--text-muted); font-size: 0.72rem;">sarah.j@email.com</small>
+                                </td>
+                                <td><span class="score-badge score-high">90%</span></td>
+                                <td>6 yrs</td>
+                                <td><span class="badge badge-info">Interviewing</span></td>
+                                <td><a th:href="@{/dashboard/candidates/1}" class="btn btn-secondary btn-sm">Profile</a></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>Amitabh Sen</strong>
+                                    <small style="display: block; color: var(--text-muted); font-size: 0.72rem;">amitabh.s@email.com</small>
+                                </td>
+                                <td><span class="score-badge score-high">85%</span></td>
+                                <td>4.5 yrs</td>
+                                <td><span class="badge badge-primary">Under Review</span></td>
+                                <td><a th:href="@{/dashboard/candidates/1}" class="btn btn-secondary btn-sm">Profile</a></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>Rahul Deshmukh</strong>
+                                    <small style="display: block; color: var(--text-muted); font-size: 0.72rem;">rahul.d@email.com</small>
+                                </td>
+                                <td><span class="score-badge score-mid">74%</span></td>
+                                <td>4 yrs</td>
+                                <td><span class="badge badge-neutral">Screened</span></td>
+                                <td><a th:href="@{/dashboard/candidates/1}" class="btn btn-secondary btn-sm">Profile</a></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </article>
+
+                <!-- Right Column: Requisition Requirements -->
+                <aside style="display: flex; flex-direction: column; gap: 20px;">
+                    <article class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Required Skills</h2>
+                        </div>
+                        <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px;">
+                            <span class="skill-tag skill-matched" style="font-size: 0.75rem;">Java 17/21</span>
+                            <span class="skill-tag skill-matched" style="font-size: 0.75rem;">Spring Boot</span>
+                            <span class="skill-tag skill-matched" style="font-size: 0.75rem;">Microservices</span>
+                            <span class="skill-tag skill-matched" style="font-size: 0.75rem;">REST APIs</span>
+                            <span class="skill-tag skill-matched" style="font-size: 0.75rem;">SQL / JPA</span>
+                        </div>
+
+                        <strong style="display: block; font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px;">Preferred:</strong>
+                        <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+                            <span class="badge badge-neutral">Docker</span>
+                            <span class="badge badge-neutral">Kubernetes</span>
+                            <span class="badge badge-neutral">AWS</span>
+                            <span class="badge badge-neutral">Kafka</span>
+                        </div>
+                    </article>
+
+                    <article class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Job Summary</h2>
+                        </div>
+                        <p style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.6; margin: 0;">
+                            Designs scalable microservices for distributed cloud systems, maintains high automated test coverage, and optimizes database transaction latencies.
+                        </p>
+                    </article>
+                </aside>
+
+            </div>
+
+        </div>
+
+        <!-- Shared Footer -->
+        <footer th:replace="~{fragments/footer :: footer}"></footer>
+
+    </main>
+
+</div>
+
+</body>
+</html>

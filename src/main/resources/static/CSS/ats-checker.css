@@ -1,0 +1,1002 @@
+
+/* =========================================================
+   SmartHire ATS Checker
+   File: static/css/ats-checker.css
+
+   Dependencies:
+   - style.css
+   - dashboard.css
+
+   Default theme: Light
+   Dark theme: html[data-theme="dark"]
+   ========================================================= */
+
+
+/* ==================== PAGE HEADING ==================== */
+
+.ats-checker-page .ats-heading {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 28px;
+}
+
+.ats-checker-page .ats-heading h1 {
+    margin: 0;
+    color: var(--text-primary, #17243a);
+    font-size: clamp(27px, 3vw, 35px);
+    font-weight: 800;
+    letter-spacing: -1px;
+    line-height: 1.25;
+}
+
+.ats-checker-page .eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+    color: var(--primary, #244d7f);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.4px;
+}
+
+.ats-checker-page .eyebrow-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent, #f28c28);
+}
+
+.ats-checker-page .page-description {
+    max-width: 670px;
+    margin: 12px 0 0;
+    color: var(--text-secondary, #66758a);
+    font-size: 14px;
+    line-height: 1.8;
+}
+
+.ats-checker-page .ats-heading > a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    flex-shrink: 0;
+    text-decoration: none;
+}
+
+
+/* ==================== INTRO CARD ==================== */
+
+.ats-checker-page .ats-intro-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 22px;
+    margin-bottom: 26px;
+    border: 1px solid #dce8f8;
+    border-radius: 16px;
+    background: linear-gradient(110deg, #f0f6ff 0%, #fff8f0 100%);
+}
+
+.ats-checker-page .ats-intro-icon {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 46px;
+    height: 46px;
+    border-radius: 13px;
+    background: #244d7f;
+    color: #fff;
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.ats-checker-page .ats-intro-content h2 {
+    margin: 2px 0 8px;
+    color: #183b67;
+    font-size: 16px;
+    font-weight: 800;
+    line-height: 1.5;
+}
+
+.ats-checker-page .ats-intro-content p {
+    margin: 0;
+    color: #596a81;
+    font-size: 12px;
+    line-height: 1.9;
+}
+
+
+/* ==================== MAIN GRID ==================== */
+
+.ats-checker-page .ats-main-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.65fr) minmax(260px, 0.85fr);
+    align-items: start;
+    gap: 24px;
+}
+
+.ats-checker-page .ats-form-card,
+.ats-checker-page .ats-side-card,
+.ats-checker-page .ats-warning-card,
+.ats-checker-page .ats-privacy-card,
+.ats-checker-page .ats-results {
+    min-width: 0;
+    border: 1px solid var(--border-color, #e5eaf1);
+    border-radius: 18px;
+    background: var(--surface, #fff);
+    box-shadow: 0 5px 22px rgb(20 43 76 / 4%);
+}
+
+.ats-checker-page .ats-form-card {
+    padding: 28px;
+}
+
+
+/* ==================== CARD HEADING ==================== */
+
+.ats-checker-page .ats-card-heading {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 18px;
+    margin-bottom: 26px;
+}
+
+.ats-checker-page .step-label {
+    color: var(--accent, #e77d1c);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.4px;
+}
+
+.ats-checker-page .ats-card-heading h2 {
+    margin: 8px 0 6px;
+    color: var(--text-primary, #17243a);
+    font-size: 20px;
+    font-weight: 800;
+    line-height: 1.4;
+}
+
+.ats-checker-page .ats-card-heading p {
+    margin: 0;
+    color: var(--text-secondary, #66758a);
+    font-size: 12px;
+    line-height: 1.8;
+}
+
+.ats-checker-page .ats-document-icon {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    background: #fff2e5;
+    font-size: 23px;
+}
+
+
+/* ==================== FORM FIELDS ==================== */
+
+.ats-checker-page .form-group {
+    margin-bottom: 25px;
+}
+
+.ats-checker-page .form-group > label,
+.ats-checker-page .ats-label-row > label {
+    display: block;
+    margin-bottom: 10px;
+    color: var(--text-primary, #17243a);
+    font-size: 13px;
+    font-weight: 750;
+}
+
+.ats-checker-page .required-mark {
+    color: #d74747;
+}
+
+.ats-checker-page .form-control {
+    display: block;
+    width: 100%;
+    min-height: 48px;
+    padding: 12px 14px;
+    border: 1px solid var(--input-border, #dce3ed);
+    border-radius: 10px;
+    outline: none;
+    background: var(--input-bg, #fff);
+    color: var(--text-primary, #17243a);
+    font: inherit;
+    font-size: 13px;
+    transition:
+            border-color 160ms ease,
+            box-shadow 160ms ease;
+}
+
+.ats-checker-page .form-control::placeholder {
+    color: var(--text-muted, #98a3b3);
+}
+
+.ats-checker-page .form-control:focus {
+    border-color: var(--primary, #244d7f);
+    box-shadow: 0 0 0 3px rgb(36 77 127 / 12%);
+}
+
+.ats-checker-page select.form-control {
+    cursor: pointer;
+}
+
+.ats-checker-page .field-help {
+    margin: 9px 0 0;
+    color: var(--text-secondary, #748196);
+    font-size: 11px;
+    line-height: 1.8;
+}
+
+.ats-checker-page .field-error {
+    margin: 8px 0 0;
+    color: #c23b37;
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+
+/* ==================== UPLOAD DROPZONE ==================== */
+
+.ats-checker-page .ats-dropzone {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 220px;
+    padding: 25px;
+    overflow: hidden;
+    border: 2px dashed #c9d8ec;
+    border-radius: 14px;
+    background: var(--upload-bg, #f8fbff);
+    text-align: center;
+    transition:
+            border-color 180ms ease,
+            background 180ms ease,
+            box-shadow 180ms ease;
+}
+
+.ats-checker-page .ats-dropzone:hover,
+.ats-checker-page .ats-dropzone:focus-within,
+.ats-checker-page .ats-dropzone.is-dragging {
+    border-color: var(--primary, #244d7f);
+    background: var(--upload-hover-bg, #f0f6ff);
+}
+
+.ats-checker-page .ats-dropzone.is-dragging {
+    box-shadow: inset 0 0 0 2px rgb(36 77 127 / 8%);
+}
+
+.ats-checker-page .ats-dropzone.has-error {
+    border-color: #d74747;
+    background: #fff7f7;
+}
+
+.ats-checker-page .ats-dropzone > input[type="file"] {
+    position: absolute;
+    z-index: 2;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.ats-checker-page #atsDropzoneContent {
+    pointer-events: none;
+}
+
+.ats-checker-page .ats-upload-icon {
+    display: grid;
+    place-items: center;
+    width: 54px;
+    height: 54px;
+    margin: 0 auto 16px;
+    border: 1px solid #dce7f7;
+    border-radius: 16px;
+    background: var(--surface, #fff);
+    color: var(--primary, #244d7f);
+    font-size: 28px;
+}
+
+.ats-checker-page .ats-dropzone h3 {
+    margin: 0;
+    color: var(--text-primary, #17243a);
+    font-size: 15px;
+    font-weight: 750;
+}
+
+.ats-checker-page .ats-dropzone p {
+    margin: 9px 0;
+    color: var(--text-secondary, #748196);
+    font-size: 12px;
+}
+
+.ats-checker-page .ats-browse-text {
+    color: var(--primary, #244d7f);
+    font-weight: 800;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.ats-checker-page .ats-file-hint {
+    display: block;
+    margin-top: 16px;
+    color: var(--text-muted, #98a3b3);
+    font-size: 10px;
+}
+
+
+/* ==================== SELECTED FILE ==================== */
+
+.ats-checker-page .ats-selected-file {
+    position: relative;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 14px;
+    border: 1px solid var(--border-color, #e5eaf1);
+    border-radius: 12px;
+    background: var(--surface, #fff);
+    text-align: left;
+}
+
+.ats-checker-page .ats-selected-file[hidden],
+.ats-checker-page [hidden] {
+    display: none !important;
+}
+
+.ats-checker-page .ats-file-symbol {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    background: #fff2e5;
+    font-size: 21px;
+}
+
+.ats-checker-page .ats-file-details {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 5px;
+    min-width: 0;
+}
+
+.ats-checker-page .ats-file-details strong {
+    overflow: hidden;
+    color: var(--text-primary, #17243a);
+    font-size: 12px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.ats-checker-page .ats-file-details span {
+    color: var(--text-secondary, #748196);
+    font-size: 11px;
+}
+
+.ats-checker-page .ats-remove-file {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    border: 1px solid var(--border-color, #e5eaf1);
+    border-radius: 8px;
+    background: var(--surface, #fff);
+    color: var(--text-secondary, #66758a);
+    cursor: pointer;
+}
+
+.ats-checker-page .ats-remove-file:focus-visible {
+    outline: 3px solid rgb(242 140 40 / 55%);
+    outline-offset: 3px;
+}
+
+
+/* ==================== JOB DESCRIPTION ==================== */
+
+.ats-checker-page .ats-label-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+}
+
+.ats-checker-page .ats-label-row > label {
+    margin-bottom: 10px;
+}
+
+.ats-checker-page .ats-optional-label {
+    margin-bottom: 10px;
+    color: var(--text-muted, #98a3b3);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+}
+
+.ats-checker-page .ats-textarea {
+    min-height: 145px;
+    resize: vertical;
+    line-height: 1.8;
+}
+
+.ats-checker-page .ats-textarea-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.ats-checker-page .ats-textarea-footer .field-help {
+    flex: 1;
+}
+
+.ats-checker-page .ats-character-counter {
+    flex-shrink: 0;
+    margin-top: 9px;
+    color: var(--text-muted, #98a3b3);
+    font-size: 10px;
+    font-variant-numeric: tabular-nums;
+}
+
+.ats-checker-page .ats-character-counter.is-near-limit {
+    color: #bd6518;
+    font-weight: 800;
+}
+
+
+/* ==================== CHECKLIST ==================== */
+
+.ats-checker-page .ats-checklist {
+    padding: 19px;
+    margin: 28px 0 22px;
+    border: 1px solid var(--border-color, #e5eaf1);
+    border-radius: 13px;
+    background: var(--surface-subtle, #fafbfd);
+}
+
+.ats-checker-page .ats-checklist > h3 {
+    margin: 0 0 18px;
+    color: var(--text-primary, #17243a);
+    font-size: 14px;
+    font-weight: 800;
+}
+
+.ats-checker-page .ats-checklist-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 11px;
+}
+
+.ats-checker-page .ats-checklist-item + .ats-checklist-item {
+    margin-top: 16px;
+}
+
+.ats-checker-page .ats-checklist-item > span {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 23px;
+    height: 23px;
+    border-radius: 50%;
+    background: #eaf6ef;
+    color: #21844b;
+    font-size: 12px;
+    font-weight: 900;
+}
+
+.ats-checker-page .ats-checklist-item p {
+    display: grid;
+    gap: 5px;
+    margin: 0;
+}
+
+.ats-checker-page .ats-checklist-item strong {
+    color: var(--text-primary, #17243a);
+    font-size: 12px;
+    font-weight: 750;
+}
+
+.ats-checker-page .ats-checklist-item small {
+    color: var(--text-secondary, #748196);
+    font-size: 11px;
+    line-height: 1.7;
+}
+
+
+/* ==================== SUBMIT BUTTON ==================== */
+
+.ats-checker-page .ats-submit-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    width: 100%;
+    min-height: 52px;
+    border: 0;
+    border-radius: 11px;
+    background: var(--primary, #244d7f);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 800;
+    cursor: pointer;
+    transition:
+            transform 160ms ease,
+            background 160ms ease,
+            box-shadow 160ms ease;
+}
+
+.ats-checker-page .ats-submit-button:hover {
+    background: var(--primary-hover, #183b67);
+    box-shadow: 0 6px 18px rgb(36 77 127 / 18%);
+    transform: translateY(-1px);
+}
+
+.ats-checker-page .ats-submit-button:focus-visible {
+    outline: 3px solid rgb(242 140 40 / 55%);
+    outline-offset: 3px;
+}
+
+.ats-checker-page .ats-submit-button:disabled {
+    opacity: 0.7;
+    cursor: wait;
+    transform: none;
+}
+
+.ats-checker-page .ats-submit-note {
+    margin: 12px 0 0;
+    color: var(--text-muted, #98a3b3);
+    font-size: 10px;
+    line-height: 1.8;
+    text-align: center;
+}
+
+
+/* ==================== SIDE PANEL ==================== */
+
+.ats-checker-page .ats-side-column {
+    display: grid;
+    gap: 20px;
+    min-width: 0;
+}
+
+.ats-checker-page .ats-side-card,
+.ats-checker-page .ats-warning-card,
+.ats-checker-page .ats-privacy-card {
+    padding: 23px;
+}
+
+.ats-checker-page .ats-side-card-icon {
+    display: grid;
+    place-items: center;
+    width: 46px;
+    height: 46px;
+    margin-bottom: 18px;
+    border-radius: 13px;
+    background: #fff2e5;
+    font-size: 22px;
+}
+
+.ats-checker-page .ats-side-card h2,
+.ats-checker-page .ats-warning-card h2,
+.ats-checker-page .ats-privacy-card h2 {
+    margin: 0;
+    color: var(--text-primary, #17243a);
+    font-size: 16px;
+    font-weight: 800;
+}
+
+.ats-checker-page .ats-side-card > p {
+    margin: 10px 0 22px;
+    color: var(--text-secondary, #748196);
+    font-size: 12px;
+    line-height: 1.8;
+}
+
+.ats-checker-page .ats-tips-list {
+    display: grid;
+    gap: 20px;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.ats-checker-page .ats-tips-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 11px;
+}
+
+.ats-checker-page .ats-tips-list li > span {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 23px;
+    height: 23px;
+    border-radius: 50%;
+    background: #eaf6ef;
+    color: #21844b;
+    font-size: 12px;
+    font-weight: 900;
+}
+
+.ats-checker-page .ats-tips-list strong {
+    display: block;
+    margin: 1px 0 5px;
+    color: var(--text-primary, #17243a);
+    font-size: 12px;
+    font-weight: 750;
+}
+
+.ats-checker-page .ats-tips-list p {
+    margin: 0;
+    color: var(--text-secondary, #748196);
+    font-size: 11px;
+    line-height: 1.8;
+}
+
+
+/* ==================== WARNING CARD ==================== */
+
+.ats-checker-page .ats-warning-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    border-color: #f0dfbd;
+    background: #fffaf0;
+}
+
+.ats-checker-page .ats-warning-icon {
+    flex-shrink: 0;
+    color: #b8741b;
+    font-size: 21px;
+}
+
+.ats-checker-page .ats-warning-card h2 {
+    color: #80551d;
+    font-size: 13px;
+}
+
+.ats-checker-page .ats-warning-card p {
+    margin: 8px 0 0;
+    color: #876a45;
+    font-size: 11px;
+    line-height: 1.9;
+}
+
+
+/* ==================== PRIVACY CARD ==================== */
+
+.ats-checker-page .ats-privacy-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    background: var(--surface-subtle, #fafbfd);
+}
+
+.ats-checker-page .ats-privacy-card > span {
+    flex-shrink: 0;
+    font-size: 21px;
+}
+
+.ats-checker-page .ats-privacy-card h2 {
+    font-size: 13px;
+}
+
+.ats-checker-page .ats-privacy-card p {
+    margin: 8px 0 0;
+    color: var(--text-secondary, #748196);
+    font-size: 11px;
+    line-height: 1.9;
+}
+
+
+/* ==================== PROCESSING ==================== */
+
+.ats-checker-page .ats-processing {
+    padding: 36px 24px;
+    margin-top: 24px;
+    border: 1px solid var(--border-color, #e5eaf1);
+    border-radius: 16px;
+    background: var(--surface, #fff);
+    text-align: center;
+}
+
+.ats-checker-page .ats-spinner {
+    width: 38px;
+    height: 38px;
+    margin: 0 auto 18px;
+    border: 3px solid var(--border-color, #e5eaf1);
+    border-top-color: var(--primary, #244d7f);
+    border-radius: 50%;
+    animation: ats-spin 800ms linear infinite;
+}
+
+.ats-checker-page .ats-processing h2 {
+    margin: 0 0 8px;
+    color: var(--text-primary, #17243a);
+    font-size: 17px;
+}
+
+.ats-checker-page .ats-processing p {
+    margin: 0;
+    color: var(--text-secondary, #748196);
+    font-size: 12px;
+    line-height: 1.8;
+}
+
+@keyframes ats-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+/* ==================== RESULTS ==================== */
+
+.ats-checker-page .ats-results {
+    padding: 25px;
+    margin-top: 28px;
+}
+
+.ats-checker-page .ats-results-heading h2 {
+    margin: 8px 0;
+    color: var(--text-primary, #17243a);
+    font-size: 22px;
+    font-weight: 800;
+}
+
+.ats-checker-page .ats-results-heading p {
+    margin: 0;
+    color: var(--text-secondary, #748196);
+    font-size: 12px;
+    line-height: 1.8;
+}
+
+.ats-checker-page .ats-result-summary {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 15px;
+    margin-top: 24px;
+}
+
+.ats-checker-page .ats-score-card,
+.ats-checker-page .ats-result-card {
+    min-width: 0;
+    padding: 20px;
+    border: 1px solid var(--border-color, #e5eaf1);
+    border-radius: 13px;
+    background: var(--surface-subtle, #fafbfd);
+}
+
+.ats-checker-page .ats-result-label {
+    display: block;
+    color: var(--text-secondary, #748196);
+    font-size: 11px;
+    line-height: 1.7;
+}
+
+.ats-checker-page .ats-score-value {
+    margin-top: 12px;
+    color: var(--primary, #244d7f);
+    font-size: 36px;
+    font-weight: 850;
+    letter-spacing: -1px;
+}
+
+.ats-checker-page .ats-score-value small {
+    color: var(--text-secondary, #748196);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0;
+}
+
+.ats-checker-page .ats-score-card > p {
+    margin: 10px 0 0;
+    color: var(--text-secondary, #748196);
+    font-size: 11px;
+    line-height: 1.8;
+}
+
+.ats-checker-page .ats-result-card h3 {
+    margin: 12px 0 0;
+    overflow-wrap: anywhere;
+    color: var(--text-primary, #17243a);
+    font-size: 14px;
+    font-weight: 750;
+    line-height: 1.7;
+}
+
+.ats-checker-page .ats-detailed-findings {
+    margin-top: 18px;
+}
+
+.ats-checker-page .ats-detailed-findings h3 {
+    margin: 0;
+}
+
+.ats-checker-page .ats-detailed-findings ul {
+    display: grid;
+    gap: 10px;
+    padding-left: 20px;
+    margin: 15px 0 0;
+    color: var(--text-secondary, #748196);
+    font-size: 12px;
+    line-height: 1.8;
+}
+
+
+/* ==================== DARK MODE ==================== */
+
+html[data-theme="dark"] .ats-checker-page .ats-intro-card {
+    border-color: #2d415b;
+    background: linear-gradient(110deg, #1c2c42, #30271f);
+}
+
+html[data-theme="dark"] .ats-checker-page .ats-intro-content h2 {
+    color: #d7e6ff;
+}
+
+html[data-theme="dark"] .ats-checker-page .ats-intro-content p {
+    color: #b5c1d2;
+}
+
+html[data-theme="dark"] .ats-checker-page .ats-dropzone {
+    border-color: #42546d;
+    background: var(--upload-bg, #182335);
+}
+
+html[data-theme="dark"] .ats-checker-page .ats-dropzone:hover,
+html[data-theme="dark"] .ats-checker-page .ats-dropzone:focus-within,
+html[data-theme="dark"] .ats-checker-page .ats-dropzone.is-dragging {
+    border-color: #8eb9f2;
+    background: #202f44;
+}
+
+html[data-theme="dark"] .ats-checker-page .ats-dropzone.has-error {
+    border-color: #e07171;
+    background: #332426;
+}
+
+html[data-theme="dark"] .ats-checker-page .ats-warning-card {
+    border-color: #59482c;
+    background: #302a20;
+}
+
+html[data-theme="dark"] .ats-checker-page .ats-warning-card h2 {
+    color: #ffdda7;
+}
+
+html[data-theme="dark"] .ats-checker-page .ats-warning-card p {
+    color: #dfc8a3;
+}
+
+html[data-theme="dark"] .ats-checker-page .ats-document-icon,
+html[data-theme="dark"] .ats-checker-page .ats-side-card-icon,
+html[data-theme="dark"] .ats-checker-page .ats-file-symbol {
+    background: #3a2d22;
+}
+
+html[data-theme="dark"] .ats-checker-page .ats-checklist-item > span,
+html[data-theme="dark"] .ats-checker-page .ats-tips-list li > span {
+    background: #203b2e;
+    color: #8ee0aa;
+}
+
+
+/* ==================== RESPONSIVE ==================== */
+
+@media (max-width: 1100px) {
+    .ats-checker-page .ats-main-grid {
+        grid-template-columns: minmax(0, 1.35fr) minmax(235px, 0.9fr);
+        gap: 18px;
+    }
+
+    .ats-checker-page .ats-form-card {
+        padding: 23px;
+    }
+
+    .ats-checker-page .ats-side-card,
+    .ats-checker-page .ats-warning-card,
+    .ats-checker-page .ats-privacy-card {
+        padding: 19px;
+    }
+}
+
+@media (max-width: 850px) {
+    .ats-checker-page .ats-main-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .ats-checker-page .ats-side-column {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        align-items: start;
+    }
+
+    .ats-checker-page .ats-side-card {
+        grid-row: span 2;
+    }
+}
+
+@media (max-width: 600px) {
+    .ats-checker-page .ats-heading {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 18px;
+    }
+
+    .ats-checker-page .ats-heading h1 {
+        font-size: 28px;
+    }
+
+    .ats-checker-page .ats-heading > a {
+        align-self: flex-start;
+    }
+
+    .ats-checker-page .ats-intro-card {
+        gap: 12px;
+        padding: 16px;
+    }
+
+    .ats-checker-page .ats-form-card {
+        padding: 18px;
+        border-radius: 14px;
+    }
+
+    .ats-checker-page .ats-card-heading h2 {
+        font-size: 18px;
+    }
+
+    .ats-checker-page .ats-dropzone {
+        min-height: 200px;
+        padding: 18px 12px;
+    }
+
+    .ats-checker-page .ats-dropzone h3 {
+        font-size: 13px;
+    }
+
+    .ats-checker-page .ats-side-column {
+        grid-template-columns: 1fr;
+    }
+
+    .ats-checker-page .ats-side-card {
+        grid-row: auto;
+    }
+
+    .ats-checker-page .ats-textarea-footer {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .ats-checker-page .ats-result-summary {
+        grid-template-columns: 1fr;
+    }
+
+    .ats-checker-page .ats-results {
+        padding: 18px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .ats-checker-page *,
+    .ats-checker-page *::before,
+    .ats-checker-page *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}

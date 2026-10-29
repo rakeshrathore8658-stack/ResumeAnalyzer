@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Analyzer History')}"></head>
+
+<body class="dashboard-page history-page">
+
+<div class="dashboard-layout">
+
+    <!-- Shared Sidebar -->
+    <aside th:replace="~{fragments/sidebar :: sidebar(active='analyzerhistory')}"></aside>
+
+    <!-- Main Content Area -->
+    <main class="dashboard-main">
+
+        <!-- Shared Topbar -->
+        <header th:replace="~{fragments/header :: topbar}"></header>
+
+        <div class="main-content">
+
+            <!-- Breadcrumbs -->
+            <nav class="breadcrumb" style="margin-bottom: 20px;">
+                <a th:href="@{/dashboard}">Dashboard</a>
+                <span class="breadcrumb-separator">/</span>
+                <span class="breadcrumb-current">Analyzer History</span>
+            </nav>
+
+            <!-- Page Header -->
+            <div class="page-header-row">
+                <div>
+                    <h1 class="page-title">Resume Analysis History</h1>
+                    <p class="page-subtitle">Track your resume optimizations across different career roles and versions.</p>
+                </div>
+                <div class="page-header-actions">
+                    <a class="btn btn-primary" th:href="@{/dashboard/resumeanalyzer}">
+                        <span>✦</span> + New Analysis
+                    </a>
+                </div>
+            </div>
+
+            <!-- Stats Overview Bar -->
+            <section class="stats-grid-4" style="margin-bottom: 24px;">
+                <article class="stat-card">
+                    <div class="stat-top">
+                        <span class="stat-label">Total Resumes Scanned</span>
+                        <span class="stat-icon icon-navy">📄</span>
+                    </div>
+                    <div class="stat-value">6</div>
+                    <span class="stat-unit">Across 4 target profiles</span>
+                </article>
+
+                <article class="stat-card">
+                    <div class="stat-top">
+                        <span class="stat-label">Highest Score Achieved</span>
+                        <span class="stat-icon icon-green">🏆</span>
+                    </div>
+                    <div class="stat-value" style="color: var(--success);">88%</div>
+                    <span class="stat-unit">Java Developer role</span>
+                </article>
+
+                <article class="stat-card">
+                    <div class="stat-top">
+                        <span class="stat-label">Average Score</span>
+                        <span class="stat-icon icon-info">📈</span>
+                    </div>
+                    <div class="stat-value">80%</div>
+                    <span class="stat-unit">+15% improvement</span>
+                </article>
+
+                <article class="stat-card">
+                    <div class="stat-top">
+                        <span class="stat-label">Most Targeted Role</span>
+                        <span class="stat-icon">🎯</span>
+                    </div>
+                    <div class="stat-value" style="font-size: 1.25rem;">Java Dev</div>
+                    <span class="stat-unit">3 analyses performed</span>
+                </article>
+            </section>
+
+            <!-- Filter & Search Toolbar -->
+            <article class="card" style="margin-bottom: 20px; padding: 16px 20px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px;">
+                    <div style="display: flex; align-items: center; gap: 12px; flex: 1; min-width: 280px;">
+                        <input type="search" id="historySearch" placeholder="Search by resume filename, job role, or skills..." style="width: 100%; padding: 9px 14px; border: 1px solid var(--border-color); border-radius: var(--radius-md); background: var(--bg-input); color: var(--text-primary); font-size: 0.88rem;">
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                        <select id="roleFilter" style="padding: 9px 12px; border: 1px solid var(--border-color); border-radius: var(--radius-md); background: var(--bg-input); color: var(--text-primary); font-size: 0.85rem;">
+                            <option value="">All Career Roles</option>
+                            <option value="Java Developer">Java Developer</option>
+                            <option value="Spring Boot Developer">Spring Boot Developer</option>
+                            <option value="Full Stack Developer">Full Stack Developer</option>
+                            <option value="DevOps Engineer">DevOps Engineer</option>
+                            <option value="Data Analyst">Data Analyst</option>
+                        </select>
+
+                        <select id="scoreFilter" style="padding: 9px 12px; border: 1px solid var(--border-color); border-radius: var(--radius-md); background: var(--bg-input); color: var(--text-primary); font-size: 0.85rem;">
+                            <option value="">All Scores</option>
+                            <option value="high">High (80%+)</option>
+                            <option value="mid">Average (60-79%)</option>
+                            <option value="low">Needs Work (&lt;60%)</option>
+                        </select>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Scalable History Table -->
+            <article class="card">
+                <div class="table-wrapper">
+                    <table class="table" id="historyTable">
+                        <thead>
+                        <tr>
+                            <th>Resume File</th>
+                            <th>Target Career Profile</th>
+                            <th>ATS Score</th>
+                            <th>Skill Match</th>
+                            <th>Date Scanned</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>
+                                <strong>AlexMorgan_JavaResume_v3.pdf</strong>
+                                <small style="display: block; color: var(--text-muted); font-size: 0.72rem;">245 KB · 3 pages</small>
+                            </td>
+                            <td><span class="badge badge-primary">Java Developer</span></td>
+                            <td><span class="score-badge score-high">88%</span></td>
+                            <td><span>82% (14 matched)</span></td>
+                            <td><span>28 Oct 2026</span></td>
+                            <td><span class="badge badge-success">Completed</span></td>
+                            <td>
+                                <div style="display: flex; gap: 6px;">
+                                    <a th:href="@{/dashboard/resumeanalyzer}" class="btn btn-secondary btn-sm" title="View detailed report">Report</a>
+                                    <button type="button" class="btn btn-ghost btn-sm" style="color: var(--danger);" onclick="alert('Confirm delete dialog (frontend demonstration)')">✕</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong>AlexMorgan_FullStack_2026.docx</strong>
+                                <small style="display: block; color: var(--text-muted); font-size: 0.72rem;">198 KB · 2 pages</small>
+                            </td>
+                            <td><span class="badge badge-primary">Full Stack Developer</span></td>
+                            <td><span class="score-badge score-high">82%</span></td>
+                            <td><span>78% (12 matched)</span></td>
+                            <td><span>22 Oct 2026</span></td>
+                            <td><span class="badge badge-success">Completed</span></td>
+                            <td>
+                                <div style="display: flex; gap: 6px;">
+                                    <a th:href="@{/dashboard/resumeanalyzer}" class="btn btn-secondary btn-sm">Report</a>
+                                    <button type="button" class="btn btn-ghost btn-sm" style="color: var(--danger);" onclick="alert('Confirm delete dialog (frontend demonstration)')">✕</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong>AlexMorgan_DevOps_Draft.pdf</strong>
+                                <small style="display: block; color: var(--text-muted); font-size: 0.72rem;">210 KB · 2 pages</small>
+                            </td>
+                            <td><span class="badge badge-neutral">DevOps Engineer</span></td>
+                            <td><span class="score-badge score-mid">68%</span></td>
+                            <td><span>62% (8 matched)</span></td>
+                            <td><span>15 Oct 2026</span></td>
+                            <td><span class="badge badge-success">Completed</span></td>
+                            <td>
+                                <div style="display: flex; gap: 6px;">
+                                    <a th:href="@{/dashboard/resumeanalyzer}" class="btn btn-secondary btn-sm">Report</a>
+                                    <button type="button" class="btn btn-ghost btn-sm" style="color: var(--danger);" onclick="alert('Confirm delete dialog (frontend demonstration)')">✕</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong>Alex_DataAnalyst_v1.pdf</strong>
+                                <small style="display: block; color: var(--text-muted); font-size: 0.72rem;">185 KB · 2 pages</small>
+                            </td>
+                            <td><span class="badge badge-neutral">Data Analyst</span></td>
+                            <td><span class="score-badge score-mid">74%</span></td>
+                            <td><span>70% (9 matched)</span></td>
+                            <td><span>02 Oct 2026</span></td>
+                            <td><span class="badge badge-success">Completed</span></td>
+                            <td>
+                                <div style="display: flex; gap: 6px;">
+                                    <a th:href="@{/dashboard/resumeanalyzer}" class="btn btn-secondary btn-sm">Report</a>
+                                    <button type="button" class="btn btn-ghost btn-sm" style="color: var(--danger);" onclick="alert('Confirm delete dialog (frontend demonstration)')">✕</button>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Scalable Pagination Footer -->
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--border-color); flex-wrap: wrap; gap: 12px;">
+                    <span style="font-size: 0.8rem; color: var(--text-muted);">Showing 1 to 4 of 4 analyses</span>
+                    <div style="display: flex; gap: 6px;">
+                        <button class="btn btn-secondary btn-sm" disabled>← Previous</button>
+                        <button class="btn btn-primary btn-sm">1</button>
+                        <button class="btn btn-secondary btn-sm" disabled>Next →</button>
+                    </div>
+                </div>
+            </article>
+
+        </div>
+
+        <!-- Shared Footer -->
+        <footer th:replace="~{fragments/footer :: footer}"></footer>
+
+    </main>
+
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const searchInput = document.getElementById("historySearch");
+        const rows = document.querySelectorAll("#historyTable tbody tr");
+
+        if (searchInput) {
+            searchInput.addEventListener("input", () => {
+                const query = searchInput.value.toLowerCase().trim();
+                rows.forEach(row => {
+                    const text = row.textContent.toLowerCase();
+                    row.hidden = !text.includes(query);
+                });
+            });
+        }
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Notifications')}"></head>
+
+<body class="dashboard-page">
+
+<div class="dashboard-layout">
+
+    <!-- Shared Sidebar -->
+    <aside th:replace="~{fragments/sidebar :: sidebar(active='notifications')}"></aside>
+
+    <!-- Main Content Area -->
+    <main class="dashboard-main">
+
+        <!-- Shared Topbar -->
+        <header th:replace="~{fragments/header :: topbar}"></header>
+
+        <div class="main-content">
+
+            <!-- Breadcrumbs -->
+            <nav class="breadcrumb" style="margin-bottom: 20px;">
+                <a th:href="@{/dashboard}">Dashboard</a>
+                <span class="breadcrumb-separator">/</span>
+                <span class="breadcrumb-current">Notifications</span>
+            </nav>
+
+            <!-- Page Header -->
+            <div class="page-header-row">
+                <div>
+                    <h1 class="page-title">Notification Center</h1>
+                    <p class="page-subtitle">Stay informed about resume scan results, recruiter feedback, and interview schedules.</p>
+                </div>
+                <div class="page-header-actions">
+                    <button type="button" class="btn btn-secondary btn-sm" onclick="document.querySelectorAll('.notification-item-card').forEach(c => c.style.background = 'var(--bg-primary)'); alert('All notifications marked as read.');">
+                        ✓ Mark All as Read
+                    </button>
+                </div>
+            </div>
+
+            <!-- Notifications List Card -->
+            <article class="card" style="padding: 0; overflow: hidden;">
+                <!-- Filter Tabs -->
+                <div style="display: flex; gap: 8px; padding: 14px 20px; border-bottom: 1px solid var(--border-color); background: var(--bg-secondary);">
+                    <button class="btn btn-secondary btn-sm" style="background: var(--primary); color: #ffffff;">All (4)</button>
+                    <button class="btn btn-secondary btn-sm">Unread (2)</button>
+                    <button class="btn btn-secondary btn-sm">Analyses</button>
+                    <button class="btn btn-secondary btn-sm">Interviews</button>
+                </div>
+
+                <div style="display: flex; flex-direction: column;">
+
+                    <!-- Notif 1 -->
+                    <div class="notification-item-card" style="display: flex; align-items: flex-start; gap: 16px; padding: 18px 24px; border-bottom: 1px solid var(--border-color); background: var(--accent-light);">
+                        <span class="icon-chip chip-success" style="width: 38px; height: 38px; font-size: 1.1rem;">✓</span>
+                        <div style="flex: 1;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                                <strong style="font-size: 0.92rem; color: var(--text-primary);">Resume Analysis Completed</strong>
+                                <small style="color: var(--text-muted); font-size: 0.75rem;">15 minutes ago</small>
+                            </div>
+                            <p style="font-size: 0.84rem; color: var(--text-secondary); margin: 0 0 8px; line-height: 1.5;">
+                                Your resume <strong>AlexMorgan_JavaResume_v3.pdf</strong> achieved an ATS compatibility score of <strong>88%</strong> for Java Developer.
+                            </p>
+                            <a th:href="@{/dashboard/resumeanalyzer}" class="btn btn-secondary btn-sm">View Analysis Results →</a>
+                        </div>
+                    </div>
+
+                    <!-- Notif 2 -->
+                    <div class="notification-item-card" style="display: flex; align-items: flex-start; gap: 16px; padding: 18px 24px; border-bottom: 1px solid var(--border-color); background: var(--accent-light);">
+                        <span class="icon-chip" style="background: var(--info-bg); color: var(--info); width: 38px; height: 38px; font-size: 1.1rem;">📅</span>
+                        <div style="flex: 1;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                                <strong style="font-size: 0.92rem; color: var(--text-primary);">Interview Scheduled</strong>
+                                <small style="color: var(--text-muted); font-size: 0.75rem;">2 hours ago</small>
+                            </div>
+                            <p style="font-size: 0.84rem; color: var(--text-secondary); margin: 0 0 8px; line-height: 1.5;">
+                                An interview for <strong>Senior Java Developer</strong> has been confirmed for tomorrow at 11:00 AM via Google Meet.
+                            </p>
+                            <a th:href="@{/dashboard/help}" class="btn btn-secondary btn-sm">View Details →</a>
+                        </div>
+                    </div>
+
+                    <!-- Notif 3 -->
+                    <div class="notification-item-card" style="display: flex; align-items: flex-start; gap: 16px; padding: 18px 24px; border-bottom: 1px solid var(--border-color);">
+                        <span class="icon-chip" style="background: var(--primary-light); color: var(--primary); width: 38px; height: 38px; font-size: 1.1rem;">🎯</span>
+                        <div style="flex: 1;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                                <strong style="font-size: 0.92rem; color: var(--text-primary);">New Matching Job Profiles</strong>
+                                <small style="color: var(--text-muted); font-size: 0.75rem;">1 day ago</small>
+                            </div>
+                            <p style="font-size: 0.84rem; color: var(--text-secondary); margin: 0 0 8px; line-height: 1.5;">
+                                3 new target roles match your verified skills in Spring Boot and REST APIs.
+                            </p>
+                            <a th:href="@{/dashboard/jobroles}" class="btn btn-secondary btn-sm">Explore Roles →</a>
+                        </div>
+                    </div>
+
+                    <!-- Notif 4 -->
+                    <div class="notification-item-card" style="display: flex; align-items: flex-start; gap: 16px; padding: 18px 24px;">
+                        <span class="icon-chip" style="background: var(--warning-bg); color: var(--warning); width: 38px; height: 38px; font-size: 1.1rem;">📈</span>
+                        <div style="flex: 1;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                                <strong style="font-size: 0.92rem; color: var(--text-primary);">Skills Gap Recommendation</strong>
+                                <small style="color: var(--text-muted); font-size: 0.75rem;">3 days ago</small>
+                            </div>
+                            <p style="font-size: 0.84rem; color: var(--text-secondary); margin: 0 0 8px; line-height: 1.5;">
+                                Adding Docker containerization skills could increase your resume match score to 95%+.
+                            </p>
+                            <a th:href="@{/dashboard/skillsgap}" class="btn btn-secondary btn-sm">View Skills Gap →</a>
+                        </div>
+                    </div>
+
+                </div>
+            </article>
+
+        </div>
+
+        <!-- Shared Footer -->
+        <footer th:replace="~{fragments/footer :: footer}"></footer>
+
+    </main>
+
+</div>
+
+</body>
+</html>

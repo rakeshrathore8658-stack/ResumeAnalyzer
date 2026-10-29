@@ -1,0 +1,672 @@
+
+/* =========================================================
+   SmartHire Analysis History
+   File: static/css/history.css
+
+   Dependencies:
+   - style.css
+   - dashboard.css
+
+   Default theme: Light
+   Dark theme: html[data-theme="dark"]
+   ========================================================= */
+
+
+/* ==================== PAGE HEADING ==================== */
+
+.history-page .history-heading {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 28px;
+}
+
+.history-page .history-heading h1 {
+    margin: 0;
+    color: var(--text-primary, #17243a);
+    font-size: clamp(27px, 3vw, 35px);
+    font-weight: 800;
+    letter-spacing: -1px;
+    line-height: 1.25;
+}
+
+.history-page .eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+    color: var(--primary, #244d7f);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.4px;
+}
+
+.history-page .eyebrow-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent, #f28c28);
+}
+
+.history-page .page-description {
+    max-width: 680px;
+    margin: 12px 0 0;
+    color: var(--text-secondary, #66758a);
+    font-size: 14px;
+    line-height: 1.8;
+}
+
+.history-page .history-heading > a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    flex-shrink: 0;
+    text-decoration: none;
+}
+
+
+/* ==================== STATISTICS ==================== */
+
+.history-page .history-stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+    margin-bottom: 26px;
+}
+
+.history-page .history-stat-card {
+    min-width: 0;
+    padding: 22px;
+    border: 1px solid var(--border-color, #e5eaf1);
+    border-radius: 16px;
+    background: var(--surface, #fff);
+    box-shadow: 0 5px 22px rgb(20 43 76 / 4%);
+}
+
+.history-page .history-stat-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.history-page .history-stat-label {
+    color: var(--text-secondary, #66758a);
+    font-size: 12px;
+    font-weight: 650;
+}
+
+.history-page .history-stat-icon {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background: #edf4ff;
+    color: #244d7f;
+    font-size: 19px;
+}
+
+.history-page .history-stat-value {
+    display: flex;
+    align-items: baseline;
+    gap: 5px;
+    margin-top: 20px;
+    color: var(--text-primary, #17243a);
+    font-size: 32px;
+    font-weight: 850;
+    letter-spacing: -1px;
+    overflow-wrap: anywhere;
+}
+
+.history-page .history-stat-value small {
+    color: var(--text-secondary, #748196);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0;
+}
+
+.history-page .history-stat-date {
+    margin-top: 20px;
+    color: var(--text-primary, #17243a);
+    font-size: 19px;
+    font-weight: 800;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+
+.history-page .history-stat-description {
+    margin: 8px 0 0;
+    color: var(--text-muted, #98a3b3);
+    font-size: 11px;
+    line-height: 1.7;
+}
+
+
+/* ==================== TABLE CONTAINER ==================== */
+
+.history-page .history-table-card {
+    min-width: 0;
+    overflow: hidden;
+    border: 1px solid var(--border-color, #e5eaf1);
+    border-radius: 18px;
+    background: var(--surface, #fff);
+    box-shadow: 0 5px 22px rgb(20 43 76 / 4%);
+}
+
+.history-page .history-table-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 25px 25px 20px;
+}
+
+.history-page .history-table-heading h2 {
+    margin: 0;
+    color: var(--text-primary, #17243a);
+    font-size: 19px;
+    font-weight: 800;
+}
+
+.history-page .history-table-heading p {
+    margin: 7px 0 0;
+    color: var(--text-secondary, #748196);
+    font-size: 12px;
+    line-height: 1.7;
+}
+
+.history-page .history-export-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    flex-shrink: 0;
+    text-decoration: none;
+}
+
+
+/* ==================== SEARCH AND FILTERS ==================== */
+
+.history-page .history-toolbar {
+    display: grid;
+    grid-template-columns: minmax(200px, 1.5fr) minmax(160px, 1fr) minmax(150px, 0.8fr);
+    gap: 12px;
+    padding: 0 25px 20px;
+}
+
+.history-page .history-search {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+    min-height: 44px;
+    padding: 0 13px;
+    border: 1px solid var(--input-border, #dce3ed);
+    border-radius: 10px;
+    background: var(--input-bg, #fff);
+    color: var(--text-secondary, #748196);
+}
+
+.history-page .history-search > span {
+    flex-shrink: 0;
+    font-size: 20px;
+}
+
+.history-page .history-search input {
+    width: 100%;
+    min-width: 0;
+    padding: 10px 0;
+    border: 0;
+    outline: none;
+    background: transparent;
+    color: var(--text-primary, #17243a);
+    font: inherit;
+    font-size: 12px;
+}
+
+.history-page .history-search input::placeholder {
+    color: var(--text-muted, #98a3b3);
+}
+
+.history-page .history-search:focus-within {
+    border-color: var(--primary, #244d7f);
+    box-shadow: 0 0 0 3px rgb(36 77 127 / 10%);
+}
+
+.history-page .history-filter {
+    min-width: 0;
+}
+
+.history-page .history-filter .form-control {
+    width: 100%;
+    min-height: 44px;
+    padding: 10px 12px;
+    border: 1px solid var(--input-border, #dce3ed);
+    border-radius: 10px;
+    outline: none;
+    background: var(--input-bg, #fff);
+    color: var(--text-primary, #17243a);
+    font: inherit;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.history-page .history-filter .form-control:focus {
+    border-color: var(--primary, #244d7f);
+    box-shadow: 0 0 0 3px rgb(36 77 127 / 10%);
+}
+
+.history-page .history-search-status {
+    min-height: 15px;
+    padding: 0 25px;
+    margin: 0 0 12px;
+    color: var(--text-secondary, #748196);
+    font-size: 11px;
+}
+
+
+/* ==================== TABLE ==================== */
+
+.history-page .history-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    border-top: 1px solid var(--border-color, #e5eaf1);
+    scrollbar-width: thin;
+}
+
+.history-page .history-table {
+    width: 100%;
+    min-width: 800px;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.history-page .history-table thead {
+    background: var(--surface-subtle, #f8fafc);
+}
+
+.history-page .history-table th {
+    padding: 15px 17px;
+    color: var(--text-secondary, #66758a);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.history-page .history-table th:first-child,
+.history-page .history-table td:first-child {
+    padding-left: 25px;
+}
+
+.history-page .history-table td {
+    padding: 17px;
+    border-top: 1px solid var(--border-color, #e5eaf1);
+    color: var(--text-primary, #17243a);
+    font-size: 12px;
+    vertical-align: middle;
+}
+
+.history-page .history-table tbody tr.history-row {
+    transition: background 140ms ease;
+}
+
+.history-page .history-table tbody tr.history-row:hover {
+    background: var(--surface-hover, #f8fafc);
+}
+
+
+/* ==================== RESUME CELL ==================== */
+
+.history-page .history-resume-cell {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    min-width: 180px;
+}
+
+.history-page .history-file-icon {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    background: #fff2e5;
+    font-size: 19px;
+}
+
+.history-page .history-resume-info {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    min-width: 0;
+}
+
+.history-page .history-resume-info strong {
+    display: block;
+    max-width: 190px;
+    overflow: hidden;
+    color: var(--text-primary, #17243a);
+    font-size: 12px;
+    font-weight: 750;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.history-page .history-resume-info span {
+    color: var(--text-muted, #98a3b3);
+    font-size: 10px;
+}
+
+
+/* ==================== JOB ROLE ==================== */
+
+.history-page .history-role {
+    display: inline-block;
+    max-width: 180px;
+    padding: 6px 9px;
+    overflow: hidden;
+    border: 1px solid var(--border-color, #e5eaf1);
+    border-radius: 7px;
+    background: var(--surface-subtle, #f8fafc);
+    color: var(--text-secondary, #66758a);
+    font-size: 10px;
+    font-weight: 700;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+/* ==================== SCORE BADGES ==================== */
+
+.history-page .history-score {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 64px;
+    padding: 7px 9px;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    font-size: 11px;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+
+.history-page .history-score.score-high {
+    border-color: #c7e9d2;
+    background: #edf9f0;
+    color: #237342;
+}
+
+.history-page .history-score.score-medium {
+    border-color: #f3dfb4;
+    background: #fff7e6;
+    color: #966316;
+}
+
+.history-page .history-score.score-low {
+    border-color: #f0cece;
+    background: #fff0f0;
+    color: #b23a3a;
+}
+
+.history-page .history-date {
+    display: inline-block;
+    min-width: 130px;
+    color: var(--text-secondary, #748196);
+    font-size: 11px;
+    line-height: 1.7;
+    white-space: nowrap;
+}
+
+
+/* ==================== REPORT LINK ==================== */
+
+.history-page .history-report-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--primary, #244d7f);
+    font-size: 11px;
+    font-weight: 800;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.history-page .history-report-link:hover {
+    color: var(--accent, #e77d1c);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+}
+
+.history-page .history-report-link:focus-visible {
+    outline: 2px solid var(--primary, #244d7f);
+    outline-offset: 4px;
+    border-radius: 3px;
+}
+
+
+/* ==================== EMPTY STATE ==================== */
+
+.history-page .history-empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 48px 22px;
+    text-align: center;
+}
+
+.history-page .history-empty-state > span {
+    display: grid;
+    place-items: center;
+    width: 64px;
+    height: 64px;
+    margin-bottom: 17px;
+    border-radius: 18px;
+    background: var(--surface-subtle, #f3f6fa);
+    font-size: 27px;
+}
+
+.history-page .history-empty-state h3 {
+    margin: 0;
+    color: var(--text-primary, #17243a);
+    font-size: 17px;
+    font-weight: 800;
+}
+
+.history-page .history-empty-state p {
+    max-width: 380px;
+    margin: 10px 0 19px;
+    color: var(--text-secondary, #748196);
+    font-size: 12px;
+    line-height: 1.8;
+}
+
+
+/* ==================== TABLE FOOTER ==================== */
+
+.history-page .history-table-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    padding: 18px 25px;
+    border-top: 1px solid var(--border-color, #e5eaf1);
+    color: var(--text-secondary, #748196);
+    font-size: 11px;
+}
+
+.history-page .history-table-footer a {
+    color: var(--primary, #244d7f);
+    font-weight: 800;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.history-page .history-table-footer a:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+}
+
+
+/* ==================== ACCESSIBILITY ==================== */
+
+.history-page .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.history-page [hidden] {
+    display: none !important;
+}
+
+
+/* ==================== DARK MODE ==================== */
+
+html[data-theme="dark"] .history-page .history-stat-icon {
+    background: #233650;
+    color: #b6d5ff;
+}
+
+html[data-theme="dark"] .history-page .history-file-icon {
+    background: #3a2d22;
+}
+
+html[data-theme="dark"] .history-page .history-score.score-high {
+    border-color: #28573b;
+    background: #203b2e;
+    color: #9be2b1;
+}
+
+html[data-theme="dark"] .history-page .history-score.score-medium {
+    border-color: #66502b;
+    background: #3a3020;
+    color: #f0d08b;
+}
+
+html[data-theme="dark"] .history-page .history-score.score-low {
+    border-color: #663535;
+    background: #3a2424;
+    color: #ffaaaa;
+}
+
+html[data-theme="dark"] .history-page .history-role {
+    background: var(--surface-subtle, #182335);
+}
+
+html[data-theme="dark"] .history-page .history-table tbody tr.history-row:hover {
+    background: var(--surface-hover, #202d40);
+}
+
+
+/* ==================== RESPONSIVE ==================== */
+
+@media (max-width: 1100px) {
+    .history-page .history-stats {
+        gap: 13px;
+    }
+
+    .history-page .history-stat-card {
+        padding: 18px;
+    }
+
+    .history-page .history-toolbar {
+        grid-template-columns: minmax(180px, 1fr) minmax(150px, 0.8fr);
+    }
+
+    .history-page .history-search {
+        grid-column: 1 / -1;
+    }
+}
+
+@media (max-width: 750px) {
+    .history-page .history-stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .history-page .history-heading {
+        align-items: flex-start;
+    }
+
+    .history-page .history-table-heading {
+        align-items: flex-start;
+    }
+}
+
+@media (max-width: 560px) {
+    .history-page .history-heading {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 18px;
+    }
+
+    .history-page .history-heading h1 {
+        font-size: 28px;
+    }
+
+    .history-page .history-heading > a {
+        align-self: flex-start;
+    }
+
+    .history-page .history-stats {
+        grid-template-columns: 1fr;
+    }
+
+    .history-page .history-stat-card {
+        padding: 19px;
+    }
+
+    .history-page .history-table-heading {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 20px 18px;
+    }
+
+    .history-page .history-export-button {
+        align-self: flex-start;
+    }
+
+    .history-page .history-toolbar {
+        grid-template-columns: 1fr;
+        padding: 0 18px 18px;
+    }
+
+    .history-page .history-search {
+        grid-column: auto;
+    }
+
+    .history-page .history-search-status {
+        padding: 0 18px;
+    }
+
+    .history-page .history-table-footer {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 17px 18px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .history-page *,
+    .history-page *::before,
+    .history-page *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+

@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head('Dashboard')}"></head>
+
+<body class="dashboard-page">
+
+<div class="dashboard-layout">
+
+    <!-- Shared Sidebar -->
+    <aside th:replace="~{fragments/sidebar :: sidebar(active='dashboard')}"></aside>
+
+    <!-- Main Dashboard Area -->
+    <main class="dashboard-main">
+
+        <!-- Shared Topbar Header -->
+        <header th:replace="~{fragments/header :: topbar}"></header>
+
+        <!-- Main Content Container -->
+        <div class="main-content">
+
+            <!-- ================= JOB SEEKER DASHBOARD VIEW ================= -->
+            <div id="seekerDashboardSection" th:if="${userRole != 'HR' and userRole != 'RECRUITER'}">
+
+                <!-- Header Banner -->
+                <div class="page-header-row">
+                    <div>
+                        <p class="welcome-label">
+                            Welcome back, <strong th:text="${userName != null ? userName : 'Job Seeker'}">Job Seeker</strong> 👋
+                        </p>
+                        <h1 class="page-title">Your Career Dashboard</h1>
+                        <p class="page-subtitle">Track resume optimizations, target career matches, and interview readiness in one place.</p>
+                    </div>
+                    <div class="page-header-actions">
+                        <a class="btn btn-secondary" th:href="@{/dashboard/analyzerhistory}">
+                            <span aria-hidden="true">◷</span> View History
+                        </a>
+                        <a class="btn btn-primary" th:href="@{/dashboard/resumeanalyzer}">
+                            <span>✦</span> Analyze New Resume
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Server Alerts -->
+                <div class="alert alert-success" role="status" th:if="${successMessage}" th:text="${successMessage}">
+                    Operation completed successfully.
+                </div>
+                <div class="alert alert-danger" role="alert" th:if="${errorMessage}" th:text="${errorMessage}">
+                    Unable to load latest data.
+                </div>
+
+                <!-- KPI Metric Cards -->
+                <section class="stats-grid-4" aria-label="Resume analysis statistics">
+                    <article class="stat-card">
+                        <div class="stat-top">
+                            <span class="stat-label">Total Analyses</span>
+                            <span class="stat-icon icon-navy" aria-hidden="true">📄</span>
+                        </div>
+                        <div class="stat-value-row">
+                            <span class="stat-value" th:text="${totalAnalyses != null ? totalAnalyses : '6'}">6</span>
+                        </div>
+                        <span class="stat-unit">Completed scans</span>
+                    </article>
+
+                    <article class="stat-card">
+                        <div class="stat-top">
+                            <span class="stat-label">Average ATS Score</span>
+                            <span class="stat-icon icon-green" aria-hidden="true">◎</span>
+                        </div>
+                        <div class="stat-value-row">
+                            <span class="stat-value" th:text="${averageAtsScore != null ? #numbers.formatDecimal(averageAtsScore, 1, 0) : '82'}">82</span>
+                            <span class="stat-unit">/ 100</span>
+                        </div>
+                        <span class="stat-unit">Across uploaded resumes</span>
+                    </article>
+
+                    <article class="stat-card">
+                        <div class="stat-top">
+                            <span class="stat-label">Average Skill Match</span>
+                            <span class="stat-icon" aria-hidden="true">⌘</span>
+                        </div>
+                        <div class="stat-value-row">
+                            <span class="stat-value" th:text="${averageSkillMatch != null ? #numbers.formatDecimal(averageSkillMatch, 1, 0) : '78'}">78</span>
+                            <span class="stat-unit">%</span>
+                        </div>
+                        <span class="stat-unit">For target job roles</span>
+                    </article>
+
+                    <article class="stat-card">
+                        <div class="stat-top">
+                            <span class="stat-label">Latest Scan</span>
+                            <span class="stat-icon icon-info" aria-hidden="true">◷</span>
+                        </div>
+                        <div class="stat-value-row">
+                            <span class="stat-value" style="font-size: 1.25rem;"
+                                  th:text="${latestAnalysisDate != null ? #temporals.format(latestAnalysisDate, 'dd MMM yyyy') : '28 Oct 2026'}">
+                                28 Oct 2026
+                            </span>
+                        </div>
+                        <span class="stat-unit">Target: Java Developer</span>
+                    </article>
+                </section>
+
+                <!-- Grid: Activity Chart & Score Overview -->
+                <section class="grid-2-1">
+                    <!-- Activity Trend Chart -->
+                    <article class="card">
+                        <div class="card-header">
+                            <div>
+                                <h2 class="card-title">Analysis Score Trends</h2>
+                                <p class="card-description">Monthly progression of your resume ATS scores.</p>
+                            </div>
+                            <span class="badge badge-primary">Past 6 Months</span>
+                        </div>
+
+                        <div class="analysis-chart" style="display: flex; flex-direction: column; justify-content: flex-end; min-height: 200px; padding: 20px 0 0; border-bottom: 1px solid var(--border-color);">
+                            <div class="chart-bars" style="display: flex; align-items: flex-end; justify-content: space-around; gap: 14px; height: 160px;">
+                                <div class="chart-column" style="display: flex; flex-direction: column; align-items: center; justify-content: flex-end; flex: 1; height: 100%;">
+                                    <div class="chart-bar" style="width: 32px; height: 55%; background: var(--border-strong); border-radius: 6px 6px 0 0;" title="May: 55%"></div>
+                                    <span class="chart-month" style="font-size: 0.72rem; color: var(--text-muted); margin-top: 8px;">May</span>
+                                </div>
+                                <div class="chart-column" style="display: flex; flex-direction: column; align-items: center; justify-content: flex-end; flex: 1; height: 100%;">
+                                    <div class="chart-bar" style="width: 32px; height: 64%; background: var(--border-strong); border-radius: 6px 6px 0 0;" title="Jun: 64%"></div>
+                                    <span class="chart-month" style="font-size: 0.72rem; color: var(--text-muted); margin-top: 8px;">Jun</span>
+                                </div>
+                                <div class="chart-column" style="display: flex; flex-direction: column; align-items: center; justify-content: flex-end; flex: 1; height: 100%;">
+                                    <div class="chart-bar" style="width: 32px; height: 70%; background: var(--primary); border-radius: 6px 6px 0 0;" title="Jul: 70%"></div>
+                                    <span class="chart-month" style="font-size: 0.72rem; color: var(--text-muted); margin-top: 8px;">Jul</span>
+                                </div>
+                                <div class="chart-column" style="display: flex; flex-direction: column; align-items: center; justify-content: flex-end; flex: 1; height: 100%;">
+                                    <div class="chart-bar" style="width: 32px; height: 75%; background: var(--primary); border-radius: 6px 6px 0 0;" title="Aug: 75%"></div>
+                                    <span class="chart-month" style="font-size: 0.72rem; color: var(--text-muted); margin-top: 8px;">Aug</span>
+                                </div>
+                                <div class="chart-column" style="display: flex; flex-direction: column; align-items: center; justify-content: flex-end; flex: 1; height: 100%;">
+                                    <div class="chart-bar" style="width: 32px; height: 80%; background: var(--accent); border-radius: 6px 6px 0 0;" title="Sep: 80%"></div>
+                                    <span class="chart-month" style="font-size: 0.72rem; color: var(--text-muted); margin-top: 8px;">Sep</span>
+                                </div>
+                                <div class="chart-column" style="display: flex; flex-direction: column; align-items: center; justify-content: flex-end; flex: 1; height: 100%;">
+                                    <div class="chart-bar" style="width: 32px; height: 88%; background: var(--accent); border-radius: 6px 6px 0 0;" title="Oct: 88%"></div>
+                                    <span class="chart-month" style="font-size: 0.72rem; color: var(--text-muted); margin-top: 8px; font-weight: 700; color: var(--accent);">Oct</span>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Score Overview -->
+                    <article class="card">
+                        <div class="card-header">
+                            <div>
+                                <h2 class="card-title">Latest Analysis</h2>
+                                <p class="card-description">Java Developer Profile</p>
+                            </div>
+                            <span class="badge badge-success">Active</span>
+                        </div>
+
+                        <div class="score-overview" style="display: flex; flex-direction: column; gap: 18px;">
+                            <div>
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 0.85rem;">
+                                    <span>ATS Format Compatibility</span>
+                                    <strong>88%</strong>
+                                </div>
+                                <div class="progress"><div class="progress-bar progress-bar-success" style="width: 88%;"></div></div>
+                            </div>
+
+                            <div>
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 0.85rem;">
+                                    <span>Core Skills Alignment</span>
+                                    <strong>82%</strong>
+                                </div>
+                                <div class="progress"><div class="progress-bar" style="width: 82%;"></div></div>
+                            </div>
+
+                            <div>
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 0.85rem;">
+                                    <span>Keyword Frequency</span>
+                                    <strong>74%</strong>
+                                </div>
+                                <div class="progress"><div class="progress-bar progress-bar-warning" style="width: 74%;"></div></div>
+                            </div>
+
+                            <a th:href="@{/dashboard/resumeimprovement}" class="btn btn-secondary btn-sm btn-block" style="margin-top: 8px;">
+                                View Suggestions to reach 95%+ →
+                            </a>
+                        </div>
+                    </article>
+                </section>
+
+                <!-- Grid: Recent Analyses Table & Quick Actions -->
+                <section class="grid-2-1">
+                    <!-- Recent Analyses Table -->
+                    <article class="card">
+                        <div class="card-header">
+                            <div>
+                                <h2 class="card-title">Recent Analyses</h2>
+                                <p class="card-description">Your historical resume evaluations.</p>
+                            </div>
+                            <a th:href="@{/dashboard/analyzerhistory}" class="btn btn-ghost btn-sm">View all →</a>
+                        </div>
+
+                        <div class="table-wrapper">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>Resume Name</th>
+                                    <th>Target Role</th>
+                                    <th>Score</th>
+                                    <th>Date</th>
+                                    <th>Action</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>
+                                        <strong>AlexMorgan_JavaResume.pdf</strong>
+                                        <small style="display: block; color: var(--text-muted); font-size: 0.72rem;">245 KB · PDF</small>
+                                    </td>
+                                    <td><span class="badge badge-primary">Java Developer</span></td>
+                                    <td><span class="score-badge score-high">88%</span></td>
+                                    <td><span>28 Oct 2026</span></td>
+                                    <td><a th:href="@{/dashboard/resumeanalyzer}" class="btn btn-secondary btn-sm">Review</a></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong>AlexMorgan_FullStack.docx</strong>
+                                        <small style="display: block; color: var(--text-muted); font-size: 0.72rem;">198 KB · DOCX</small>
+                                    </td>
+                                    <td><span class="badge badge-primary">Full Stack</span></td>
+                                    <td><span class="score-badge score-high">82%</span></td>
+                                    <td><span>22 Oct 2026</span></td>
+                                    <td><a th:href="@{/dashboard/resumeanalyzer}" class="btn btn-secondary btn-sm">Review</a></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong>Alex_DevOps_Draft.pdf</strong>
+                                        <small style="display: block; color: var(--text-muted); font-size: 0.72rem;">210 KB · PDF</small>
+                                    </td>
+                                    <td><span class="badge badge-neutral">DevOps Engineer</span></td>
+                                    <td><span class="score-badge score-mid">68%</span></td>
+                                    <td><span>15 Oct 2026</span></td>
+                                    <td><a th:href="@{/dashboard/resumeanalyzer}" class="btn btn-secondary btn-sm">Review</a></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </article>
+
+                    <!-- Quick Actions Column -->
+                    <aside style="display: flex; flex-direction: column; gap: 20px;">
+                        <article class="card">
+                            <div class="card-header">
+                                <h2 class="card-title">Quick Actions</h2>
+                            </div>
+                            <div style="display: flex; flex-direction: column; gap: 10px;">
+                                <a th:href="@{/dashboard/resumeanalyzer}" class="quick-action" style="display: flex; align-items: center; justify-content: space-between; padding: 12px 14px; background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-md); text-decoration: none; color: var(--text-primary); font-size: 0.88rem; font-weight: 600;">
+                                    <span>✦ Analyze New Resume</span>
+                                    <span aria-hidden="true">→</span>
+                                </a>
+                                <a th:href="@{/dashboard/jobroles}" class="quick-action" style="display: flex; align-items: center; justify-content: space-between; padding: 12px 14px; background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-md); text-decoration: none; color: var(--text-primary); font-size: 0.88rem; font-weight: 600;">
+                                    <span>⌕ Explore Career Profiles</span>
+                                    <span aria-hidden="true">→</span>
+                                </a>
+                                <a th:href="@{/dashboard/skillsgap}" class="quick-action" style="display: flex; align-items: center; justify-content: space-between; padding: 12px 14px; background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-md); text-decoration: none; color: var(--text-primary); font-size: 0.88rem; font-weight: 600;">
+                                    <span>🎯 View Skills Gap</span>
+                                    <span aria-hidden="true">→</span>
+                                </a>
+                                <a th:href="@{/dashboard/profile}" class="quick-action" style="display: flex; align-items: center; justify-content: space-between; padding: 12px 14px; background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-md); text-decoration: none; color: var(--text-primary); font-size: 0.88rem; font-weight: 600;">
+                                    <span>♙ Update Profile Info</span>
+                                    <span aria-hidden="true">→</span>
+                                </a>
+                            </div>
+                        </article>
+                    </aside>
+                </section>
+
+            </div>
+
+            <!-- ================= HR / RECRUITER DASHBOARD VIEW ================= -->
+            <div id="hrDashboardSection" th:if="${userRole == 'HR' or userRole == 'RECRUITER'}">
+
+                <!-- HR Header Banner -->
+                <div class="page-header-row">
+                    <div>
+                        <p class="welcome-label">
+                            Recruitment Portal · <strong th:text="${companyName != null ? companyName : 'ITSoftLab Hiring Team'}">ITSoftLab Hiring Team</strong>
+                        </p>
+                        <h1 class="page-title">Recruiter Command Center</h1>
+                        <p class="page-subtitle">Track job vacancies, AI resume candidate screening, interviews, and hiring pipeline.</p>
+                    </div>
+                    <div class="page-header-actions">
+                        <a class="btn btn-secondary" th:href="@{/dashboard/candidates}">
+                            <span>👥</span> Candidate Database
+                        </a>
+                        <a class="btn btn-primary" th:href="@{/dashboard/jobs/create}">
+                            <span>+</span> Create Job Vacancy
+                        </a>
+                    </div>
+                </div>
+
+                <!-- HR 6 KPI Metrics Cards -->
+                <section class="stats-grid-6">
+                    <article class="stat-card">
+                        <div class="stat-top">
+                            <span class="stat-label">Active Jobs</span>
+                            <span class="stat-icon icon-navy">💼</span>
+                        </div>
+                        <div class="stat-value">12</div>
+                        <span class="stat-unit">4 closing soon</span>
+                    </article>
+
+                    <article class="stat-card">
+                        <div class="stat-top">
+                            <span class="stat-label">Candidates</span>
+                            <span class="stat-icon icon-info">👥</span>
+                        </div>
+                        <div class="stat-value">184</div>
+                        <span class="stat-unit">Verified profiles</span>
+                    </article>
+
+                    <article class="stat-card">
+                        <div class="stat-top">
+                            <span class="stat-label">Applications</span>
+                            <span class="stat-icon icon-purple">📥</span>
+                        </div>
+                        <div class="stat-value">320</div>
+                        <span class="stat-unit">+45 this week</span>
+                    </article>
+
+                    <article class="stat-card">
+                        <div class="stat-top">
+                            <span class="stat-label">Awaiting Review</span>
+                            <span class="stat-icon">⏳</span>
+                        </div>
+                        <div class="stat-value">45</div>
+                        <span class="stat-unit">Needs screening</span>
+                    </article>
+
+                    <article class="stat-card">
+                        <div class="stat-top">
+                            <span class="stat-label">Shortlisted</span>
+                            <span class="stat-icon icon-green">⭐</span>
+                        </div>
+                        <div class="stat-value">28</div>
+                        <span class="stat-unit">High match score</span>
+                    </article>
+
+                    <article class="stat-card">
+                        <div class="stat-top">
+                            <span class="stat-label">Interviews</span>
+                            <span class="stat-icon">📅</span>
+                        </div>
+                        <div class="stat-value">14</div>
+                        <span class="stat-unit">Scheduled this week</span>
+                    </article>
+                </section>
+
+                <!-- Recruitment Pipeline Funnel -->
+                <article class="card" style="margin-bottom: 28px;">
+                    <div class="card-header">
+                        <div>
+                            <h2 class="card-title">Recruitment Pipeline Funnel</h2>
+                            <p class="card-description">Live candidate progress across active hiring stages.</p>
+                        </div>
+                        <a th:href="@{/dashboard/reports}" class="btn btn-ghost btn-sm">View Analytics →</a>
+                    </div>
+
+                    <div class="pipeline-funnel-grid">
+                        <div class="funnel-stage-card">
+                            <span class="funnel-count">320</span>
+                            <span class="funnel-label">Applied</span>
+                        </div>
+                        <div class="funnel-stage-card">
+                            <span class="funnel-count">198</span>
+                            <span class="funnel-label">AI Screened</span>
+                        </div>
+                        <div class="funnel-stage-card">
+                            <span class="funnel-count">28</span>
+                            <span class="funnel-label">Shortlisted</span>
+                        </div>
+                        <div class="funnel-stage-card">
+                            <span class="funnel-count">14</span>
+                            <span class="funnel-label">Interviewing</span>
+                        </div>
+                        <div class="funnel-stage-card">
+                            <span class="funnel-count">5</span>
+                            <span class="funnel-label">Offered</span>
+                        </div>
+                        <div class="funnel-stage-card" style="border-color: var(--success); background: var(--success-bg);">
+                            <span class="funnel-count" style="color: var(--success);">3</span>
+                            <span class="funnel-label" style="color: var(--success);">Hired</span>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Two Column: Recent Candidate Screenings & Upcoming Interviews -->
+                <section class="grid-2-1">
+                    <article class="card">
+                        <div class="card-header">
+                            <div>
+                                <h2 class="card-title">Top Matched Candidates</h2>
+                                <p class="card-description">AI parsed candidates with highest job alignment.</p>
+                            </div>
+                            <a th:href="@{/dashboard/candidates}" class="btn btn-ghost btn-sm">All candidates →</a>
+                        </div>
+
+                        <div class="table-wrapper">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>Candidate</th>
+                                    <th>Applied Role</th>
+                                    <th>Match Score</th>
+                                    <th>Experience</th>
+                                    <th>Action</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>
+                                        <strong>Vikram Sharma</strong>
+                                        <small style="display: block; color: var(--text-muted); font-size: 0.72rem;">vikram.s@email.com</small>
+                                    </td>
+                                    <td><span class="badge badge-primary">Senior Java Dev</span></td>
+                                    <td><span class="score-badge score-high">94%</span></td>
+                                    <td>5.5 yrs</td>
+                                    <td><a th:href="@{/dashboard/candidates/1}" class="btn btn-secondary btn-sm">Profile</a></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong>Priya Patel</strong>
+                                        <small style="display: block; color: var(--text-muted); font-size: 0.72rem;">priya.p@email.com</small>
+                                    </td>
+                                    <td><span class="badge badge-primary">Full Stack MERN</span></td>
+                                    <td><span class="score-badge score-high">89%</span></td>
+                                    <td>4 yrs</td>
+                                    <td><a th:href="@{/dashboard/candidates/2}" class="btn btn-secondary btn-sm">Profile</a></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <strong>Rohan Mehta</strong>
+                                        <small style="display: block; color: var(--text-muted); font-size: 0.72rem;">rohan.m@email.com</small>
+                                    </td>
+                                    <td><span class="badge badge-primary">DevOps Engineer</span></td>
+                                    <td><span class="score-badge score-high">86%</span></td>
+                                    <td>3.5 yrs</td>
+                                    <td><a th:href="@{/dashboard/candidates/3}" class="btn btn-secondary btn-sm">Profile</a></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </article>
+
+                    <!-- Upcoming Interviews Widget -->
+                    <aside class="card">
+                        <div class="card-header">
+                            <div>
+                                <h2 class="card-title">Upcoming Interviews</h2>
+                                <p class="card-description">Next 48 hours</p>
+                            </div>
+                            <a th:href="@{/dashboard/interviews}" class="btn btn-ghost btn-sm">Manage →</a>
+                        </div>
+
+                        <div style="display: flex; flex-direction: column; gap: 12px;">
+                            <div class="interview-item-card" style="padding: 12px;">
+                                <div class="interview-meta">
+                                    <div class="interview-date-box" style="padding: 4px 8px; min-width: 48px;">
+                                        <span class="interview-date-day" style="font-size: 0.95rem;">29</span>
+                                        <span class="interview-date-month" style="font-size: 0.65rem;">Oct</span>
+                                    </div>
+                                    <div class="interview-details">
+                                        <h4>Vikram Sharma</h4>
+                                        <p>Tech Round 1 · 11:00 AM</p>
+                                    </div>
+                                </div>
+                                <a th:href="@{/dashboard/feedback}" class="btn btn-secondary btn-sm">Evaluate</a>
+                            </div>
+
+                            <div class="interview-item-card" style="padding: 12px;">
+                                <div class="interview-meta">
+                                    <div class="interview-date-box" style="padding: 4px 8px; min-width: 48px;">
+                                        <span class="interview-date-day" style="font-size: 0.95rem;">30</span>
+                                        <span class="interview-date-month" style="font-size: 0.65rem;">Oct</span>
+                                    </div>
+                                    <div class="interview-details">
+                                        <h4>Priya Patel</h4>
+                                        <p>System Design · 2:30 PM</p>
+                                    </div>
+                                </div>
+                                <a th:href="@{/dashboard/feedback}" class="btn btn-secondary btn-sm">Evaluate</a>
+                            </div>
+
+                            <a th:href="@{/dashboard/interviews}" class="btn btn-primary btn-sm btn-block" style="margin-top: 6px;">
+                                + Schedule Interview
+                            </a>
+                        </div>
+                    </aside>
+                </section>
+
+            </div>
+
+        </div>
+
+        <!-- Shared Footer -->
+        <footer th:replace="~{fragments/footer :: footer}"></footer>
+
+    </main>
+
+</div>
+
+</body>
+</html>
