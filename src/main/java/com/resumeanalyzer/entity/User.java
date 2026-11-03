@@ -1,4 +1,3 @@
-
 package com.resumeanalyzer.entity;
 
 import jakarta.persistence.*;
@@ -26,15 +25,30 @@ public class User {
     @Column(nullable = false, length = 254)
     private String email;
 
+    @Column(name = "phone_number", length = 30)
+    private String phoneNumber;
+
     // Store the encoded password, never the plain-text password.
     @Column(name = "password_hash", nullable = false)
     private String passwordHash;
 
-    @Column(name = "career_role", nullable = false, length = 50)
+    @Column(name = "role", nullable = false, length = 20)
+    private String role = "USER";
+
+    @Column(name = "career_role", length = 50)
     private String careerRole;
 
+    @Column(name = "company_name", length = 100)
+    private String companyName;
+
+    @Column(length = 150)
+    private String location;
+
+    @Column(length = 200)
+    private String headline;
+
     @Column(name = "terms_accepted", nullable = false)
-    private boolean termsAccepted;
+    private Boolean termsAccepted = true;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
@@ -42,10 +56,27 @@ public class User {
     public User() {
     }
 
+    public User(String fullName, String email, String phoneNumber, String passwordHash, String role, String careerRole, String companyName) {
+        this.fullName = fullName;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.passwordHash = passwordHash;
+        this.role = (role != null && !role.isBlank()) ? role.toUpperCase() : "USER";
+        this.careerRole = careerRole;
+        this.companyName = companyName;
+        this.termsAccepted = true;
+    }
+
     @PrePersist
     protected void onCreate() {
         if (createdAt == null) {
             createdAt = LocalDateTime.now();
+        }
+        if (role == null || role.isBlank()) {
+            role = "USER";
+        }
+        if (careerRole == null || careerRole.isBlank()) {
+            careerRole = "HR".equalsIgnoreCase(role) ? "HR / Recruiter" : "General";
         }
     }
 
@@ -73,12 +104,28 @@ public class User {
         this.email = email;
     }
 
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
     public String getPasswordHash() {
         return passwordHash;
     }
 
     public void setPasswordHash(String passwordHash) {
         this.passwordHash = passwordHash;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = (role != null && !role.isBlank()) ? role.toUpperCase() : "USER";
     }
 
     public String getCareerRole() {
@@ -89,17 +136,43 @@ public class User {
         this.careerRole = careerRole;
     }
 
-    public boolean isTermsAccepted() {
-        return termsAccepted;
+    public String getCompanyName() {
+        return companyName;
     }
 
-    public void setTermsAccepted(boolean termsAccepted) {
-        this.termsAccepted = termsAccepted;
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getHeadline() {
+        return headline;
+    }
+
+    public void setHeadline(String headline) {
+        this.headline = headline;
+    }
+
+    public boolean isTermsAccepted() {
+        return Boolean.TRUE.equals(termsAccepted);
+    }
+
+    public void setTermsAccepted(Boolean termsAccepted) {
+        this.termsAccepted = (termsAccepted != null) ? termsAccepted : true;
     }
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
 }

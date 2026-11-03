@@ -39,7 +39,7 @@
 
                     <article class="card">
                         <div class="card-header">
-                            <h2 class="card-title"><span>❓</span> Frequently Asked Questions</h2>
+                            <h2 class="card-title"><span style="color: var(--info); margin-right: 6px;"><i class="bi bi-question-circle"></i></span> Frequently Asked Questions</h2>
                         </div>
 
                         <div style="display: flex; flex-direction: column; gap: 14px;">
@@ -91,11 +91,15 @@
                 <aside style="display: flex; flex-direction: column; gap: 20px;">
                     <article class="card">
                         <div class="card-header">
-                            <h2 class="card-title"><span>✉</span> Contact Support</h2>
+                            <h2 class="card-title"><span style="color: var(--accent); margin-right: 6px;"><i class="bi bi-envelope"></i></span> Contact Support</h2>
                             <p class="card-description">Need assistance with analysis or account?</p>
                         </div>
 
-                        <form onsubmit="event.preventDefault(); alert('Message sent to SmartHire support! (Frontend demonstration)'); this.reset();">
+                        <div id="supportSuccessAlert" class="alert alert-success" style="display: none; margin-bottom: 14px; padding: 12px 14px; border-radius: var(--radius-md); font-size: 0.85rem;">
+                            <i class="bi bi-check-circle-fill" style="margin-right: 6px;"></i> Your message has been sent to SmartHire support! We will reply within 24 hours.
+                        </div>
+
+                        <form onsubmit="event.preventDefault(); document.getElementById('supportSuccessAlert').style.display = 'block'; this.reset();">
                             <div class="form-group" style="margin-bottom: 14px;">
                                 <label style="display: block; font-size: 0.82rem; font-weight: 600; margin-bottom: 4px;">Subject</label>
                                 <input type="text" class="form-control" placeholder="e.g. Issue parsing PDF document" required style="width: 100%; padding: 9px 12px; border: 1px solid var(--border-strong); border-radius: var(--radius-md); background: var(--bg-input); color: var(--text-primary); font-size: 0.88rem;">

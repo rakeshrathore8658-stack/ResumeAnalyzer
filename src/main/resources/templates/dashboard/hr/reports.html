@@ -31,9 +31,9 @@
                     <p class="page-subtitle">Track hiring pipeline conversion, applicant distribution by requisition, and AI screening efficiency.</p>
                 </div>
                 <div class="page-header-actions">
-                    <button type="button" class="btn btn-primary" id="btnExportReport">
-                        <span>📊</span> Export CSV Report
-                    </button>
+                    <a th:href="@{/dashboard/reports/export(period=${selectedPeriod != null ? selectedPeriod : '30days'})}" class="btn btn-primary" id="btnExportReport" style="text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
+                        <i class="bi bi-file-earmark-spreadsheet"></i> Export CSV Report
+                    </a>
                 </div>
             </div>
 
@@ -42,9 +42,12 @@
                 <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
                     <span style="font-size: 0.85rem; font-weight: 600; color: var(--text-secondary);">Reporting Period:</span>
                     <div style="display: flex; gap: 8px;">
-                        <button class="btn btn-secondary btn-sm" style="background: var(--primary); color: #ffffff;">Last 30 Days</button>
-                        <button class="btn btn-secondary btn-sm">This Quarter</button>
-                        <button class="btn btn-secondary btn-sm">Year to Date</button>
+                        <a th:href="@{/dashboard/reports(period='30days')}" class="btn btn-secondary btn-sm"
+                           th:style="${selectedPeriod == '30days' or selectedPeriod == null ? 'background: var(--primary); color: #ffffff; text-decoration: none;' : 'text-decoration: none;'}">Last 30 Days</a>
+                        <a th:href="@{/dashboard/reports(period='quarter')}" class="btn btn-secondary btn-sm"
+                           th:style="${selectedPeriod == 'quarter' ? 'background: var(--primary); color: #ffffff; text-decoration: none;' : 'text-decoration: none;'}">This Quarter</a>
+                        <a th:href="@{/dashboard/reports(period='ytd')}" class="btn btn-secondary btn-sm"
+                           th:style="${selectedPeriod == 'ytd' ? 'background: var(--primary); color: #ffffff; text-decoration: none;' : 'text-decoration: none;'}">Year to Date</a>
                     </div>
                 </div>
             </article>
@@ -54,37 +57,37 @@
                 <article class="stat-card">
                     <div class="stat-top">
                         <span class="stat-label">Total Resumes Screened</span>
-                        <span class="stat-icon icon-navy">📄</span>
+                        <span class="stat-icon icon-navy"><i class="bi bi-file-earmark-text"></i></span>
                     </div>
-                    <div class="stat-value">320</div>
-                    <span class="stat-unit">+45 this month</span>
+                    <div class="stat-value" th:text="${report != null ? report.totalResumesScreened : 0}">0</div>
+                    <span class="stat-unit" th:text="${report != null ? ('+' + report.newResumesThisMonth + ' this month') : '+0 this month'}">+0 this month</span>
                 </article>
 
                 <article class="stat-card">
                     <div class="stat-top">
                         <span class="stat-label">AI Shortlist Conversion</span>
-                        <span class="stat-icon icon-green">⭐</span>
+                        <span class="stat-icon icon-green"><i class="bi bi-star"></i></span>
                     </div>
-                    <div class="stat-value" style="color: var(--success);">8.8%</div>
-                    <span class="stat-unit">28 candidates selected</span>
+                    <div class="stat-value" style="color: var(--success);" th:text="${report != null ? (report.shortlistConversionRate + '%') : '0.0%'}">0.0%</div>
+                    <span class="stat-unit" th:text="${report != null ? (report.shortlistedCount + ' candidates selected') : '0 candidates selected'}">0 candidates selected</span>
                 </article>
 
                 <article class="stat-card">
                     <div class="stat-top">
                         <span class="stat-label">Interview to Offer Rate</span>
-                        <span class="stat-icon icon-info">📈</span>
+                        <span class="stat-icon icon-info"><i class="bi bi-graph-up-arrow"></i></span>
                     </div>
-                    <div class="stat-value">35.7%</div>
-                    <span class="stat-unit">5 offers from 14 interviews</span>
+                    <div class="stat-value" th:text="${report != null ? (report.interviewToOfferRate + '%') : '0.0%'}">0.0%</div>
+                    <span class="stat-unit" th:text="${report != null ? (report.offersCount + ' offers from ' + report.interviewsCount + ' interviews') : '0 offers from 0 interviews'}">0 offers from 0 interviews</span>
                 </article>
 
                 <article class="stat-card">
                     <div class="stat-top">
                         <span class="stat-label">Average Time-to-Hire</span>
-                        <span class="stat-icon">⏱</span>
+                        <span class="stat-icon"><i class="bi bi-stopwatch"></i></span>
                     </div>
-                    <div class="stat-value">18 Days</div>
-                    <span class="stat-unit">4 days faster than industry avg</span>
+                    <div class="stat-value" th:text="${report != null ? (report.avgTimeToHireDays + ' Days') : '0 Days'}">0 Days</div>
+                    <span class="stat-unit" th:text="${report != null ? report.timeToHireSubtext : 'Live metric based on active pipeline'}">Live metric based on active pipeline</span>
                 </article>
             </section>
 
@@ -104,41 +107,51 @@
                         <div>
                             <div style="display: flex; justify-content: space-between; font-size: 0.84rem; margin-bottom: 4px;">
                                 <span>1. Applied Resumes</span>
-                                <strong>320 (100%)</strong>
+                                <strong th:text="${report != null ? (report.funnelApplied + ' (' + report.funnelAppliedPct + '%)') : '0 (0.0%)'}">0 (0.0%)</strong>
                             </div>
-                            <div class="progress"><div class="progress-bar progress-bar-info" style="width: 100%;"></div></div>
+                            <div class="progress">
+                                <div class="progress-bar progress-bar-info" th:style="${'width: ' + (report != null ? report.funnelAppliedPct : 100) + '%;'}"></div>
+                            </div>
                         </div>
 
                         <div>
                             <div style="display: flex; justify-content: space-between; font-size: 0.84rem; margin-bottom: 4px;">
                                 <span>2. AI Match Passed (70%+)</span>
-                                <strong>198 (61.8%)</strong>
+                                <strong th:text="${report != null ? (report.funnel70Plus + ' (' + report.funnel70PlusPct + '%)') : '0 (0.0%)'}">0 (0.0%)</strong>
                             </div>
-                            <div class="progress"><div class="progress-bar" style="width: 61.8%;"></div></div>
+                            <div class="progress">
+                                <div class="progress-bar" th:style="${'width: ' + (report != null ? report.funnel70PlusPct : 61.8) + '%;'}"></div>
+                            </div>
                         </div>
 
                         <div>
                             <div style="display: flex; justify-content: space-between; font-size: 0.84rem; margin-bottom: 4px;">
                                 <span>3. Shortlisted for Phone Screen</span>
-                                <strong>28 (8.8%)</strong>
+                                <strong th:text="${report != null ? (report.funnelShortlisted + ' (' + report.funnelShortlistedPct + '%)') : '0 (0.0%)'}">0 (0.0%)</strong>
                             </div>
-                            <div class="progress"><div class="progress-bar progress-bar-warning" style="width: 8.8%;"></div></div>
+                            <div class="progress">
+                                <div class="progress-bar progress-bar-warning" th:style="${'width: ' + (report != null ? report.funnelShortlistedPct : 8.8) + '%;'}"></div>
+                            </div>
                         </div>
 
                         <div>
                             <div style="display: flex; justify-content: space-between; font-size: 0.84rem; margin-bottom: 4px;">
                                 <span>4. Technical Interviews</span>
-                                <strong>14 (4.4%)</strong>
+                                <strong th:text="${report != null ? (report.funnelInterviews + ' (' + report.funnelInterviewsPct + '%)') : '0 (0.0%)'}">0 (0.0%)</strong>
                             </div>
-                            <div class="progress"><div class="progress-bar progress-bar-warning" style="width: 4.4%;"></div></div>
+                            <div class="progress">
+                                <div class="progress-bar progress-bar-warning" th:style="${'width: ' + (report != null ? report.funnelInterviewsPct : 4.4) + '%;'}"></div>
+                            </div>
                         </div>
 
                         <div>
                             <div style="display: flex; justify-content: space-between; font-size: 0.84rem; margin-bottom: 4px;">
                                 <span>5. Offers Extended & Accepted</span>
-                                <strong>3 (1.0%)</strong>
+                                <strong th:text="${report != null ? (report.funnelOffers + ' (' + report.funnelOffersPct + '%)') : '0 (0.0%)'}">0 (0.0%)</strong>
                             </div>
-                            <div class="progress"><div class="progress-bar progress-bar-success" style="width: 3.5%;"></div></div>
+                            <div class="progress">
+                                <div class="progress-bar progress-bar-success" th:style="${'width: ' + (report != null ? report.funnelOffersPct : 3.5) + '%;'}"></div>
+                            </div>
                         </div>
                     </div>
                 </article>
@@ -153,36 +166,23 @@
                     </div>
 
                     <div style="display: flex; flex-direction: column; gap: 14px;">
-                        <div>
-                            <div style="display: flex; justify-content: space-between; font-size: 0.84rem; margin-bottom: 4px;">
-                                <span>Senior Java Developer</span>
-                                <strong>48 applicants</strong>
+                        <th:block th:if="${report != null and report.applicantsByVacancy != null and !report.applicantsByVacancy.isEmpty()}">
+                            <div th:each="job : ${report.applicantsByVacancy}">
+                                <div style="display: flex; justify-content: space-between; font-size: 0.84rem; margin-bottom: 4px;">
+                                    <span th:text="${job.title}">Senior Java Developer</span>
+                                    <strong th:text="${job.totalApplications + ' applicants'}">48 applicants</strong>
+                                </div>
+                                <div class="progress">
+                                    <div th:class="${'progress-bar ' + (job.barClass != null ? job.barClass : '')}" th:style="${'width: ' + job.progressPercentage + '%;'}"></div>
+                                </div>
                             </div>
-                            <div class="progress"><div class="progress-bar" style="width: 85%;"></div></div>
-                        </div>
+                        </th:block>
 
-                        <div>
-                            <div style="display: flex; justify-content: space-between; font-size: 0.84rem; margin-bottom: 4px;">
-                                <span>Full Stack MERN Developer</span>
-                                <strong>52 applicants</strong>
-                            </div>
-                            <div class="progress"><div class="progress-bar progress-bar-info" style="width: 95%;"></div></div>
-                        </div>
-
-                        <div>
-                            <div style="display: flex; justify-content: space-between; font-size: 0.84rem; margin-bottom: 4px;">
-                                <span>DevOps / Cloud Engineer</span>
-                                <strong>28 applicants</strong>
-                            </div>
-                            <div class="progress"><div class="progress-bar progress-bar-warning" style="width: 50%;"></div></div>
-                        </div>
-
-                        <div>
-                            <div style="display: flex; justify-content: space-between; font-size: 0.84rem; margin-bottom: 4px;">
-                                <span>Data Analyst</span>
-                                <strong>31 applicants</strong>
-                            </div>
-                            <div class="progress"><div class="progress-bar progress-bar-success" style="width: 55%;"></div></div>
+                        <!-- Empty state if no vacancies or applicants -->
+                        <div th:if="${report == null or report.applicantsByVacancy == null or report.applicantsByVacancy.isEmpty()}"
+                             style="padding: 24px 16px; text-align: center; color: var(--text-muted); font-size: 0.85rem;">
+                            <i class="bi bi-briefcase" style="font-size: 1.6rem; display: block; margin-bottom: 6px; opacity: 0.5;"></i>
+                            No applicant distribution recorded yet for active vacancies.
                         </div>
                     </div>
                 </article>
@@ -208,41 +208,24 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td><strong>Senior Java Developer</strong></td>
-                            <td>Engineering</td>
-                            <td>48</td>
-                            <td>12</td>
-                            <td>6</td>
-                            <td>1</td>
-                            <td><span class="score-badge score-high">84%</span></td>
-                        </tr>
-                        <tr>
-                            <td><strong>Full Stack MERN Developer</strong></td>
-                            <td>Product</td>
-                            <td>52</td>
-                            <td>14</td>
-                            <td>5</td>
-                            <td>1</td>
-                            <td><span class="score-badge score-high">81%</span></td>
-                        </tr>
-                        <tr>
-                            <td><strong>DevOps / Cloud Engineer</strong></td>
-                            <td>Infrastructure</td>
-                            <td>28</td>
-                            <td>7</td>
-                            <td>3</td>
-                            <td>1</td>
-                            <td><span class="score-badge score-high">88%</span></td>
-                        </tr>
-                        <tr>
-                            <td><strong>Data Analyst</strong></td>
-                            <td>Data & BI</td>
-                            <td>31</td>
-                            <td>9</td>
-                            <td>4</td>
-                            <td>0</td>
-                            <td><span class="score-badge score-mid">76%</span></td>
+                        <th:block th:if="${report != null and report.requisitionSummaries != null and !report.requisitionSummaries.isEmpty()}">
+                            <tr th:each="row : ${report.requisitionSummaries}">
+                                <td><strong th:text="${row.title}">Senior Java Developer</strong></td>
+                                <td th:text="${row.department}">Engineering</td>
+                                <td th:text="${row.totalApplications}">48</td>
+                                <td th:text="${row.shortlisted}">12</td>
+                                <td th:text="${row.interviews}">6</td>
+                                <td th:text="${row.hired}">1</td>
+                                <td>
+                                    <span th:class="${'score-badge ' + (row.avgMatchScore >= 80 ? 'score-high' : (row.avgMatchScore >= 60 ? 'score-mid' : 'score-low'))}"
+                                          th:text="${row.avgMatchScore + '%'}">84%</span>
+                                </td>
+                            </tr>
+                        </th:block>
+
+                        <!-- Empty state if no requisitions -->
+                        <tr th:if="${report == null or report.requisitionSummaries == null or report.requisitionSummaries.isEmpty()}">
+                            <td colspan="7" style="text-align: center; color: var(--text-muted); padding: 24px;">No requisition data recorded for this period.</td>
                         </tr>
                         </tbody>
                     </table>

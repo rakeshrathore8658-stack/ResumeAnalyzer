@@ -1,4 +1,4 @@
-
+﻿
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       data-theme="light">
@@ -14,6 +14,7 @@
 
     <title>SmartHire | AI Resume Analyzer</title>
 
+    <link rel="stylesheet" th:href="@{/css/bootstrap-icons.min.css}">
     <link rel="stylesheet" th:href="@{/css/style.css}">
 
     <!-- Landing page specific styles -->
@@ -334,8 +335,8 @@
                     aria-pressed="false"
                     title="Switch theme">
 
-                <span class="icon-moon" aria-hidden="true">🌙</span>
-                <span class="icon-sun" aria-hidden="true">☀️</span>
+                <span class="icon-moon" aria-hidden="true"><i class="bi bi-moon-stars"></i></span>
+                <span class="icon-sun" aria-hidden="true"><i class="bi bi-sun"></i></span>
             </button>
 
             <a class="btn btn-secondary" th:href="@{/login}">
@@ -500,7 +501,7 @@
             <div class="grid grid-3">
 
                 <article class="feature-card">
-                    <div class="feature-icon" aria-hidden="true">✦</div>
+                    <div class="feature-icon" aria-hidden="true"><i class="bi bi-cpu"></i></div>
 
                     <h3>AI Resume Analysis</h3>
 
@@ -512,7 +513,7 @@
                 </article>
 
                 <article class="feature-card">
-                    <div class="feature-icon" aria-hidden="true">◎</div>
+                    <div class="feature-icon" aria-hidden="true"><i class="bi bi-speedometer2"></i></div>
 
                     <h3>ATS Compatibility</h3>
 
@@ -524,7 +525,7 @@
                 </article>
 
                 <article class="feature-card">
-                    <div class="feature-icon" aria-hidden="true">↗</div>
+                    <div class="feature-icon" aria-hidden="true"><i class="bi bi-bullseye"></i></div>
 
                     <h3>Skill Matching</h3>
 
@@ -535,7 +536,7 @@
                 </article>
 
                 <article class="feature-card">
-                    <div class="feature-icon" aria-hidden="true">⌕</div>
+                    <div class="feature-icon" aria-hidden="true"><i class="bi bi-compass"></i></div>
 
                     <h3>Multiple Job Profiles</h3>
 
@@ -546,7 +547,7 @@
                 </article>
 
                 <article class="feature-card">
-                    <div class="feature-icon" aria-hidden="true">▤</div>
+                    <div class="feature-icon" aria-hidden="true"><i class="bi bi-file-earmark-bar-graph"></i></div>
 
                     <h3>Detailed Reports</h3>
 
@@ -557,7 +558,7 @@
                 </article>
 
                 <article class="feature-card">
-                    <div class="feature-icon" aria-hidden="true">◷</div>
+                    <div class="feature-icon" aria-hidden="true"><i class="bi bi-clock-history"></i></div>
 
                     <h3>Analysis History</h3>
 
@@ -652,43 +653,43 @@
 
                 <a class="role-card"
                    th:href="@{/job-roles}">
-                    <span class="role-icon" aria-hidden="true">⌘</span>
+                    <span class="role-icon" aria-hidden="true"><i class="bi bi-lightning-charge"></i></span>
                     <span>Java Developer</span>
                 </a>
 
                 <a class="role-card"
                    th:href="@{/job-roles}">
-                    <span class="role-icon" aria-hidden="true">⌘</span>
+                    <span class="role-icon" aria-hidden="true"><i class="bi bi-lightning-charge"></i></span>
                     <span>MERN Stack Developer</span>
                 </a>
 
                 <a class="role-card"
                    th:href="@{/job-roles}">
-                    <span class="role-icon" aria-hidden="true">◈</span>
+                    <span class="role-icon" aria-hidden="true"><i class="bi bi-bar-chart"></i></span>
                     <span>Data Scientist</span>
                 </a>
 
                 <a class="role-card"
                    th:href="@{/job-roles}">
-                    <span class="role-icon" aria-hidden="true">⚙</span>
+                    <span class="role-icon" aria-hidden="true"><i class="bi bi-cloud-check"></i></span>
                     <span>DevOps Engineer</span>
                 </a>
 
                 <a class="role-card"
                    th:href="@{/job-roles}">
-                    <span class="role-icon" aria-hidden="true">▤</span>
+                    <span class="role-icon" aria-hidden="true"><i class="bi bi-clipboard-data"></i></span>
                     <span>Business Analyst</span>
                 </a>
 
                 <a class="role-card"
                    th:href="@{/job-roles}">
-                    <span class="role-icon" aria-hidden="true">◎</span>
+                    <span class="role-icon" aria-hidden="true"><i class="bi bi-megaphone"></i></span>
                     <span>Social Media Manager</span>
                 </a>
 
                 <a class="role-card"
                    th:href="@{/job-roles}">
-                    <span class="role-icon" aria-hidden="true">◇</span>
+                    <span class="role-icon" aria-hidden="true"><i class="bi bi-palette"></i></span>
                     <span>UI/UX Designer</span>
                 </a>
 

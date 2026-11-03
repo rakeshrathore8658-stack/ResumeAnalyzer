@@ -1,8 +1,6 @@
-
 package com.resumeanalyzer.dto;
 
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
@@ -17,6 +15,9 @@ public class RegisterRequest {
     @Size(max = 254)
     private String email;
 
+    @Size(max = 30, message = "Phone number must be at most 30 characters")
+    private String phoneNumber;
+
     @NotBlank(message = "Password is required")
     @Size(min = 8, message = "Password must contain at least 8 characters")
     private String password;
@@ -24,11 +25,13 @@ public class RegisterRequest {
     @NotBlank(message = "Confirm password is required")
     private String confirmPassword;
 
-    @NotBlank(message = "Please select your career interest")
+    private String role = "USER";
+
     private String careerRole;
 
-    @AssertTrue(message = "You must accept the terms and conditions")
-    private boolean termsAccepted;
+    private String companyName;
+
+    private boolean termsAccepted = true;
 
     public RegisterRequest() {
     }
@@ -49,6 +52,14 @@ public class RegisterRequest {
         this.email = email;
     }
 
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
     public String getPassword() {
         return password;
     }
@@ -65,12 +76,28 @@ public class RegisterRequest {
         this.confirmPassword = confirmPassword;
     }
 
+    public String getRole() {
+        return (role != null && !role.isBlank()) ? role.toUpperCase() : "USER";
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
     public String getCareerRole() {
         return careerRole;
     }
 
     public void setCareerRole(String careerRole) {
         this.careerRole = careerRole;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 
     public boolean isTermsAccepted() {

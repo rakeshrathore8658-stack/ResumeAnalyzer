@@ -8,6 +8,86 @@
     "use strict";
 
     /**
+     * Helper: Open a modal cleanly
+     */
+    function openModal(modal) {
+        if (!modal) return;
+        modal.hidden = false;
+        modal.removeAttribute("hidden");
+        modal.classList.add("is-open");
+        modal.style.display = "flex";
+        document.body.style.overflow = "hidden";
+    }
+
+    /**
+     * Helper: Close a modal cleanly
+     */
+    function closeModal(modal) {
+        if (!modal) return;
+        modal.hidden = true;
+        modal.setAttribute("hidden", "");
+        modal.classList.remove("is-open");
+        modal.style.display = "none";
+        document.body.style.overflow = "";
+
+        // Reset any alert messages inside modal
+        const alerts = modal.querySelectorAll(".alert");
+        alerts.forEach(alert => {
+            alert.hidden = true;
+            alert.setAttribute("hidden", "");
+            alert.style.display = "none";
+        });
+    }
+
+    // Expose helpers globally so pages and inline handlers can use them
+    window.openModal = openModal;
+    window.closeModal = closeModal;
+            alert.hidden = true;
+            alert.setAttribute("hidden", "");
+            alert.style.display = "none";
+        });
+    }
+
+    /**
+     * Global Modal Controllers (Cancel, Close ✕, Backdrop Click, Escape Key)
+     */
+    function initGlobalModals() {
+        // Ensure all modals start closed on initial page load
+        document.querySelectorAll(".modal-overlay").forEach(modal => {
+            if (!modal.classList.contains("is-open")) {
+                closeModal(modal);
+            }
+        });
+
+        // Delegate clicks for close buttons and overlay backdrops
+        document.addEventListener("click", (e) => {
+            // 1. Any button or element with [data-close-modal] (Cancel button, ✕ button, Close button)
+            const closeBtn = e.target.closest("[data-close-modal]");
+            if (closeBtn) {
+                e.preventDefault();
+                const modal = closeBtn.closest(".modal-overlay");
+                if (modal) {
+                    closeModal(modal);
+                }
+                return;
+            }
+
+            // 2. Click directly on the backdrop outside the modal dialog
+            if (e.target.classList.contains("modal-overlay")) {
+                closeModal(e.target);
+            }
+        });
+
+        // 3. Escape key closes any open modal
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "Escape" || e.key === "Esc") {
+                const openModals = document.querySelectorAll(".modal-overlay.is-open, .modal-overlay:not([hidden])");
+                openModals.forEach(m => closeModal(m));
+            }
+        });
+    }
+
+    /**
      * Candidate Comparison System
      * Allows selecting up to 3 candidates to compare side-by-side.
      */
@@ -16,83 +96,78 @@
         const compareModal = document.getElementById("compareModal");
         const compareCheckboxes = document.querySelectorAll(".candidate-compare-checkbox");
 
-        if (!compareCheckboxes.length) return;
-
-        function updateCompareButton() {
-            const checkedBoxes = document.querySelectorAll(".candidate-compare-checkbox:checked");
-            if (compareBtn) {
-                compareBtn.disabled = checkedBoxes.length < 2;
-                compareBtn.innerHTML = `<span>⚖</span> Compare Selected (${checkedBoxes.length})`;
-            }
-        }
-
-        compareCheckboxes.forEach(cb => {
-            cb.addEventListener("change", () => {
-                const checkedBoxes = document.querySelectorAll(".candidate-compare-checkbox:checked");
-                if (checkedBoxes.length > 3) {
-                    cb.checked = false;
-                    alert("You can compare a maximum of 3 candidates at once.");
-                }
-                updateCompareButton();
-            });
-        });
-
         if (compareBtn && compareModal) {
             compareBtn.addEventListener("click", () => {
-                compareModal.hidden = false;
+                openModal(compareModal);
             });
         }
 
-        document.querySelectorAll("[data-close-modal]").forEach(btn => {
-            btn.addEventListener("click", () => {
-                const modal = btn.closest(".modal-overlay");
-                if (modal) modal.hidden = true;
+        const proceedScheduleBtn = document.getElementById("btnProceedToSchedule");
+        if (proceedScheduleBtn) {
+            proceedScheduleBtn.addEventListener("click", () => {
+                if (compareModal) closeModal(compareModal);
+                const scheduleModal = document.getElementById("scheduleInterviewModal");
+                if (scheduleModal) {
+                    const nameField = document.getElementById("modalInterviewCandidate");
+                    const jobField = document.getElementById("modalInterviewJob");
+                    if (nameField) nameField.value = "Vikram Sharma & Priya Patel";
+                    if (jobField) jobField.value = "Shortlisted Vacancies";
+                    openModal(scheduleModal);
+                } else {
+                    alert("Interview round scheduled for shortlisted candidates! (Frontend demonstration)");
+                }
             });
-        });
+        }
+
+        if (compareCheckboxes.length > 0) {
+            function updateCompareButton() {
+                const checkedBoxes = document.querySelectorAll(".candidate-compare-checkbox:checked");
+                if (compareBtn) {
+                    compareBtn.disabled = checkedBoxes.length < 2;
+                    compareBtn.innerHTML = `<span>⚖</span> Compare Selected (${checkedBoxes.length})`;
+                }
+            }
+
+            compareCheckboxes.forEach(cb => {
+                cb.addEventListener("change", () => {
+                    const checkedBoxes = document.querySelectorAll(".candidate-compare-checkbox:checked");
+                    if (checkedBoxes.length > 3) {
+                        cb.checked = false;
+                        alert("You can compare a maximum of 3 candidates at once.");
+                    }
+                    updateCompareButton();
+                });
+            });
+
+            updateCompareButton();
+        }
     }
 
     /**
-     * Schedule Interview Modal
+     * Schedule Interview Modal - Allow direct form posting to backend server
      */
     function initScheduleInterviewModal() {
         const scheduleModal = document.getElementById("scheduleInterviewModal");
-        const openButtons = document.querySelectorAll("[data-open-schedule-modal]");
 
-        if (!scheduleModal) return;
+        // Delegate opening to any button with [data-open-schedule-modal]
+        document.addEventListener("click", (e) => {
+            const btn = e.target.closest("[data-open-schedule-modal]");
+            if (!btn) return;
+            e.preventDefault();
 
-        openButtons.forEach(btn => {
-            btn.addEventListener("click", (e) => {
-                e.preventDefault();
-                const candidateName = btn.getAttribute("data-candidate-name") || "Alex Morgan";
-                const jobTitle = btn.getAttribute("data-job-title") || "Senior Java Developer";
+            if (!scheduleModal) return;
 
-                const nameField = document.getElementById("modalInterviewCandidate");
-                const jobField = document.getElementById("modalInterviewJob");
+            const candidateName = btn.getAttribute("data-candidate-name");
+            const jobTitle = btn.getAttribute("data-job-title");
 
-                if (nameField) nameField.value = candidateName;
-                if (jobField) jobField.value = jobTitle;
+            const nameField = document.getElementById("modalInterviewCandidate");
+            const jobField = document.getElementById("modalInterviewJob");
 
-                scheduleModal.hidden = false;
-            });
+            if (nameField && candidateName) nameField.value = candidateName;
+            if (jobField && jobTitle) jobField.value = jobTitle;
+
+            openModal(scheduleModal);
         });
-
-        const interviewForm = document.getElementById("scheduleInterviewForm");
-        if (interviewForm) {
-            interviewForm.addEventListener("submit", (e) => {
-                e.preventDefault();
-                const alertMsg = document.getElementById("interviewScheduleSuccess");
-                if (alertMsg) {
-                    alertMsg.hidden = false;
-                    setTimeout(() => {
-                        scheduleModal.hidden = true;
-                        alertMsg.hidden = true;
-                    }, 1500);
-                } else {
-                    scheduleModal.hidden = true;
-                    alert("Interview scheduled successfully! (Frontend demonstration)");
-                }
-            });
-        }
     }
 
     /**
@@ -109,11 +184,15 @@
 
         if (openBulkBtn && bulkModal) {
             openBulkBtn.addEventListener("click", () => {
-                bulkModal.hidden = false;
+                openModal(bulkModal);
             });
         }
 
         if (bulkFileInput && bulkDropzone) {
+            bulkDropzone.addEventListener("click", () => {
+                bulkFileInput.click();
+            });
+
             bulkFileInput.addEventListener("change", () => {
                 renderSelectedFiles(bulkFileInput.files);
             });
@@ -130,7 +209,7 @@
             bulkDropzone.addEventListener("drop", (e) => {
                 e.preventDefault();
                 bulkDropzone.classList.remove("drag-over");
-                if (e.dataTransfer.files.length) {
+                if (e.dataTransfer && e.dataTransfer.files.length) {
                     renderSelectedFiles(e.dataTransfer.files);
                 }
             });
@@ -139,7 +218,7 @@
         function renderSelectedFiles(files) {
             if (!bulkList) return;
             bulkList.innerHTML = "";
-            Array.from(files).forEach((file, index) => {
+            Array.from(files).forEach((file) => {
                 const li = document.createElement("div");
                 li.className = "bulk-file-item";
                 li.style.cssText = "display: flex; justify-content: space-between; padding: 8px 12px; background: var(--bg-secondary); border-radius: 6px; margin-bottom: 6px; font-size: 0.85rem;";
@@ -161,7 +240,7 @@
                         clearInterval(interval);
                         bulkUploadBtn.textContent = "Completed!";
                         setTimeout(() => {
-                            if (bulkModal) bulkModal.hidden = true;
+                            if (bulkModal) closeModal(bulkModal);
                             bulkUploadBtn.disabled = false;
                             bulkUploadBtn.textContent = "Start Parsing";
                             bulkProgressBar.style.width = "0%";
@@ -175,30 +254,19 @@
 
     /**
      * Export Reports to CSV
-     * Client-side CSV generation for immediate demonstration.
      */
     function initReportExport() {
         const exportBtn = document.getElementById("btnExportReport");
         if (!exportBtn) return;
 
-        exportBtn.addEventListener("click", () => {
-            const csvRows = [
-                ["Job Title", "Department", "Applicants", "Shortlisted", "Interviews", "Hired", "Average Match Score"],
-                ["Senior Java Developer", "Engineering", "48", "12", "6", "2", "84%"],
-                ["Spring Boot Backend Engineer", "Engineering", "36", "8", "4", "1", "79%"],
-                ["Full Stack MERN Developer", "Product", "52", "14", "5", "2", "81%"],
-                ["DevOps / Cloud Engineer", "Infrastructure", "28", "7", "3", "1", "88%"],
-                ["Data Analyst", "Data & BI", "31", "9", "4", "1", "76%"]
-            ];
+        // Allow direct navigation to backend CSV generator if tag is an anchor
+        if (exportBtn.tagName === "A" && exportBtn.getAttribute("href")) {
+            return;
+        }
 
-            const csvContent = "data:text/csv;charset=utf-8," + csvRows.map(e => e.join(",")).join("\n");
-            const encodedUri = encodeURI(csvContent);
-            const link = document.createElement("a");
-            link.setAttribute("href", encodedUri);
-            link.setAttribute("download", `SmartHire_Recruitment_Report_${new Date().toISOString().slice(0, 10)}.csv`);
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
+        exportBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            window.location.href = "/dashboard/reports/export";
         });
     }
 
@@ -222,6 +290,7 @@
     }
 
     document.addEventListener("DOMContentLoaded", () => {
+        initGlobalModals();
         initCandidateComparison();
         initScheduleInterviewModal();
         initBulkUpload();

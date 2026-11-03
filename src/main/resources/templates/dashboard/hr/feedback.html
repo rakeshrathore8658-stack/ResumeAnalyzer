@@ -39,20 +39,38 @@
 
             <!-- Feedback Scorecard Form -->
             <article class="card" style="max-width: 900px; margin: 0 auto;">
-                <form id="feedbackForm" onsubmit="event.preventDefault(); alert('Interview feedback scorecard submitted! (Frontend demonstration)'); window.location.href='/dashboard/interviews';">
+
+                <!-- Candidate Selector Dropdown -->
+                <div class="form-group" style="margin-bottom: 20px;" th:if="${allCandidates != null and !allCandidates.isEmpty()}">
+                    <label style="display: block; font-size: 0.84rem; font-weight: 600; margin-bottom: 6px;">Select Candidate to Evaluate:</label>
+                    <select class="form-control" style="width: 100%; padding: 8px 12px; border: 1px solid var(--border-color); border-radius: var(--radius-md); background: var(--bg-input); color: var(--text-primary); font-size: 0.88rem;" onchange="window.location.href='/dashboard/feedback?candId=' + this.value;">
+                        <option th:each="c : ${allCandidates}"
+                                th:value="${c.id}"
+                                th:selected="${candidate != null and candidate.id == c.id}"
+                                th:text="${c.candidateName + ' · ' + (c.targetJobRole != null ? c.targetJobRole : 'General Requisition') + ' (' + c.overallScore + '% Match Score)'}">
+                            Candidate Name
+                        </option>
+                    </select>
+                </div>
+
+                <form id="feedbackForm" th:action="@{/dashboard/feedback}" method="post">
+                    <input type="hidden" name="candId" th:value="${candidate != null ? candidate.id : 1}">
+                    <input type="hidden" name="techScore" id="techScoreInput" value="4">
+                    <input type="hidden" name="archScore" id="archScoreInput" value="4">
+                    <input type="hidden" name="commScore" id="commScoreInput" value="4">
 
                     <!-- Candidate Summary Header -->
                     <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 20px; border-bottom: 1px solid var(--border-color); margin-bottom: 24px; flex-wrap: wrap; gap: 14px;">
                         <div>
-                            <span class="badge badge-primary">EVALUATION ROUND 1</span>
-                            <h2 style="font-size: 1.25rem; font-weight: 800; margin: 6px 0 2px;">Vikram Sharma</h2>
+                            <span class="badge badge-primary" th:text="${candidate != null and candidate.interviewRound != null ? candidate.interviewRound : 'EVALUATION ROUND 1'}">EVALUATION ROUND 1</span>
+                            <h2 style="font-size: 1.25rem; font-weight: 800; margin: 6px 0 2px;" th:text="${candidate != null ? candidate.candidateName : 'Candidate Name'}">Candidate Name</h2>
                             <p style="margin: 0; font-size: 0.85rem; color: var(--text-secondary);">
-                                Senior Java Developer (REQ-1042) · Interviewed on 29 Oct 2026
+                                <span th:text="${candidate != null ? (candidate.targetJobRole + ' · Score ' + candidate.overallScore + '%') : 'Senior Java Developer'}">Senior Java Developer</span> · <span th:text="${candidate != null ? candidate.formattedInterviewDate : 'Scheduled'}">29 Oct 2026</span>
                             </p>
                         </div>
                         <div>
                             <span style="font-size: 0.8rem; color: var(--text-muted); display: block;">Interviewer:</span>
-                            <strong style="color: var(--text-primary);">Alex Carter (Lead Architect)</strong>
+                            <strong style="color: var(--text-primary);" th:text="${candidate != null and candidate.interviewerName != null ? candidate.interviewerName : 'Alex Carter (Lead Architect)'}">Alex Carter (Lead Architect)</strong>
                         </div>
                     </div>
 
@@ -65,10 +83,9 @@
                         <div style="display: flex; justify-content: space-between; align-items: center; padding: 14px; background: var(--bg-secondary); border-radius: var(--radius-md); border: 1px solid var(--border-color); flex-wrap: wrap; gap: 12px;">
                             <div>
                                 <strong style="display: block; font-size: 0.9rem; color: var(--text-primary);">1. Technical Competency & Coding</strong>
-                                <small style="color: var(--text-secondary); font-size: 0.78rem;">Java syntax, Spring Boot microservices, REST best practices, database transactions.</small>
+                                <small style="color: var(--text-secondary); font-size: 0.78rem;">Syntax proficiency, frameworks mastery, REST architectural design, data persistence.</small>
                             </div>
-                            <div class="score-rating-group">
-                                <input type="hidden" name="techScore" value="5">
+                            <div class="score-rating-group" data-target="techScoreInput">
                                 <button type="button" class="score-rating-btn" data-score="1">1</button>
                                 <button type="button" class="score-rating-btn" data-score="2">2</button>
                                 <button type="button" class="score-rating-btn" data-score="3">3</button>
@@ -83,8 +100,7 @@
                                 <strong style="display: block; font-size: 0.9rem; color: var(--text-primary);">2. System Architecture & Problem Solving</strong>
                                 <small style="color: var(--text-secondary); font-size: 0.78rem;">Design trade-offs, scalability, caching strategies, queue asynchronous processing.</small>
                             </div>
-                            <div class="score-rating-group">
-                                <input type="hidden" name="archScore" value="4">
+                            <div class="score-rating-group" data-target="archScoreInput">
                                 <button type="button" class="score-rating-btn" data-score="1">1</button>
                                 <button type="button" class="score-rating-btn" data-score="2">2</button>
                                 <button type="button" class="score-rating-btn" data-score="3">3</button>
@@ -97,10 +113,9 @@
                         <div style="display: flex; justify-content: space-between; align-items: center; padding: 14px; background: var(--bg-secondary); border-radius: var(--radius-md); border: 1px solid var(--border-color); flex-wrap: wrap; gap: 12px;">
                             <div>
                                 <strong style="display: block; font-size: 0.9rem; color: var(--text-primary);">3. Communication & Collaboration</strong>
-                                <small style="color: var(--text-secondary); font-size: 0.78rem;">Ability to explain complex designs, receptiveness to technical feedback, team collaboration.</small>
+                                <small style="color: var(--text-secondary); font-size: 0.78rem;">Clarity in explaining concepts, feedback reception, cross-functional collaboration.</small>
                             </div>
-                            <div class="score-rating-group">
-                                <input type="hidden" name="commScore" value="4">
+                            <div class="score-rating-group" data-target="commScoreInput">
                                 <button type="button" class="score-rating-btn" data-score="1">1</button>
                                 <button type="button" class="score-rating-btn" data-score="2">2</button>
                                 <button type="button" class="score-rating-btn" data-score="3">3</button>
@@ -117,14 +132,14 @@
                             <label style="display: block; font-size: 0.82rem; font-weight: 600; margin-bottom: 6px;">
                                 Candidate Strengths
                             </label>
-                            <textarea rows="3" class="form-control" style="width: 100%; padding: 10px 12px; border: 1px solid var(--border-strong); border-radius: var(--radius-md); background: var(--bg-input); color: var(--text-primary); font-size: 0.88rem; resize: vertical; box-sizing: border-box; font-family: inherit;">Demonstrated deep understanding of JVM concurrency, Spring Boot thread pooling, and Kafka partition rebalancing. Clean code and thoughtful error handling during live coding challenge.</textarea>
+                            <textarea name="strengths" rows="3" class="form-control" placeholder="Key strengths noted during interview..." style="width: 100%; padding: 10px 12px; border: 1px solid var(--border-strong); border-radius: var(--radius-md); background: var(--bg-input); color: var(--text-primary); font-size: 0.88rem; resize: vertical; box-sizing: border-box; font-family: inherit;">Demonstrated deep practical knowledge in Spring Boot, API design, and SQL optimization. Clean problem-solving structure.</textarea>
                         </div>
 
                         <div class="form-group">
                             <label style="display: block; font-size: 0.82rem; font-weight: 600; margin-bottom: 6px;">
                                 Areas for Development / Follow-up in Next Round
                             </label>
-                            <textarea rows="2" class="form-control" style="width: 100%; padding: 10px 12px; border: 1px solid var(--border-strong); border-radius: var(--radius-md); background: var(--bg-input); color: var(--text-primary); font-size: 0.88rem; resize: vertical; box-sizing: border-box; font-family: inherit;">Has worked primarily with AWS ECS rather than native Kubernetes deployments, but demonstrated rapid learning curve.</textarea>
+                            <textarea name="weaknesses" rows="2" class="form-control" placeholder="Areas for growth or questions for the next round..." style="width: 100%; padding: 10px 12px; border: 1px solid var(--border-strong); border-radius: var(--radius-md); background: var(--bg-input); color: var(--text-primary); font-size: 0.88rem; resize: vertical; box-sizing: border-box; font-family: inherit;">Further assessment of container deployment pipelines and message queue scale recommended.</textarea>
                         </div>
                     </div>
 
@@ -151,7 +166,7 @@
                             </label>
 
                             <label style="display: flex; align-items: center; gap: 8px; padding: 10px 16px; background: var(--bg-primary); border: 1px solid var(--danger); border-radius: var(--radius-md); cursor: pointer;">
-                                <input type="radio" name="recommendation" value="Do Not Hire">
+                                <input type="radio" name="recommendation" value="No Hire">
                                 <strong style="color: var(--danger); font-size: 0.88rem;">Do Not Hire</strong>
                             </label>
                         </div>
@@ -159,7 +174,7 @@
 
                     <div style="display: flex; justify-content: flex-end; gap: 12px;">
                         <a th:href="@{/dashboard/interviews}" class="btn btn-secondary">Cancel</a>
-                        <button type="submit" class="btn btn-primary">Submit Scorecard</button>
+                        <button type="submit" class="btn btn-primary">Submit Scorecard & Save</button>
                     </div>
 
                 </form>
@@ -173,6 +188,26 @@
     </main>
 
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        document.querySelectorAll(".score-rating-group").forEach(group => {
+            const targetInputId = group.getAttribute("data-target");
+            const targetInput = document.getElementById(targetInputId);
+            const buttons = group.querySelectorAll(".score-rating-btn");
+
+            buttons.forEach(btn => {
+                btn.addEventListener("click", () => {
+                    buttons.forEach(b => b.classList.remove("active"));
+                    btn.classList.add("active");
+                    if (targetInput) {
+                        targetInput.value = btn.getAttribute("data-score");
+                    }
+                });
+            });
+        });
+    });
+</script>
 
 </body>
 </html>

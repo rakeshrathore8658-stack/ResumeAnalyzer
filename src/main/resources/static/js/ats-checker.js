@@ -363,21 +363,7 @@
     }
 
 
-    // ==================== MOBILE SIDEBAR ====================
-
-    const sidebar = document.getElementById("dashboardSidebar");
-    const sidebarButton = document.getElementById("sidebarMenuButton");
-
-    if (sidebar && sidebarButton) {
-        sidebarButton.addEventListener("click", () => {
-            const isOpen = sidebar.classList.toggle("is-open");
-
-            sidebarButton.setAttribute(
-                "aria-expanded",
-                String(isOpen)
-            );
-        });
-    }
+    // Mobile sidebar toggle is centralized in app.js
 
 
     // ==================== FORM SUBMISSION ====================

@@ -28,14 +28,14 @@
             <div class="page-header-row">
                 <div>
                     <div class="eyebrow" style="color: var(--accent); font-weight: 800; font-size: 0.75rem; letter-spacing: 0.08em; margin-bottom: 6px;">
-                        <span>✦</span> AI-POWERED RESUME EVALUATION
+                        <i class="bi bi-cpu"></i> AI-POWERED RESUME EVALUATION
                     </div>
                     <h1 class="page-title">Resume Analyzer</h1>
                     <p class="page-subtitle">Upload your resume to evaluate ATS compatibility, extract skills, and match against target career profiles.</p>
                 </div>
                 <div class="page-header-actions">
                     <a class="btn btn-secondary" th:href="@{/dashboard/analyzerhistory}">
-                        <span aria-hidden="true">◷</span> View Analysis History
+                        <i class="bi bi-clock-history"></i> View Analysis History
                     </a>
                 </div>
             </div>
@@ -43,7 +43,7 @@
             <!-- Helpful Notice -->
             <div class="card" style="background: linear-gradient(110deg, var(--primary-light) 0%, var(--accent-light) 100%); border-color: rgba(32, 59, 96, 0.12); margin-bottom: 24px; padding: 16px 20px;">
                 <div style="display: flex; align-items: center; gap: 14px;">
-                    <span style="font-size: 1.4rem;">🎯</span>
+                    <span style="font-size: 1.4rem; color: var(--accent);"><i class="bi bi-bullseye"></i></span>
                     <div>
                         <strong style="color: var(--primary); font-size: 0.92rem;">Maximize your analysis accuracy</strong>
                         <p style="margin: 2px 0 0; font-size: 0.82rem; color: var(--text-secondary);">
@@ -73,34 +73,34 @@
                         <div class="form-section" style="margin-bottom: 24px;">
                             <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
                                 <span class="badge badge-primary">STEP 1 OF 3</span>
-                                <small style="color: var(--text-muted); font-size: 0.75rem;">Supported: PDF, DOC, DOCX (Max 5MB)</small>
+                                <small style="color: var(--text-muted); font-size: 0.75rem;">Supported: PDF, DOC, DOCX, TXT (Max 10MB)</small>
                             </div>
                             <h2 style="font-size: 1.05rem; font-weight: 700; margin: 0 0 4px;">Upload your Resume</h2>
                             <p style="font-size: 0.82rem; color: var(--text-secondary); margin: 0 0 14px;">Drag and drop your latest resume file below.</p>
 
                             <!-- Drag & Drop Zone -->
-                            <div class="resume-dropzone" id="resumeDropzone" style="border: 2px dashed var(--border-strong); border-radius: var(--radius-lg); padding: 32px 20px; text-align: center; background: var(--bg-secondary); cursor: pointer; transition: all var(--transition-fast);">
-                                <input type="file" id="resumeFile" name="resumeFile" accept=".pdf,.doc,.docx" style="display: none;" required>
+                            <label for="resumeFile" class="resume-dropzone" id="resumeDropzone" tabindex="0" role="button" aria-label="Upload your resume document" style="display: block; border: 2px dashed var(--border-strong); border-radius: var(--radius-lg); padding: 32px 20px; text-align: center; background: var(--bg-secondary); cursor: pointer; transition: all var(--transition-fast);">
+                                <input type="file" id="resumeFile" name="resumeFile" accept=".pdf,.doc,.docx,.txt" style="display: none;">
                                 
                                 <div id="dropzoneContent">
-                                    <div style="font-size: 2.2rem; color: var(--accent); margin-bottom: 10px;">↑</div>
+                                    <div style="font-size: 2.2rem; color: var(--accent); margin-bottom: 10px;"><i class="bi bi-cloud-arrow-up"></i></div>
                                     <h3 style="font-size: 0.95rem; font-weight: 700; margin: 0 0 6px;">Drag & drop your resume file here</h3>
                                     <p style="font-size: 0.82rem; color: var(--text-secondary); margin: 0 0 8px;">or <span style="color: var(--accent); font-weight: 700; text-decoration: underline;">browse computer</span></p>
-                                    <span style="font-size: 0.75rem; color: var(--text-muted);">PDF or DOCX format · Under 5 MB</span>
+                                    <span style="font-size: 0.75rem; color: var(--text-muted);">PDF, DOC, DOCX or TXT format · Under 10 MB</span>
                                 </div>
 
                                 <!-- Selected File Badge (Appears when file picked) -->
                                 <div id="selectedFile" hidden style="display: flex; align-items: center; justify-content: space-between; background: var(--bg-primary); padding: 12px 16px; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
                                     <div style="display: flex; align-items: center; gap: 12px;">
-                                        <span style="font-size: 1.5rem;">📄</span>
+                                        <span style="font-size: 1.5rem; color: var(--danger);"><i class="bi bi-file-earmark-pdf-fill"></i></span>
                                         <div style="text-align: left;">
                                             <strong id="selectedFileName" style="display: block; font-size: 0.88rem; color: var(--text-primary);">resume.pdf</strong>
                                             <span id="selectedFileSize" style="font-size: 0.75rem; color: var(--text-muted);">240 KB</span>
                                         </div>
                                     </div>
-                                    <button type="button" id="removeSelectedFile" class="btn btn-ghost btn-sm" style="color: var(--danger); font-weight: 700;">✕ Remove</button>
+                                    <button type="button" id="removeSelectedFile" class="btn btn-ghost btn-sm" style="color: var(--danger); font-weight: 700;"><i class="bi bi-x-circle"></i> Remove</button>
                                 </div>
-                            </div>
+                            </label>
 
                             <p class="field-error" id="resumeFileError" style="color: var(--danger); font-size: 0.8rem; margin-top: 8px;" hidden></p>
                         </div>
@@ -121,7 +121,13 @@
                                     Target Job Role
                                 </label>
                                 <select id="jobRole" name="jobRole" class="form-control" style="width: 100%; padding: 10px 14px; border: 1px solid var(--border-strong); border-radius: var(--radius-md); background: var(--bg-input); color: var(--text-primary); font-size: 0.88rem;" required>
-                                    <option value="" disabled selected>-- Choose Target Job Profile --</option>
+                                    <option value="" disabled th:selected="${selectedRole == null}">-- Choose Target Job Profile --</option>
+                                    <optgroup label="Active Company Openings (HR Published)" th:if="${availableJobs != null and !availableJobs.isEmpty()}">
+                                        <option th:each="j : ${availableJobs}"
+                                                th:value="${j.title}"
+                                                th:text="${j.title} + ' (' + ${j.department} + ')'"
+                                                th:selected="${selectedRole != null and (selectedRole.equalsIgnoreCase(j.title) or j.title.toLowerCase().contains(selectedRole.toLowerCase()))}"></option>
+                                    </optgroup>
                                     <optgroup label="Software Engineering & Development">
                                         <option value="Java Developer">Java Developer</option>
                                         <option value="Spring Boot Developer">Spring Boot Developer</option>
@@ -189,10 +195,35 @@
                             </div>
                         </div>
 
+                        <!-- AI ENGINE SETTINGS -->
+                        <div class="form-section" style="margin-bottom: 24px; padding: 14px 16px; background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-md);">
+                            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+                                <strong style="font-size: 0.88rem; color: var(--text-primary); display: flex; align-items: center; gap: 6px;">
+                                    <i class="bi bi-robot" style="color: var(--accent);"></i> AI Engine Selection
+                                </strong>
+                                <span class="badge badge-primary">LOCAL AI DEFAULT</span>
+                            </div>
+                            <div style="display: grid; grid-template-columns: 1fr; gap: 10px;">
+                                <div>
+                                    <label for="aiProviderSelect" style="display: block; font-size: 0.8rem; font-weight: 600; margin-bottom: 4px; color: var(--text-primary);">
+                                        Evaluation Model
+                                    </label>
+                                    <select id="aiProviderSelect" name="aiProvider" class="form-control" style="width: 100%; padding: 8px 12px; font-size: 0.84rem; border-radius: var(--radius-md); border: 1px solid var(--border-strong); background: var(--bg-input); color: var(--text-primary);">
+                                        <option value="local" selected>Offline Smart NLP Engine (Instant Dynamic Matching) - Default</option>
+                                        <option value="gemini">Google Gemini AI (Cloud Deep ATS Evaluation) - Secondary</option>
+                                        <option value="ollama">Local Ollama (CodeLlama / Llama 3)</option>
+                                    </select>
+                                    <small style="display: block; margin-top: 6px; font-size: 0.75rem; color: var(--text-muted);">
+                                        <i class="bi bi-shield-check" style="color: var(--success, #10b981);"></i> Local model runs offline instantly. Gemini API is configured via system environment variables.
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+
                         <!-- Submit Action Area -->
                         <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 28px;">
                             <button type="submit" class="btn btn-primary btn-block" id="analyzeResumeButton" style="padding: 12px 20px; font-size: 0.95rem; font-weight: 700;">
-                                <span>✦</span> Analyze My Resume
+                                <i class="bi bi-cpu"></i> Analyze My Resume
                             </button>
                             <p style="text-align: center; font-size: 0.75rem; color: var(--text-muted); margin: 0;">
                                 Processing is performed securely. File extraction supports text and OCR parsers.
@@ -216,7 +247,7 @@
                     <!-- Value Proposition Card -->
                     <article class="card">
                         <div class="card-header">
-                            <h2 class="card-title"><span>🎯</span> What the AI Analyzes</h2>
+                            <h2 class="card-title"><span style="color: var(--accent); margin-right: 6px;"><i class="bi bi-bullseye"></i></span> What the AI Analyzes</h2>
                         </div>
                         <ul class="insight-bullet-list">
                             <li>
@@ -237,15 +268,17 @@
                         </ul>
                     </article>
 
-                    <!-- Interactive Demo Preview Toggle -->
+                    <!-- Analysis History & Stored ATS Scores -->
                     <article class="card" style="border-left: 4px solid var(--accent);">
-                        <h3 style="font-size: 0.92rem; margin: 0 0 6px; color: var(--text-primary);">Frontend Results Preview</h3>
+                        <h3 style="font-size: 0.92rem; margin: 0 0 6px; color: var(--text-primary);">
+                            <i class="bi bi-clock-history" style="color: var(--accent); margin-right: 4px;"></i> Saved ATS History
+                        </h3>
                         <p style="font-size: 0.8rem; color: var(--text-secondary); margin: 0 0 12px;">
-                            Toggle to inspect the completed analysis results interface below before hooking up backend services.
+                            Every analyzed resume and ATS evaluation score is automatically saved to your database history.
                         </p>
-                        <button type="button" class="btn btn-secondary btn-sm btn-block" id="btnToggleDemoResults">
-                            👁 Toggle Results Card Below
-                        </button>
+                        <a class="btn btn-secondary btn-sm btn-block" th:href="@{/dashboard/analyzerhistory}">
+                            <i class="bi bi-journal-text"></i> View All Past Analyses
+                        </a>
                     </article>
 
                 </aside>
@@ -253,8 +286,12 @@
             </div>
 
             <!-- ================= SHARED AI RESUME ANALYSIS RESULTS SECTION ================= -->
-            <section id="analysisResultsContainer" style="margin-top: 32px;">
-                <div th:replace="~{fragments/analysis-result :: analysisResult('user', 84, null, null, null, null)}"></div>
+            <!-- Completely hidden until a resume is analyzed or loaded from database -->
+            <section id="analysisResultsContainer"
+                     th:hidden="${!hasAnalysis}"
+                     th:style="${hasAnalysis ? 'margin-top: 32px; display: block;' : 'margin-top: 32px; display: none;'}"
+                     style="margin-top: 32px; display: none;">
+                <div th:replace="~{fragments/analysis-result :: analysisResult('user', ${analysis != null ? analysis.overallScore : null}, ${analysis != null ? analysis.matchedSkillsList : null}, ${analysis != null ? analysis.missingSkillsList : null}, ${analysis != null ? analysis.strengthsList : null}, ${analysis != null ? analysis.recommendationsList : null})}"></div>
             </section>
 
         </div>
@@ -267,17 +304,6 @@
 </div>
 
 <script th:src="@{/js/analyzer.js}" defer></script>
-<script>
-    document.addEventListener("DOMContentLoaded", () => {
-        const toggleBtn = document.getElementById("btnToggleDemoResults");
-        const resultsContainer = document.getElementById("analysisResultsContainer");
-        if (toggleBtn && resultsContainer) {
-            toggleBtn.addEventListener("click", () => {
-                resultsContainer.hidden = !resultsContainer.hidden;
-            });
-        }
-    });
-</script>
 
 </body>
 </html>

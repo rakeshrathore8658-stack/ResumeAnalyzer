@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/head :: head('Dashboard')}"></head>
 
@@ -25,22 +25,35 @@
                 <div class="page-header-row">
                     <div>
                         <p class="welcome-label">
-                            Welcome back, <strong th:text="${userName != null ? userName : 'Job Seeker'}">Job Seeker</strong> 👋
+                            Welcome back, <strong th:text="${userName != null ? userName : 'Job Seeker'}">Job Seeker</strong>
                         </p>
                         <h1 class="page-title">Your Career Dashboard</h1>
                         <p class="page-subtitle">Track resume optimizations, target career matches, and interview readiness in one place.</p>
                     </div>
                     <div class="page-header-actions">
                         <a class="btn btn-secondary" th:href="@{/dashboard/analyzerhistory}">
-                            <span aria-hidden="true">◷</span> View History
+                            <i class="bi bi-clock-history"></i> View History
                         </a>
                         <a class="btn btn-primary" th:href="@{/dashboard/resumeanalyzer}">
-                            <span>✦</span> Analyze New Resume
+                            <i class="bi bi-cpu"></i> Analyze New Resume
                         </a>
                     </div>
                 </div>
 
                 <!-- Server Alerts -->
+                <div class="alert alert-danger" role="alert" th:if="${param.denied}" style="margin-bottom: 24px; display: flex; align-items: flex-start; gap: 12px; padding: 14px 18px; border-radius: var(--radius-md); background: var(--danger-bg); color: var(--danger); border: 1px solid rgba(220, 38, 38, 0.3);">
+                    <span style="font-size: 1.4rem; display: flex; margin-top: 2px;" aria-hidden="true"><i class="bi bi-shield-x"></i></span>
+                    <div>
+                        <strong style="display: block; font-size: 0.92rem; margin-bottom: 3px;">Access Restricted</strong>
+                        <span style="font-size: 0.85rem; line-height: 1.5; display: block;" th:if="${param.denied[0] == 'seeker_restricted'}">
+                            This section is restricted to HR / Recruiter accounts. You have been redirected to your Job Seeker workspace.
+                        </span>
+                        <span style="font-size: 0.85rem; line-height: 1.5; display: block;" th:if="${param.denied[0] != 'seeker_restricted'}">
+                            You do not have permission to access the requested page.
+                        </span>
+                    </div>
+                </div>
+
                 <div class="alert alert-success" role="status" th:if="${successMessage}" th:text="${successMessage}">
                     Operation completed successfully.
                 </div>
@@ -50,54 +63,54 @@
 
                 <!-- KPI Metric Cards -->
                 <section class="stats-grid-4" aria-label="Resume analysis statistics">
-                    <article class="stat-card">
+                    <a th:href="@{/dashboard/analyzerhistory}" class="stat-card stat-card-interactive" title="View analysis history">
                         <div class="stat-top">
                             <span class="stat-label">Total Analyses</span>
-                            <span class="stat-icon icon-navy" aria-hidden="true">📄</span>
+                            <span class="stat-icon icon-navy" aria-hidden="true"><i class="bi bi-file-earmark-text"></i></span>
                         </div>
                         <div class="stat-value-row">
-                            <span class="stat-value" th:text="${totalAnalyses != null ? totalAnalyses : '6'}">6</span>
+                            <span class="stat-value" th:text="${totalAnalyses != null ? totalAnalyses : 0}">0</span>
                         </div>
                         <span class="stat-unit">Completed scans</span>
-                    </article>
+                    </a>
 
-                    <article class="stat-card">
+                    <a th:href="@{/dashboard/resumeimprovement}" class="stat-card stat-card-interactive" title="View ATS score improvements">
                         <div class="stat-top">
                             <span class="stat-label">Average ATS Score</span>
-                            <span class="stat-icon icon-green" aria-hidden="true">◎</span>
+                            <span class="stat-icon icon-green" aria-hidden="true"><i class="bi bi-speedometer2"></i></span>
                         </div>
                         <div class="stat-value-row">
-                            <span class="stat-value" th:text="${averageAtsScore != null ? #numbers.formatDecimal(averageAtsScore, 1, 0) : '82'}">82</span>
+                            <span class="stat-value" th:text="${averageAtsScore != null ? #numbers.formatDecimal(averageAtsScore, 1, 0) : 0}">0</span>
                             <span class="stat-unit">/ 100</span>
                         </div>
                         <span class="stat-unit">Across uploaded resumes</span>
-                    </article>
+                    </a>
 
-                    <article class="stat-card">
+                    <a th:href="@{/dashboard/skillsgap}" class="stat-card stat-card-interactive" title="View skills gap analysis">
                         <div class="stat-top">
                             <span class="stat-label">Average Skill Match</span>
-                            <span class="stat-icon" aria-hidden="true">⌘</span>
+                            <span class="stat-icon" aria-hidden="true"><i class="bi bi-bullseye"></i></span>
                         </div>
                         <div class="stat-value-row">
-                            <span class="stat-value" th:text="${averageSkillMatch != null ? #numbers.formatDecimal(averageSkillMatch, 1, 0) : '78'}">78</span>
+                            <span class="stat-value" th:text="${averageSkillMatch != null ? #numbers.formatDecimal(averageSkillMatch, 1, 0) : 0}">0</span>
                             <span class="stat-unit">%</span>
                         </div>
                         <span class="stat-unit">For target job roles</span>
-                    </article>
+                    </a>
 
-                    <article class="stat-card">
+                    <a th:href="@{/dashboard/resumeanalyzer}" class="stat-card stat-card-interactive" title="Analyze new resume">
                         <div class="stat-top">
                             <span class="stat-label">Latest Scan</span>
-                            <span class="stat-icon icon-info" aria-hidden="true">◷</span>
+                            <span class="stat-icon icon-info" aria-hidden="true"><i class="bi bi-calendar-check"></i></span>
                         </div>
                         <div class="stat-value-row">
                             <span class="stat-value" style="font-size: 1.25rem;"
-                                  th:text="${latestAnalysisDate != null ? #temporals.format(latestAnalysisDate, 'dd MMM yyyy') : '28 Oct 2026'}">
-                                28 Oct 2026
+                                  th:text="${latestAnalysisDate != null ? latestAnalysisDate : 'No scans yet'}">
+                                No scans yet
                             </span>
                         </div>
-                        <span class="stat-unit">Target: Java Developer</span>
-                    </article>
+                        <span class="stat-unit" th:text="${latestTargetRole != null ? 'Target: ' + latestTargetRole : 'Target: General'}">Target: General</span>
+                    </a>
                 </section>
 
                 <!-- Grid: Activity Chart & Score Overview -->
@@ -142,43 +155,62 @@
                         </div>
                     </article>
 
-                    <!-- Score Overview -->
+                    <!-- Score Overview (Dynamic Latest Analysis from DB) -->
                     <article class="card">
                         <div class="card-header">
                             <div>
                                 <h2 class="card-title">Latest Analysis</h2>
-                                <p class="card-description">Java Developer Profile</p>
+                                <p class="card-description" th:text="${latestAnalysis != null and latestAnalysis.targetJobRole != null ? latestAnalysis.targetJobRole + ' Profile' : 'No Resume Analyzed Yet'}">Java Developer Profile</p>
                             </div>
-                            <span class="badge badge-success">Active</span>
+                            <span class="badge"
+                                  th:classappend="${latestAnalysis != null and (latestAnalysis.status == 'Active' or latestAnalysis.status == 'Completed') ? 'badge-success' : 'badge-neutral'}"
+                                  th:text="${latestAnalysis != null ? (latestAnalysis.status != null ? latestAnalysis.status : 'Active') : 'Inactive'}">Active</span>
                         </div>
 
-                        <div class="score-overview" style="display: flex; flex-direction: column; gap: 18px;">
+                        <div class="score-overview" style="display: flex; flex-direction: column; gap: 18px;" th:if="${latestAnalysis != null}">
                             <div>
                                 <div style="display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 0.85rem;">
                                     <span>ATS Format Compatibility</span>
-                                    <strong>88%</strong>
+                                    <strong th:text="${(latestAnalysis.formattingScore != null ? latestAnalysis.formattingScore : 0) + '%'}">88%</strong>
                                 </div>
-                                <div class="progress"><div class="progress-bar progress-bar-success" style="width: 88%;"></div></div>
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-success"
+                                         th:style="'width: ' + (${latestAnalysis.formattingScore != null ? latestAnalysis.formattingScore : 0}) + '%;'"></div>
+                                </div>
                             </div>
 
                             <div>
                                 <div style="display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 0.85rem;">
                                     <span>Core Skills Alignment</span>
-                                    <strong>82%</strong>
+                                    <strong th:text="${(latestAnalysis.skillsScore != null ? latestAnalysis.skillsScore : 0) + '%'}">82%</strong>
                                 </div>
-                                <div class="progress"><div class="progress-bar" style="width: 82%;"></div></div>
+                                <div class="progress">
+                                    <div class="progress-bar"
+                                         th:style="'width: ' + (${latestAnalysis.skillsScore != null ? latestAnalysis.skillsScore : 0}) + '%;'"></div>
+                                </div>
                             </div>
 
                             <div>
                                 <div style="display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 0.85rem;">
                                     <span>Keyword Frequency</span>
-                                    <strong>74%</strong>
+                                    <strong th:text="${(latestAnalysis.keywordScore != null ? latestAnalysis.keywordScore : 0) + '%'}">74%</strong>
                                 </div>
-                                <div class="progress"><div class="progress-bar progress-bar-warning" style="width: 74%;"></div></div>
+                                <div class="progress">
+                                    <div class="progress-bar progress-bar-warning"
+                                         th:style="'width: ' + (${latestAnalysis.keywordScore != null ? latestAnalysis.keywordScore : 0}) + '%;'"></div>
+                                </div>
                             </div>
 
-                            <a th:href="@{/dashboard/resumeimprovement}" class="btn btn-secondary btn-sm btn-block" style="margin-top: 8px;">
-                                View Suggestions to reach 95%+ →
+                            <a th:href="@{'/dashboard/resumeanalyzer?id=' + ${latestAnalysis.id}}" class="btn btn-secondary btn-sm btn-block" style="margin-top: 8px;">
+                                View Suggestions to reach 95%+ &rarr;
+                            </a>
+                        </div>
+
+                        <!-- Empty state if database has no analysis yet -->
+                        <div th:if="${latestAnalysis == null}" style="padding: 28px 16px; text-align: center; color: var(--text-secondary);">
+                            <p style="font-size: 0.88rem; margin-bottom: 12px;">No resumes analyzed yet.</p>
+                            <a th:href="@{/dashboard/resumeanalyzer}" class="btn btn-primary btn-sm btn-block">
+                                <i class="bi bi-cpu"></i> Analyze New Resume
                             </a>
                         </div>
                     </article>
@@ -208,35 +240,27 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr>
+                                <!-- Dynamic Recent Analyses from DB -->
+                                <tr th:if="${recentAnalyses != null and !recentAnalyses.isEmpty()}" th:each="analysis : ${recentAnalyses}">
                                     <td>
-                                        <strong>AlexMorgan_JavaResume.pdf</strong>
-                                        <small style="display: block; color: var(--text-muted); font-size: 0.72rem;">245 KB · PDF</small>
+                                        <strong th:text="${analysis.resumeFileName}">Resume.pdf</strong>
+                                        <small style="display: block; color: var(--text-muted); font-size: 0.72rem;" th:text="${analysis.aiProvider != null ? 'AI: ' + analysis.aiProvider : 'AI Evaluated'}">PDF</small>
                                     </td>
-                                    <td><span class="badge badge-primary">Java Developer</span></td>
-                                    <td><span class="score-badge score-high">88%</span></td>
-                                    <td><span>28 Oct 2026</span></td>
+                                    <td><span class="badge badge-primary" th:text="${analysis.targetJobRole}">Java Developer</span></td>
+                                    <td>
+                                        <span class="score-badge"
+                                              th:classappend="${analysis.overallScore >= 75 ? 'score-high' : (analysis.overallScore >= 50 ? 'score-mid' : 'score-low')}"
+                                              th:text="${analysis.overallScore + '%'}">88%</span>
+                                    </td>
+                                    <td th:text="${analysis.formattedDate}">28 Oct 2026</td>
                                     <td><a th:href="@{/dashboard/resumeanalyzer}" class="btn btn-secondary btn-sm">Review</a></td>
                                 </tr>
-                                <tr>
-                                    <td>
-                                        <strong>AlexMorgan_FullStack.docx</strong>
-                                        <small style="display: block; color: var(--text-muted); font-size: 0.72rem;">198 KB · DOCX</small>
+
+                                <!-- Empty State -->
+                                <tr th:if="${recentAnalyses == null or recentAnalyses.isEmpty()}">
+                                    <td colspan="5" style="text-align: center; padding: 28px; color: var(--text-secondary);">
+                                        No resumes analyzed yet. <a th:href="@{/dashboard/resumeanalyzer}" style="color: var(--accent); font-weight: 700;">Analyze your resume now →</a>
                                     </td>
-                                    <td><span class="badge badge-primary">Full Stack</span></td>
-                                    <td><span class="score-badge score-high">82%</span></td>
-                                    <td><span>22 Oct 2026</span></td>
-                                    <td><a th:href="@{/dashboard/resumeanalyzer}" class="btn btn-secondary btn-sm">Review</a></td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <strong>Alex_DevOps_Draft.pdf</strong>
-                                        <small style="display: block; color: var(--text-muted); font-size: 0.72rem;">210 KB · PDF</small>
-                                    </td>
-                                    <td><span class="badge badge-neutral">DevOps Engineer</span></td>
-                                    <td><span class="score-badge score-mid">68%</span></td>
-                                    <td><span>15 Oct 2026</span></td>
-                                    <td><a th:href="@{/dashboard/resumeanalyzer}" class="btn btn-secondary btn-sm">Review</a></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -251,19 +275,19 @@
                             </div>
                             <div style="display: flex; flex-direction: column; gap: 10px;">
                                 <a th:href="@{/dashboard/resumeanalyzer}" class="quick-action" style="display: flex; align-items: center; justify-content: space-between; padding: 12px 14px; background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-md); text-decoration: none; color: var(--text-primary); font-size: 0.88rem; font-weight: 600;">
-                                    <span>✦ Analyze New Resume</span>
+                                    <span><i class="bi bi-cpu" style="margin-right: 6px; color: var(--accent);"></i> Analyze New Resume</span>
                                     <span aria-hidden="true">→</span>
                                 </a>
                                 <a th:href="@{/dashboard/jobroles}" class="quick-action" style="display: flex; align-items: center; justify-content: space-between; padding: 12px 14px; background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-md); text-decoration: none; color: var(--text-primary); font-size: 0.88rem; font-weight: 600;">
-                                    <span>⌕ Explore Career Profiles</span>
+                                    <span><i class="bi bi-compass" style="margin-right: 6px; color: var(--primary);"></i> Explore Career Profiles</span>
                                     <span aria-hidden="true">→</span>
                                 </a>
                                 <a th:href="@{/dashboard/skillsgap}" class="quick-action" style="display: flex; align-items: center; justify-content: space-between; padding: 12px 14px; background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-md); text-decoration: none; color: var(--text-primary); font-size: 0.88rem; font-weight: 600;">
-                                    <span>🎯 View Skills Gap</span>
+                                    <span><i class="bi bi-bullseye" style="margin-right: 6px; color: var(--warning);"></i> View Skills Gap</span>
                                     <span aria-hidden="true">→</span>
                                 </a>
                                 <a th:href="@{/dashboard/profile}" class="quick-action" style="display: flex; align-items: center; justify-content: space-between; padding: 12px 14px; background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: var(--radius-md); text-decoration: none; color: var(--text-primary); font-size: 0.88rem; font-weight: 600;">
-                                    <span>♙ Update Profile Info</span>
+                                    <span><i class="bi bi-person" style="margin-right: 6px; color: var(--info);"></i> Update Profile Info</span>
                                     <span aria-hidden="true">→</span>
                                 </a>
                             </div>
@@ -287,69 +311,83 @@
                     </div>
                     <div class="page-header-actions">
                         <a class="btn btn-secondary" th:href="@{/dashboard/candidates}">
-                            <span>👥</span> Candidate Database
+                            <i class="bi bi-people"></i> Candidate Database
                         </a>
                         <a class="btn btn-primary" th:href="@{/dashboard/jobs/create}">
-                            <span>+</span> Create Job Vacancy
+                            <i class="bi bi-plus-lg"></i> Create Job Vacancy
                         </a>
+                    </div>
+                </div>
+
+                <!-- Access Denied Alert -->
+                <div class="alert alert-danger" role="alert" th:if="${param.denied}" style="margin-bottom: 24px; display: flex; align-items: flex-start; gap: 12px; padding: 14px 18px; border-radius: var(--radius-md); background: var(--danger-bg); color: var(--danger); border: 1px solid rgba(220, 38, 38, 0.3);">
+                    <span style="font-size: 1.4rem; display: flex; margin-top: 2px;" aria-hidden="true"><i class="bi bi-shield-x"></i></span>
+                    <div>
+                        <strong style="display: block; font-size: 0.92rem; margin-bottom: 3px;">Access Restricted</strong>
+                        <span style="font-size: 0.85rem; line-height: 1.5; display: block;" th:if="${param.denied[0] == 'hr_restricted'}">
+                            This tool is intended exclusively for Job Seekers. As an HR / Recruiter, please use the candidate and job tools in your workspace.
+                        </span>
+                        <span style="font-size: 0.85rem; line-height: 1.5; display: block;" th:if="${param.denied[0] != 'hr_restricted'}">
+                            You do not have permission to access the requested page.
+                        </span>
                     </div>
                 </div>
 
                 <!-- HR 6 KPI Metrics Cards -->
                 <section class="stats-grid-6">
-                    <article class="stat-card">
+                    <a th:href="@{/dashboard/jobs}" class="stat-card stat-card-interactive" title="Open Job Management">
                         <div class="stat-top">
                             <span class="stat-label">Active Jobs</span>
-                            <span class="stat-icon icon-navy">💼</span>
+                            <span class="stat-icon icon-navy"><i class="bi bi-briefcase"></i></span>
                         </div>
-                        <div class="stat-value">12</div>
-                        <span class="stat-unit">4 closing soon</span>
-                    </article>
+                        <div class="stat-value" th:text="${totalJobsCount != null ? totalJobsCount : 0}">4</div>
+                        <span class="stat-unit">Open requisitions</span>
+                    </a>
 
-                    <article class="stat-card">
+                    <a th:href="@{/dashboard/candidates}" class="stat-card stat-card-interactive" title="Open Candidates Directory">
                         <div class="stat-top">
                             <span class="stat-label">Candidates</span>
-                            <span class="stat-icon icon-info">👥</span>
+                            <span class="stat-icon icon-info"><i class="bi bi-people"></i></span>
                         </div>
-                        <div class="stat-value">184</div>
-                        <span class="stat-unit">Verified profiles</span>
-                    </article>
+                        <div class="stat-value" th:text="${totalCandidatesCount != null ? totalCandidatesCount : 0}">2</div>
+                        <span class="stat-unit">Analyzed in database</span>
+                    </a>
 
-                    <article class="stat-card">
+                    <a th:href="@{/dashboard/applications}" class="stat-card stat-card-interactive" title="Open Applications Pipeline">
                         <div class="stat-top">
                             <span class="stat-label">Applications</span>
-                            <span class="stat-icon icon-purple">📥</span>
+                            <span class="stat-icon icon-purple"><i class="bi bi-inbox"></i></span>
                         </div>
-                        <div class="stat-value">320</div>
-                        <span class="stat-unit">+45 this week</span>
-                    </article>
+                        <div class="stat-value" th:text="${totalApplicationsCount != null ? totalApplicationsCount : 0}">2</div>
+                        <span class="stat-unit">Total pipeline entries</span>
+                    </a>
 
-                    <article class="stat-card">
+                    <a th:href="@{/dashboard/applications(stage='Under Review')}" class="stat-card stat-card-interactive" title="View Candidates Awaiting Review">
                         <div class="stat-top">
                             <span class="stat-label">Awaiting Review</span>
-                            <span class="stat-icon">⏳</span>
+                            <span class="stat-icon"><i class="bi bi-hourglass-split"></i></span>
                         </div>
-                        <div class="stat-value">45</div>
+                        <div class="stat-value" th:text="${awaitingReviewCount != null ? awaitingReviewCount : 0}">1</div>
                         <span class="stat-unit">Needs screening</span>
-                    </article>
+                    </a>
 
-                    <article class="stat-card">
+                    <a th:href="@{/dashboard/shortlist}" class="stat-card stat-card-interactive" title="Open Shortlisted Candidates">
                         <div class="stat-top">
                             <span class="stat-label">Shortlisted</span>
-                            <span class="stat-icon icon-green">⭐</span>
+                            <span class="stat-icon icon-green"><i class="bi bi-star"></i></span>
                         </div>
-                        <div class="stat-value">28</div>
+                        <div class="stat-value" th:text="${shortlistedCount != null ? shortlistedCount : 0}">1</div>
                         <span class="stat-unit">High match score</span>
-                    </article>
+                    </a>
 
-                    <article class="stat-card">
+                    <a th:href="@{/dashboard/interviews}" class="stat-card stat-card-interactive" title="Open Scheduled Interviews">
                         <div class="stat-top">
                             <span class="stat-label">Interviews</span>
-                            <span class="stat-icon">📅</span>
+                            <span class="stat-icon"><i class="bi bi-calendar-event"></i></span>
                         </div>
-                        <div class="stat-value">14</div>
-                        <span class="stat-unit">Scheduled this week</span>
-                    </article>
+                        <div class="stat-value" th:text="${interviewsCount != null ? interviewsCount : 0}">0</div>
+                        <span class="stat-unit">Active rounds</span>
+                    </a>
                 </section>
 
                 <!-- Recruitment Pipeline Funnel -->
@@ -363,30 +401,30 @@
                     </div>
 
                     <div class="pipeline-funnel-grid">
-                        <div class="funnel-stage-card">
-                            <span class="funnel-count">320</span>
+                        <a th:href="@{/dashboard/applications}" class="funnel-stage-card funnel-card-interactive" title="View all applications">
+                            <span class="funnel-count" th:text="${totalCandidatesCount != null ? totalCandidatesCount : (report != null ? report.funnelApplied : 0)}">0</span>
                             <span class="funnel-label">Applied</span>
-                        </div>
-                        <div class="funnel-stage-card">
-                            <span class="funnel-count">198</span>
+                        </a>
+                        <a th:href="@{/dashboard/candidates}" class="funnel-stage-card funnel-card-interactive" title="View AI screened candidates">
+                            <span class="funnel-count" th:text="${aiScreenedCount != null ? aiScreenedCount : (report != null ? report.funnel70Plus : 0)}">0</span>
                             <span class="funnel-label">AI Screened</span>
-                        </div>
-                        <div class="funnel-stage-card">
-                            <span class="funnel-count">28</span>
+                        </a>
+                        <a th:href="@{/dashboard/shortlist}" class="funnel-stage-card funnel-card-interactive" title="View shortlisted candidates">
+                            <span class="funnel-count" th:text="${shortlistedCount != null ? shortlistedCount : (report != null ? report.funnelShortlisted : 0)}">0</span>
                             <span class="funnel-label">Shortlisted</span>
-                        </div>
-                        <div class="funnel-stage-card">
-                            <span class="funnel-count">14</span>
+                        </a>
+                        <a th:href="@{/dashboard/interviews}" class="funnel-stage-card funnel-card-interactive" title="View interviewing candidates">
+                            <span class="funnel-count" th:text="${interviewsCount != null ? interviewsCount : (report != null ? report.funnelInterviews : 0)}">0</span>
                             <span class="funnel-label">Interviewing</span>
-                        </div>
-                        <div class="funnel-stage-card">
-                            <span class="funnel-count">5</span>
+                        </a>
+                        <a th:href="@{/dashboard/applications(stage='Offered')}" class="funnel-stage-card funnel-card-interactive" title="View offered candidates">
+                            <span class="funnel-count" th:text="${offeredCount != null ? offeredCount : (report != null ? report.funnelOffers : 0)}">0</span>
                             <span class="funnel-label">Offered</span>
-                        </div>
-                        <div class="funnel-stage-card" style="border-color: var(--success); background: var(--success-bg);">
-                            <span class="funnel-count" style="color: var(--success);">3</span>
+                        </a>
+                        <a th:href="@{/dashboard/applications(stage='Hired')}" class="funnel-stage-card funnel-card-interactive" style="border-color: var(--success); background: var(--success-bg);" title="View hired candidates">
+                            <span class="funnel-count" style="color: var(--success);" th:text="${hiredCount != null ? hiredCount : (report != null ? report.funnelHired : 0)}">0</span>
                             <span class="funnel-label" style="color: var(--success);">Hired</span>
-                        </div>
+                        </a>
                     </div>
                 </article>
 
@@ -413,35 +451,25 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr>
+                                <tr th:if="${topCandidates != null and !topCandidates.isEmpty()}" th:each="cand : ${topCandidates}">
                                     <td>
-                                        <strong>Vikram Sharma</strong>
-                                        <small style="display: block; color: var(--text-muted); font-size: 0.72rem;">vikram.s@email.com</small>
+                                        <strong th:text="${cand.candidateName}">Candidate Name</strong>
+                                        <small style="display: block; color: var(--text-muted); font-size: 0.72rem;" th:text="${cand.candidateEmail}">candidate@email.com</small>
                                     </td>
-                                    <td><span class="badge badge-primary">Senior Java Dev</span></td>
-                                    <td><span class="score-badge score-high">94%</span></td>
-                                    <td>5.5 yrs</td>
-                                    <td><a th:href="@{/dashboard/candidates/1}" class="btn btn-secondary btn-sm">Profile</a></td>
+                                    <td><span class="badge badge-primary" th:text="${cand.targetJobRole}">Senior Java Dev</span></td>
+                                    <td>
+                                        <span class="score-badge"
+                                              th:classappend="${cand.overallScore >= 75 ? 'score-high' : (cand.overallScore >= 50 ? 'score-mid' : 'score-low')}"
+                                              th:text="${cand.overallScore + '%'}">94%</span>
+                                    </td>
+                                    <td th:text="${cand.candidateExperience}">5.5 yrs</td>
+                                    <td><a th:href="@{'/dashboard/candidates/' + ${cand.id}}" class="btn btn-secondary btn-sm">Profile</a></td>
                                 </tr>
-                                <tr>
-                                    <td>
-                                        <strong>Priya Patel</strong>
-                                        <small style="display: block; color: var(--text-muted); font-size: 0.72rem;">priya.p@email.com</small>
+
+                                <tr th:if="${topCandidates == null or topCandidates.isEmpty()}">
+                                    <td colspan="5" style="text-align: center; padding: 24px; color: var(--text-secondary);">
+                                        No candidates evaluated yet in database.
                                     </td>
-                                    <td><span class="badge badge-primary">Full Stack MERN</span></td>
-                                    <td><span class="score-badge score-high">89%</span></td>
-                                    <td>4 yrs</td>
-                                    <td><a th:href="@{/dashboard/candidates/2}" class="btn btn-secondary btn-sm">Profile</a></td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <strong>Rohan Mehta</strong>
-                                        <small style="display: block; color: var(--text-muted); font-size: 0.72rem;">rohan.m@email.com</small>
-                                    </td>
-                                    <td><span class="badge badge-primary">DevOps Engineer</span></td>
-                                    <td><span class="score-badge score-high">86%</span></td>
-                                    <td>3.5 yrs</td>
-                                    <td><a th:href="@{/dashboard/candidates/3}" class="btn btn-secondary btn-sm">Profile</a></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -459,33 +487,27 @@
                         </div>
 
                         <div style="display: flex; flex-direction: column; gap: 12px;">
-                            <div class="interview-item-card" style="padding: 12px;">
-                                <div class="interview-meta">
-                                    <div class="interview-date-box" style="padding: 4px 8px; min-width: 48px;">
-                                        <span class="interview-date-day" style="font-size: 0.95rem;">29</span>
-                                        <span class="interview-date-month" style="font-size: 0.65rem;">Oct</span>
+                            <th:block th:if="${upcomingInterviews != null and !upcomingInterviews.isEmpty()}">
+                                <div class="interview-item-card" th:each="interview : ${upcomingInterviews}" style="padding: 12px;">
+                                    <div class="interview-meta">
+                                        <div class="interview-date-box" style="padding: 4px 8px; min-width: 48px;">
+                                            <span class="interview-date-day" style="font-size: 0.95rem;" th:text="${interview.interviewDay}">29</span>
+                                            <span class="interview-date-month" style="font-size: 0.65rem;" th:text="${interview.interviewMonth}">OCT</span>
+                                        </div>
+                                        <div class="interview-details">
+                                            <h4 th:text="${interview.candidateName}">Candidate Name</h4>
+                                            <p th:text="${interview.interviewRound != null ? interview.interviewRound + ' · 11:00 AM' : 'Technical Round 1 · 11:00 AM'}">Tech Round 1 · 11:00 AM</p>
+                                        </div>
                                     </div>
-                                    <div class="interview-details">
-                                        <h4>Vikram Sharma</h4>
-                                        <p>Tech Round 1 · 11:00 AM</p>
-                                    </div>
+                                    <a th:href="@{'/dashboard/feedback?candId=' + ${interview.id}}" class="btn btn-secondary btn-sm">Evaluate</a>
                                 </div>
-                                <a th:href="@{/dashboard/feedback}" class="btn btn-secondary btn-sm">Evaluate</a>
-                            </div>
+                            </th:block>
 
-                            <div class="interview-item-card" style="padding: 12px;">
-                                <div class="interview-meta">
-                                    <div class="interview-date-box" style="padding: 4px 8px; min-width: 48px;">
-                                        <span class="interview-date-day" style="font-size: 0.95rem;">30</span>
-                                        <span class="interview-date-month" style="font-size: 0.65rem;">Oct</span>
-                                    </div>
-                                    <div class="interview-details">
-                                        <h4>Priya Patel</h4>
-                                        <p>System Design · 2:30 PM</p>
-                                    </div>
+                            <th:block th:if="${upcomingInterviews == null or upcomingInterviews.isEmpty()}">
+                                <div style="text-align: center; padding: 20px; color: var(--text-secondary); font-size: 0.88rem;">
+                                    No interviews scheduled yet.
                                 </div>
-                                <a th:href="@{/dashboard/feedback}" class="btn btn-secondary btn-sm">Evaluate</a>
-                            </div>
+                            </th:block>
 
                             <a th:href="@{/dashboard/interviews}" class="btn btn-primary btn-sm btn-block" style="margin-top: 6px;">
                                 + Schedule Interview

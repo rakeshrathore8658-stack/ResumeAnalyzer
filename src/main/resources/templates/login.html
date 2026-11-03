@@ -7,6 +7,7 @@
     <meta name="description" content="Log in to SmartHire to access your personalized Job Seeker or HR Recruiter portal.">
     <title>Login | SmartHire</title>
     
+    <link rel="stylesheet" th:href="@{/css/bootstrap-icons.min.css}">
     <link rel="stylesheet" th:href="@{/css/style.css}">
 
     <!-- Early Theme Detection Script (Prevents flash of white in dark mode) -->
@@ -267,6 +268,11 @@
 
         .password-wrapper {
             position: relative;
+            width: 100%;
+        }
+
+        .password-wrapper .form-control {
+            padding-right: 58px;
         }
 
         .password-toggle {
@@ -278,26 +284,9 @@
             border: none;
             color: var(--text-secondary);
             cursor: pointer;
-            font-size: 0.8rem;
+            font-size: 0.82rem;
             font-weight: 600;
-        }
-
-        .theme-toggle {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            border: 1px solid var(--border-color);
-            background: var(--bg-secondary);
-            display: grid;
-            place-items: center;
-            cursor: pointer;
-            font-size: 1.1rem;
-            transition: all var(--transition-fast);
-        }
-
-        .theme-toggle:hover {
-            background: var(--bg-hover);
-            border-color: var(--border-strong);
+            padding: 4px;
         }
 
         @media (max-width: 900px) {
@@ -309,6 +298,22 @@
             }
             .auth-form-panel {
                 padding: 32px 20px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .auth-form-panel {
+                padding: 24px 16px;
+            }
+            .form-control {
+                font-size: 16px;
+                padding: 10px 12px;
+            }
+            .password-wrapper .form-control {
+                padding-right: 56px;
+            }
+            .role-option-card {
+                padding: 10px 12px;
             }
         }
     </style>
@@ -335,15 +340,15 @@
 
             <div class="auth-benefits">
                 <div class="auth-benefit">
-                    <span class="benefit-check" aria-hidden="true">✓</span>
+                    <span class="benefit-check" aria-hidden="true"><i class="bi bi-check2"></i></span>
                     <span>AI-Powered Resume ATS Compatibility Scanning</span>
                 </div>
                 <div class="auth-benefit">
-                    <span class="benefit-check" aria-hidden="true">✓</span>
+                    <span class="benefit-check" aria-hidden="true"><i class="bi bi-check2"></i></span>
                     <span>Multi-Domain Career Skill Profiling</span>
                 </div>
                 <div class="auth-benefit">
-                    <span class="benefit-check" aria-hidden="true">✓</span>
+                    <span class="benefit-check" aria-hidden="true"><i class="bi bi-check2"></i></span>
                     <span>Structured Recruiter Interview Workflows</span>
                 </div>
             </div>
@@ -364,9 +369,18 @@
 
         <div class="auth-box">
 
+            <!-- PASSWORD RESET NOTIFICATION -->
+            <div class="alert alert-success" th:if="${param.reset}" style="margin-bottom: 22px; display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: var(--radius-md); background: var(--success-bg); color: var(--success); border: 1px solid rgba(22, 132, 91, 0.3);">
+                <span style="font-size: 1.3rem; display: flex;" aria-hidden="true"><i class="bi bi-shield-check"></i></span>
+                <div>
+                    <strong style="display: block; font-size: 0.9rem;">Password Reset Successfully</strong>
+                    <span style="font-size: 0.8rem; color: var(--text-secondary);">Your password has been updated. Please sign in with your new credentials.</span>
+                </div>
+            </div>
+
             <!-- LOGOUT SUCCESS NOTIFICATION -->
             <div class="alert alert-success" th:if="${param.logout}" style="margin-bottom: 22px; display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: var(--radius-md); background: var(--success-bg); color: var(--success); border: 1px solid rgba(22, 132, 91, 0.3);">
-                <span style="font-size: 1.4rem;" aria-hidden="true">✓</span>
+                <span style="font-size: 1.3rem; display: flex;" aria-hidden="true"><i class="bi bi-check-circle-fill"></i></span>
                 <div>
                     <strong style="display: block; font-size: 0.9rem;">Logged Out Successfully</strong>
                     <span style="font-size: 0.8rem; color: var(--text-secondary);">You have safely signed out of your SmartHire account.</span>
@@ -374,11 +388,32 @@
             </div>
 
             <!-- LOGIN ERROR NOTIFICATION -->
-            <div class="alert alert-danger" th:if="${param.error}" style="margin-bottom: 22px; display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: var(--radius-md); background: var(--danger-bg); color: var(--danger); border: 1px solid rgba(220, 38, 38, 0.3);">
-                <span style="font-size: 1.4rem;" aria-hidden="true">⚠️</span>
+            <div class="alert alert-danger" id="loginErrorAlert" th:if="${param.error}" style="margin-bottom: 22px; display: flex; align-items: flex-start; gap: 12px; padding: 14px 18px; border-radius: var(--radius-md); background: var(--danger-bg); color: var(--danger); border: 1px solid rgba(220, 38, 38, 0.3);">
+                <span style="font-size: 1.4rem; display: flex; margin-top: 2px;" aria-hidden="true"><i class="bi bi-shield-x"></i></span>
                 <div>
-                    <strong style="display: block; font-size: 0.9rem;">Login Failed</strong>
-                    <span style="font-size: 0.8rem;">Invalid username or password. Please try again.</span>
+                    <!-- 1. Specific Role / Portal Mismatch Error -->
+                    <th:block th:if="${param.error != null and #strings.contains(param.error, 'portal_mismatch')}">
+                        <strong style="display: block; font-size: 0.92rem; margin-bottom: 3px;">Portal Access Restricted</strong>
+                        <span style="font-size: 0.85rem; line-height: 1.5; display: block;">Your account is not registered for this portal. Please use the correct login portal.</span>
+                    </th:block>
+
+                    <!-- 2. Invalid Password / Bad Credentials -->
+                    <th:block th:if="${param.error != null and #strings.contains(param.error, 'invalid_credentials')}">
+                        <strong style="display: block; font-size: 0.92rem; margin-bottom: 3px;">Authentication Failed</strong>
+                        <span style="font-size: 0.85rem; line-height: 1.5; display: block;">Incorrect email or password entered. Please check and try again.</span>
+                    </th:block>
+
+                    <!-- 3. Account Not Found -->
+                    <th:block th:if="${param.error != null and #strings.contains(param.error, 'user_not_found')}">
+                        <strong style="display: block; font-size: 0.92rem; margin-bottom: 3px;">Account Not Found</strong>
+                        <span style="font-size: 0.85rem; line-height: 1.5; display: block;">No registered account found with this email. Please register or verify the email address.</span>
+                    </th:block>
+
+                    <!-- 4. Default / Generic Login Error -->
+                    <th:block th:if="${param.error != null and !#strings.contains(param.error, 'portal_mismatch') and !#strings.contains(param.error, 'invalid_credentials') and !#strings.contains(param.error, 'user_not_found')}">
+                        <strong style="display: block; font-size: 0.92rem; margin-bottom: 3px;">Login Failed</strong>
+                        <span style="font-size: 0.85rem; line-height: 1.5; display: block;">Invalid username or password. Please try again.</span>
+                    </th:block>
                 </div>
             </div>
 
@@ -391,8 +426,8 @@
                 <span class="role-selector-label">Log in as:</span>
                 <div class="role-options-grid">
                     <!-- Option 1: Job Seeker -->
-                    <div class="role-option-card selected" id="cardLoginSeeker">
-                        <span style="font-size: 1.5rem;">👤</span>
+                    <div class="role-option-card" th:classappend="${selectedRole != 'HR'} ? 'selected' : ''" id="cardLoginSeeker">
+                        <span style="font-size: 1.4rem; color: var(--accent); display: flex;" aria-hidden="true"><i class="bi bi-person-badge"></i></span>
                         <div>
                             <strong>Job Seeker</strong>
                             <small>Candidate Portal</small>
@@ -400,8 +435,8 @@
                     </div>
 
                     <!-- Option 2: HR / Recruiter -->
-                    <div class="role-option-card" id="cardLoginHr">
-                        <span style="font-size: 1.5rem;">💼</span>
+                    <div class="role-option-card" th:classappend="${selectedRole == 'HR'} ? 'selected' : ''" id="cardLoginHr">
+                        <span style="font-size: 1.4rem; color: var(--accent); display: flex;" aria-hidden="true"><i class="bi bi-briefcase"></i></span>
                         <div>
                             <strong>HR / Recruiter</strong>
                             <small>Employer Portal</small>
@@ -411,20 +446,21 @@
             </div>
 
             <!-- LOGIN FORM -->
-            <form id="loginForm" th:action="@{/login}" method="post">
-                <input type="hidden" name="role" id="loginRoleInput" value="USER">
+            <form id="loginForm" action="/login" th:action="@{/login}" method="post">
+                <input type="hidden" name="role" id="loginRoleInput" th:value="${selectedRole == 'HR' ? 'HR' : 'USER'}" value="USER">
 
                 <!-- Email / Username -->
                 <div class="form-group">
                     <label class="form-label" for="username" id="usernameLabel">Email Address</label>
-                    <input type="text" id="username" name="username" class="form-control" placeholder="you@example.com" required value="alex.morgan@email.com">
+                    <input type="text" id="username" name="username" class="form-control" placeholder="you@example.com" required
+                           th:value="${param.username != null ? param.username : (selectedRole == 'HR' ? 'sarah.j@company.com' : 'alex.morgan@email.com')}">
                 </div>
 
                 <!-- Password -->
                 <div class="form-group">
                     <label class="form-label" for="password">Password</label>
                     <div class="password-wrapper">
-                        <input type="password" id="password" name="password" class="form-control" placeholder="Enter your password" required value="password123">
+                        <input type="password" id="password" name="password" class="form-control" placeholder="Enter your password" required autocomplete="current-password">
                         <button type="button" class="password-toggle" id="togglePassword">Show</button>
                     </div>
                 </div>
@@ -434,7 +470,7 @@
                     <label style="display: flex; align-items: center; gap: 8px; color: var(--text-secondary); cursor: pointer;">
                         <input type="checkbox" name="remember-me" checked> Remember me
                     </label>
-                    <a th:href="@{/dashboard/help}" style="color: var(--accent); text-decoration: none; font-weight: 600;">Forgot password?</a>
+                    <a th:href="@{/forgot-password}" style="color: var(--accent); text-decoration: none; font-weight: 600;">Forgot password?</a>
                 </div>
 
                 <!-- Submit Button -->
@@ -464,37 +500,101 @@
         const visualDesc = document.getElementById("visualDesc");
         const togglePwd = document.getElementById("togglePassword");
         const pwdInput = document.getElementById("password");
+        const loginForm = document.getElementById("loginForm");
 
-        function setLoginRole(role) {
-            const isHr = role === "HR";
-            roleInput.value = isHr ? "HR" : "USER";
+        function setLoginRole(role, isUserClick = false) {
+            const isHr = (role === "HR");
+            const targetRole = isHr ? "HR" : "USER";
 
-            cardLoginSeeker.classList.toggle("selected", !isHr);
-            cardLoginHr.classList.toggle("selected", isHr);
+            if (roleInput) {
+                roleInput.value = targetRole;
+            }
+
+            if (cardLoginSeeker && cardLoginHr) {
+                cardLoginSeeker.classList.toggle("selected", !isHr);
+                cardLoginHr.classList.toggle("selected", isHr);
+            }
+
+            // CRITICAL: ONLY hide the error alert if user explicitly clicks to change role!
+            // When page loads with an error (?error=...), do NOT hide it so the user can see it!
+            if (isUserClick) {
+                // When user explicitly clicks the card, clear all previous alerts
+                document.querySelectorAll(".alert").forEach(el => el.style.display = "none");
+
+                // Cleanly update URL without reloading page (remove old error param)
+                if (window.history && window.history.replaceState) {
+                    try {
+                        const currentUrl = new URL(window.location.href);
+                        currentUrl.searchParams.delete("error");
+                        currentUrl.searchParams.set("role", targetRole);
+                        window.history.replaceState({}, "", currentUrl.toString());
+                    } catch (e) {}
+                }
+            }
+
+            // Update Email label, placeholder, submit button text and visual branding
+            const currentVal = usernameInput && usernameInput.value ? usernameInput.value.trim().toLowerCase() : "";
+            const isDemoUser = (!currentVal || currentVal === "alex.morgan@email.com" || currentVal === "sarah.j@company.com");
 
             if (isHr) {
-                usernameLabel.textContent = "Work Email / Username";
-                usernameInput.placeholder = "recruiter@company.com";
-                usernameInput.value = "sarah.j@company.com";
-                btnLoginSubmit.textContent = "Log In as HR Recruiter & Open Dashboard →";
-                visualTitle.innerHTML = "Hire Top Talent <br><span>Faster & Smarter.</span>";
-                visualDesc.textContent = "Sign in to manage job requisitions, review AI match scores, and coordinate interviews.";
+                if (usernameLabel) usernameLabel.textContent = "Work Email / Username";
+                if (usernameInput) {
+                    usernameInput.placeholder = "recruiter@company.com";
+                    if (isDemoUser) {
+                        usernameInput.value = "sarah.j@company.com";
+                        if (pwdInput && !pwdInput.value) pwdInput.value = "password123";
+                    }
+                }
+                if (btnLoginSubmit) {
+                    btnLoginSubmit.textContent = "Log In as HR Recruiter & Open Dashboard →";
+                }
+                if (visualTitle) {
+                    visualTitle.innerHTML = "Hire Top Talent <br><span>Faster & Smarter.</span>";
+                }
+                if (visualDesc) {
+                    visualDesc.textContent = "Sign in to manage job requisitions, review AI match scores, and coordinate interviews.";
+                }
             } else {
-                usernameLabel.textContent = "Email Address";
-                usernameInput.placeholder = "you@example.com";
-                usernameInput.value = "alex.morgan@email.com";
-                btnLoginSubmit.textContent = "Log In as Job Seeker & Open Dashboard →";
-                visualTitle.innerHTML = "Analyze. Improve. <br><span>Get Job Ready.</span>";
-                visualDesc.textContent = "Sign in to your account to review saved resume analyses, track job role matches, and improve your ATS score.";
+                if (usernameLabel) usernameLabel.textContent = "Email Address";
+                if (usernameInput) {
+                    usernameInput.placeholder = "you@example.com";
+                    if (isDemoUser) {
+                        usernameInput.value = "alex.morgan@email.com";
+                        if (pwdInput && !pwdInput.value) pwdInput.value = "password123";
+                    }
+                }
+                if (btnLoginSubmit) {
+                    btnLoginSubmit.textContent = "Log In as Job Seeker & Open Dashboard →";
+                }
+                if (visualTitle) {
+                    visualTitle.innerHTML = "Analyze. Improve. <br><span>Get Job Ready.</span>";
+                }
+                if (visualDesc) {
+                    visualDesc.textContent = "Sign in to your account to review saved resume analyses, track job role matches, and improve your ATS score.";
+                }
             }
         }
 
-        cardLoginSeeker.addEventListener("click", () => setLoginRole("USER"));
-        cardLoginHr.addEventListener("click", () => setLoginRole("HR"));
+        if (cardLoginSeeker) {
+            cardLoginSeeker.addEventListener("click", () => setLoginRole("USER", true));
+        }
+        if (cardLoginHr) {
+            cardLoginHr.addEventListener("click", () => setLoginRole("HR", true));
+        }
 
+        // Initialize role on load with isUserClick = false (preserves error alert!)
         const urlParams = new URLSearchParams(window.location.search);
-        if (urlParams.get("role") === "HR") {
-            setLoginRole("HR");
+        const initialRole = urlParams.get("role") || (roleInput ? roleInput.value : "USER") || "USER";
+        setLoginRole(initialRole, false);
+
+        if (loginForm) {
+            loginForm.addEventListener("submit", () => {
+                loginForm.action = "/login";
+                if (roleInput) {
+                    const isHr = cardLoginHr && cardLoginHr.classList.contains("selected");
+                    roleInput.value = isHr ? "HR" : "USER";
+                }
+            });
         }
 
         if (togglePwd && pwdInput) {
@@ -504,8 +604,6 @@
                 togglePwd.textContent = isPass ? "Hide" : "Show";
             });
         }
-
-
     });
 </script>
 

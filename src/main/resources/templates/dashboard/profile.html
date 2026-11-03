@@ -32,6 +32,11 @@
                 </div>
             </div>
 
+            <!-- Success Alert -->
+            <div class="alert alert-success" role="status" th:if="${successMessage}" th:text="${successMessage}" style="margin-bottom: 20px;">
+                Profile updated successfully.
+            </div>
+
             <div class="grid-2-1">
 
                 <!-- Left Column: Profile Details Form -->
@@ -40,14 +45,12 @@
 
                         <div style="display: flex; align-items: center; gap: 20px; margin-bottom: 28px; padding-bottom: 20px; border-bottom: 1px solid var(--border-color);">
                             <div class="profile-avatar" style="width: 72px; height: 72px; font-size: 1.8rem; background: var(--primary);">
-                                <span th:text="${userName != null and !#strings.isEmpty(userName) ? #strings.substring(userName, 0, 1).toUpperCase() : 'A'}">A</span>
+                                <span th:text="${userName != null and !#strings.isEmpty(userName) ? #strings.substring(userName, 0, 1).toUpperCase() : 'U'}">U</span>
                             </div>
                             <div>
-                                <h3 style="margin: 0 0 4px; font-size: 1.1rem; color: var(--text-primary);" th:text="${userName != null ? userName : 'Alex Morgan'}">Alex Morgan</h3>
-                                <p style="margin: 0 0 8px; font-size: 0.8rem; color: var(--text-muted);" th:text="${userEmail != null ? userEmail : 'alex.morgan@email.com'}">alex.morgan@email.com</p>
-                                <button type="button" class="btn btn-secondary btn-sm" onclick="alert('Avatar upload dialog (frontend demonstration)')">
-                                    📷 Change Avatar
-                                </button>
+                                <h3 style="margin: 0 0 4px; font-size: 1.1rem; color: var(--text-primary);" th:text="${userName != null ? userName : 'User Profile'}">User Profile</h3>
+                                <p style="margin: 0 0 8px; font-size: 0.8rem; color: var(--text-muted);" th:text="${userEmail != null ? userEmail : 'user@example.com'}">user@example.com</p>
+                                <span class="badge badge-primary"><i class="bi bi-shield-check"></i> Verified Profile</span>
                             </div>
                         </div>
 
@@ -56,22 +59,22 @@
                         <div class="grid-1-1" style="gap: 16px; margin-bottom: 16px;">
                             <div class="form-group">
                                 <label style="display: block; font-size: 0.82rem; font-weight: 600; margin-bottom: 6px;">Full Name</label>
-                                <input type="text" name="fullName" class="form-control" th:value="${userName != null ? userName : 'Alex Morgan'}" required style="width: 100%; padding: 10px 14px; border: 1px solid var(--border-strong); border-radius: var(--radius-md); background: var(--bg-input); color: var(--text-primary); font-size: 0.88rem;">
+                                <input type="text" name="fullName" class="form-control" th:value="${userName}" placeholder="Your full name" required style="width: 100%; padding: 10px 14px; border: 1px solid var(--border-strong); border-radius: var(--radius-md); background: var(--bg-input); color: var(--text-primary); font-size: 0.88rem;">
                             </div>
                             <div class="form-group">
                                 <label style="display: block; font-size: 0.82rem; font-weight: 600; margin-bottom: 6px;">Email Address</label>
-                                <input type="email" name="email" class="form-control" th:value="${userEmail != null ? userEmail : 'alex.morgan@email.com'}" required style="width: 100%; padding: 10px 14px; border: 1px solid var(--border-strong); border-radius: var(--radius-md); background: var(--bg-input); color: var(--text-primary); font-size: 0.88rem;">
+                                <input type="email" name="email" class="form-control" th:value="${userEmail}" readonly style="width: 100%; padding: 10px 14px; border: 1px solid var(--border-color); border-radius: var(--radius-md); background: var(--bg-secondary); color: var(--text-muted); font-size: 0.88rem;">
                             </div>
                         </div>
 
                         <div class="grid-1-1" style="gap: 16px; margin-bottom: 24px;">
                             <div class="form-group">
                                 <label style="display: block; font-size: 0.82rem; font-weight: 600; margin-bottom: 6px;">Phone Number</label>
-                                <input type="tel" name="phone" class="form-control" value="+1 (555) 234-5678" style="width: 100%; padding: 10px 14px; border: 1px solid var(--border-strong); border-radius: var(--radius-md); background: var(--bg-input); color: var(--text-primary); font-size: 0.88rem;">
+                                <input type="tel" name="phone" class="form-control" th:value="${userPhone}" placeholder="+91 98765 43210" style="width: 100%; padding: 10px 14px; border: 1px solid var(--border-strong); border-radius: var(--radius-md); background: var(--bg-input); color: var(--text-primary); font-size: 0.88rem;">
                             </div>
                             <div class="form-group">
                                 <label style="display: block; font-size: 0.82rem; font-weight: 600; margin-bottom: 6px;">Location</label>
-                                <input type="text" name="location" class="form-control" value="San Francisco, CA / Remote" style="width: 100%; padding: 10px 14px; border: 1px solid var(--border-strong); border-radius: var(--radius-md); background: var(--bg-input); color: var(--text-primary); font-size: 0.88rem;">
+                                <input type="text" name="location" class="form-control" th:value="${userLocation}" placeholder="e.g. Indore, MP / Remote" style="width: 100%; padding: 10px 14px; border: 1px solid var(--border-strong); border-radius: var(--radius-md); background: var(--bg-input); color: var(--text-primary); font-size: 0.88rem;">
                             </div>
                         </div>
 
@@ -79,48 +82,24 @@
                         <h3 style="font-size: 0.95rem; font-weight: 700; margin-bottom: 16px;">Career & Preferences</h3>
                         <div class="form-group" style="margin-bottom: 16px;">
                             <label style="display: block; font-size: 0.82rem; font-weight: 600; margin-bottom: 6px;">Professional Headline</label>
-                            <input type="text" name="headline" class="form-control" value="Java & Spring Boot Backend Engineer | Microservices Specialist" style="width: 100%; padding: 10px 14px; border: 1px solid var(--border-strong); border-radius: var(--radius-md); background: var(--bg-input); color: var(--text-primary); font-size: 0.88rem;">
+                            <input type="text" name="headline" class="form-control" th:value="${userHeadline}" placeholder="e.g. Java & Spring Boot Engineer | Backend Specialist" style="width: 100%; padding: 10px 14px; border: 1px solid var(--border-strong); border-radius: var(--radius-md); background: var(--bg-input); color: var(--text-primary); font-size: 0.88rem;">
                         </div>
 
                         <div class="grid-1-1" style="gap: 16px; margin-bottom: 24px;">
                             <div class="form-group">
                                 <label style="display: block; font-size: 0.82rem; font-weight: 600; margin-bottom: 6px;">Target Career Role</label>
-                                <select name="careerRole" class="form-control" style="width: 100%; padding: 10px 14px; border: 1px solid var(--border-strong); border-radius: var(--radius-md); background: var(--bg-input); color: var(--text-primary); font-size: 0.88rem;">
-                                    <option value="Java Developer" selected>Java Developer</option>
-                                    <option value="Spring Boot Developer">Spring Boot Developer</option>
-                                    <option value="Full Stack Developer">Full Stack Developer</option>
-                                    <option value="DevOps Engineer">DevOps Engineer</option>
-                                </select>
+                                <input type="text" name="careerRole" class="form-control" th:value="${careerRole}" placeholder="e.g. Java Developer" style="width: 100%; padding: 10px 14px; border: 1px solid var(--border-strong); border-radius: var(--radius-md); background: var(--bg-input); color: var(--text-primary); font-size: 0.88rem;">
                             </div>
-                            <div class="form-group">
-                                <label style="display: block; font-size: 0.82rem; font-weight: 600; margin-bottom: 6px;">Experience Level</label>
-                                <select name="experienceLevel" class="form-control" style="width: 100%; padding: 10px 14px; border: 1px solid var(--border-strong); border-radius: var(--radius-md); background: var(--bg-input); color: var(--text-primary); font-size: 0.88rem;">
-                                    <option value="Entry">Entry Level (0-2 years)</option>
-                                    <option value="Mid" selected>Mid Level (3-5 years)</option>
-                                    <option value="Senior">Senior Level (5-8 years)</option>
-                                    <option value="Lead">Lead / Architect (8+ years)</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <!-- Skills Chips -->
-                        <div class="form-group" style="margin-bottom: 28px;">
-                            <label style="display: block; font-size: 0.82rem; font-weight: 600; margin-bottom: 6px;">Key Competencies</label>
-                            <div style="display: flex; flex-wrap: wrap; gap: 8px;">
-                                <span class="badge badge-primary">Java 17 ✕</span>
-                                <span class="badge badge-primary">Spring Boot 3 ✕</span>
-                                <span class="badge badge-primary">REST APIs ✕</span>
-                                <span class="badge badge-primary">MySQL ✕</span>
-                                <span class="badge badge-primary">Hibernate/JPA ✕</span>
-                                <span class="badge badge-primary">Git ✕</span>
-                                <button type="button" class="btn btn-secondary btn-sm" style="padding: 2px 8px; font-size: 0.72rem;">+ Add Skill</button>
+                            <div class="form-group" th:if="${userRole == 'HR' or userRole == 'RECRUITER'}">
+                                <label style="display: block; font-size: 0.82rem; font-weight: 600; margin-bottom: 6px;">Company Name</label>
+                                <input type="text" name="companyName" class="form-control" th:value="${userCompany != null ? userCompany : companyName}" placeholder="e.g. ITSoftLab Technologies" style="width: 100%; padding: 10px 14px; border: 1px solid var(--border-strong); border-radius: var(--radius-md); background: var(--bg-input); color: var(--text-primary); font-size: 0.88rem;">
                             </div>
                         </div>
 
                         <!-- Form Actions -->
                         <div style="display: flex; justify-content: flex-end; gap: 12px;">
                             <button type="reset" class="btn btn-secondary">Cancel</button>
-                            <button type="submit" class="btn btn-primary" onclick="alert('Profile changes saved successfully! (Frontend demonstration)')">Save Changes</button>
+                            <button type="submit" class="btn btn-primary">Save Changes</button>
                         </div>
 
                     </form>
@@ -131,15 +110,20 @@
                     <article class="card">
                         <div class="card-header">
                             <h2 class="card-title">Profile Strength</h2>
-                            <span class="badge badge-success">85% Complete</span>
+                            <span class="badge" th:classappend="${profileStrengthPct >= 80 ? 'badge-success' : (profileStrengthPct >= 50 ? 'badge-info' : 'badge-neutral')}" th:text="${profileStrengthPct} + '% Complete'">85% Complete</span>
                         </div>
                         <div class="progress" style="margin-bottom: 14px;">
-                            <div class="progress-bar progress-bar-success" style="width: 85%;"></div>
+                            <div class="progress-bar" th:classappend="${profileStrengthPct >= 80 ? 'progress-bar-success' : (profileStrengthPct >= 50 ? 'progress-bar-warning' : 'progress-bar-danger')}" th:style="'width: ' + ${profileStrengthPct} + '%;'"></div>
                         </div>
                         <ul class="insight-bullet-list">
-                            <li><strong style="color: var(--success);">✓</strong> Basic information verified</li>
-                            <li><strong style="color: var(--success);">✓</strong> Target role configured</li>
-                            <li><strong style="color: var(--warning);">!</strong> Add LinkedIn or GitHub link</li>
+                            <li th:if="${basicInfoVerified}"><strong style="color: var(--success);"><i class="bi bi-check2"></i></strong> Basic information verified</li>
+                            <li th:unless="${basicInfoVerified}"><strong style="color: var(--warning);"><i class="bi bi-exclamation-circle"></i></strong> Complete basic profile info</li>
+                            <li th:if="${phoneConfigured}"><strong style="color: var(--success);"><i class="bi bi-check2"></i></strong> Contact phone number verified</li>
+                            <li th:unless="${phoneConfigured}"><strong style="color: var(--warning);"><i class="bi bi-exclamation-circle"></i></strong> Add your contact phone number</li>
+                            <li th:if="${careerConfigured}"><strong style="color: var(--success);"><i class="bi bi-check2"></i></strong> Target role & preferences configured</li>
+                            <li th:unless="${careerConfigured}"><strong style="color: var(--warning);"><i class="bi bi-exclamation-circle"></i></strong> Configure target career role</li>
+                            <li th:if="${resumeAttached}"><strong style="color: var(--success);"><i class="bi bi-check2"></i></strong> Master resume uploaded & parsed</li>
+                            <li th:unless="${resumeAttached}"><strong style="color: var(--warning);"><i class="bi bi-exclamation-circle"></i></strong> Upload master resume for ATS screening</li>
                         </ul>
                     </article>
 
@@ -147,14 +131,31 @@
                         <div class="card-header">
                             <h2 class="card-title">Active Resume Attachment</h2>
                         </div>
-                        <div style="display: flex; align-items: center; gap: 12px; padding: 12px; background: var(--bg-secondary); border-radius: var(--radius-md); margin-bottom: 14px;">
-                            <span style="font-size: 1.8rem;">📄</span>
-                            <div>
-                                <strong style="display: block; font-size: 0.88rem; color: var(--text-primary);">AlexMorgan_JavaResume_v3.pdf</strong>
-                                <small style="color: var(--text-muted); font-size: 0.75rem;">Analyzed on 28 Oct 2026 · ATS Score 88%</small>
+                        <!-- When user has an active resume -->
+                        <div th:if="${activeResume != null}">
+                            <div style="display: flex; align-items: center; gap: 12px; padding: 12px; background: var(--bg-secondary); border-radius: var(--radius-md); margin-bottom: 14px;">
+                                <span style="font-size: 1.8rem; color: var(--danger);"><i class="bi bi-file-earmark-pdf"></i></span>
+                                <div style="overflow: hidden;">
+                                    <strong style="display: block; font-size: 0.88rem; color: var(--text-primary); text-overflow: ellipsis; overflow: hidden; white-space: nowrap;" th:text="${activeResume.fileName}">resume.pdf</strong>
+                                    <small style="color: var(--text-muted); font-size: 0.75rem;">
+                                        Uploaded <span th:text="${activeResume.createdAt != null ? #temporals.format(activeResume.createdAt, 'dd MMM yyyy') : 'Recently'}">28 Oct 2026</span>
+                                        <span th:if="${latestScore != null}"> · ATS Score <strong style="color: var(--primary);" th:text="${latestScore} + '%'">88%</strong></span>
+                                    </small>
+                                </div>
                             </div>
+                            <a th:href="@{/dashboard/resumeanalyzer}" class="btn btn-secondary btn-sm btn-block">Upload Replacement →</a>
                         </div>
-                        <a th:href="@{/dashboard/resumeanalyzer}" class="btn btn-secondary btn-sm btn-block">Upload Replacement →</a>
+                        <!-- When no resume uploaded yet -->
+                        <div th:unless="${activeResume != null}">
+                            <div style="display: flex; align-items: center; gap: 12px; padding: 12px; background: var(--bg-secondary); border-radius: var(--radius-md); margin-bottom: 14px;">
+                                <span style="font-size: 1.8rem; color: var(--accent);"><i class="bi bi-file-earmark-arrow-up"></i></span>
+                                <div>
+                                    <strong style="display: block; font-size: 0.88rem; color: var(--text-primary);">No Resume Uploaded Yet</strong>
+                                    <small style="color: var(--text-muted); font-size: 0.75rem;">Upload a resume to analyze ATS score and apply to open requisitions.</small>
+                                </div>
+                            </div>
+                            <a th:href="@{/dashboard/resumeanalyzer}" class="btn btn-primary btn-sm btn-block">Upload Resume →</a>
+                        </div>
                     </article>
                 </aside>
 

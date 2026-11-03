@@ -1,3 +1,4 @@
+@import url('bootstrap-icons.min.css');
 
 /* =========================================================
    SmartHire - AI Resume Analyzer
@@ -23,6 +24,7 @@ html[data-theme="light"] {
     --bg-primary: #FFFFFF;
     --bg-secondary: #F6F8FB;
     --bg-tertiary: #EDF2F7;
+    --bg-card: #FFFFFF;
     --bg-sidebar: #FFFFFF;
     --bg-input: #FFFFFF;
     --bg-hover: #F1F5F9;
@@ -70,6 +72,7 @@ html[data-theme="dark"] {
     --bg-primary: #111827;
     --bg-secondary: #0B1220;
     --bg-tertiary: #1E293B;
+    --bg-card: #1E293B;
     --bg-sidebar: #111827;
     --bg-input: #172033;
     --bg-hover: #263449;
@@ -147,6 +150,14 @@ html[data-theme="dark"] {
 
     --transition-fast: 150ms ease;
     --transition-normal: 250ms ease;
+}
+
+/* Universal hidden attribute override */
+[hidden],
+[hidden="true"],
+.modal-overlay[hidden],
+.alert[hidden] {
+    display: none !important;
 }
 
 /* ---------- 4. Reset ---------- */
@@ -1170,11 +1181,20 @@ html[data-theme="dark"] .theme-toggle .icon-sun {
     position: fixed;
     z-index: 2000;
     inset: 0;
-    display: flex;
+    display: none;
     align-items: center;
     justify-content: center;
     padding: var(--space-4);
     background: var(--overlay);
+}
+
+.modal-overlay.is-open {
+    display: flex !important;
+}
+
+.modal-overlay[hidden],
+.modal-overlay:not(.is-open) {
+    display: none !important;
 }
 
 .modal {

@@ -32,7 +32,7 @@
                 </div>
                 <div class="page-header-actions">
                     <a class="btn btn-primary" th:href="@{/dashboard/resumeanalyzer}">
-                        <span>✦</span> Re-scan Resume
+                        <i class="bi bi-cpu"></i> Re-scan Resume
                     </a>
                 </div>
             </div>
@@ -41,7 +41,7 @@
             <article class="card" style="margin-bottom: 24px; padding: 18px 24px;">
                 <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
                     <div style="display: flex; align-items: center; gap: 14px;">
-                        <span style="font-size: 1.5rem;">🎯</span>
+                        <span style="font-size: 1.5rem; color: var(--accent);"><i class="bi bi-bullseye"></i></span>
                         <div>
                             <strong style="font-size: 0.95rem; color: var(--text-primary);">Evaluating Against Profile:</strong>
                             <p style="margin: 0; font-size: 0.8rem; color: var(--text-secondary);">Skills comparison against market job descriptions</p>
@@ -64,7 +64,7 @@
                 <article class="stat-card">
                     <div class="stat-top">
                         <span class="stat-label">Role Skills Match</span>
-                        <span class="stat-icon icon-green">⌘</span>
+                        <span class="stat-icon icon-green"><i class="bi bi-bullseye"></i></span>
                     </div>
                     <div class="stat-value" style="color: var(--success);">75%</div>
                     <span class="stat-unit">12 of 16 skills verified</span>
@@ -73,7 +73,7 @@
                 <article class="stat-card">
                     <div class="stat-top">
                         <span class="stat-label">Verified Present</span>
-                        <span class="stat-icon icon-navy">✓</span>
+                        <span class="stat-icon icon-navy"><i class="bi bi-check-lg"></i></span>
                     </div>
                     <div class="stat-value">12</div>
                     <span class="stat-unit">Found in resume text</span>
@@ -82,7 +82,7 @@
                 <article class="stat-card">
                     <div class="stat-top">
                         <span class="stat-label">Critical Missing Skills</span>
-                        <span class="stat-icon" style="background: var(--warning-bg); color: var(--warning);">!</span>
+                        <span class="stat-icon" style="background: var(--warning-bg); color: var(--warning);"><i class="bi bi-exclamation-triangle"></i></span>
                     </div>
                     <div class="stat-value" style="color: var(--warning);">3</div>
                     <span class="stat-unit">High priority for target role</span>
@@ -91,7 +91,7 @@
                 <article class="stat-card">
                     <div class="stat-top">
                         <span class="stat-label">Recommended Projects</span>
-                        <span class="stat-icon icon-info">💡</span>
+                        <span class="stat-icon icon-info"><i class="bi bi-lightbulb"></i></span>
                     </div>
                     <div class="stat-value">2</div>
                     <span class="stat-unit">To prove missing skills</span>
@@ -105,7 +105,7 @@
                 <article class="card skills-panel matched-panel">
                     <div class="skills-panel-header">
                         <div class="header-icon-title">
-                            <span class="icon-chip chip-success">✓</span>
+                            <span class="icon-chip chip-success"><i class="bi bi-check-lg"></i></span>
                             <h3>Skills Verified in Your Resume</h3>
                         </div>
                         <span class="count-badge count-success">12 Found</span>

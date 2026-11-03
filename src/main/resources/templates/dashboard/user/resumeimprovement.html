@@ -32,10 +32,10 @@
                 </div>
                 <div class="page-header-actions">
                     <button type="button" class="btn btn-secondary" onclick="window.print()">
-                        <span>🖨</span> Print Checklist
+                        <i class="bi bi-printer"></i> Print Checklist
                     </button>
                     <a class="btn btn-primary" th:href="@{/dashboard/resumeanalyzer}">
-                        <span>✦</span> Re-analyze Resume
+                        <i class="bi bi-cpu"></i> Re-analyze Resume
                     </a>
                 </div>
             </div>
@@ -55,7 +55,7 @@
                             <span style="font-size: 0.75rem; text-transform: uppercase; color: #B9C8DC; display: block;">CURRENT</span>
                             <strong style="font-size: 1.8rem; color: #ffffff;">82%</strong>
                         </div>
-                        <span style="font-size: 1.5rem; color: var(--accent);">➔</span>
+                        <span style="font-size: 1.5rem; color: var(--accent);"><i class="bi bi-arrow-right"></i></span>
                         <div style="text-align: center;">
                             <span style="font-size: 0.75rem; text-transform: uppercase; color: var(--accent); display: block;">PROJECTED</span>
                             <strong style="font-size: 1.8rem; color: var(--accent);">95%</strong>
@@ -73,7 +73,7 @@
                         <p class="card-description">Replace generic statements with quantifiable achievements and role keywords.</p>
                     </div>
                     <button type="button" class="btn btn-secondary btn-sm" onclick="navigator.clipboard.writeText(document.getElementById('improvedSummaryText').innerText); alert('Copied improved summary to clipboard!')">
-                        📋 Copy Improved Text
+                        <i class="bi bi-clipboard"></i> Copy Improved Text
                     </button>
                 </div>
 
@@ -81,7 +81,7 @@
                     <!-- Original Summary -->
                     <div style="background: var(--danger-bg); border: 1px solid rgba(220, 38, 38, 0.2); border-radius: var(--radius-md); padding: 18px;">
                         <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
-                            <strong style="color: var(--danger); font-size: 0.82rem; text-transform: uppercase;">⚠️ Current Phrasing in Resume</strong>
+                            <strong style="color: var(--danger); font-size: 0.82rem; text-transform: uppercase;"><i class="bi bi-exclamation-triangle"></i> Current Phrasing in Resume</strong>
                             <span class="badge badge-danger">Weak Keywords</span>
                         </div>
                         <p style="font-size: 0.85rem; color: var(--text-primary); line-height: 1.6; margin: 0;">
@@ -92,7 +92,7 @@
                     <!-- Improved Summary -->
                     <div style="background: var(--success-bg); border: 1px solid rgba(22, 132, 91, 0.2); border-radius: var(--radius-md); padding: 18px;">
                         <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
-                            <strong style="color: var(--success); font-size: 0.82rem; text-transform: uppercase;">✓ Recommended High-Impact Phrasing</strong>
+                            <strong style="color: var(--success); font-size: 0.82rem; text-transform: uppercase;"><i class="bi bi-check2-circle"></i> Recommended High-Impact Phrasing</strong>
                             <span class="badge badge-success">High ATS Match</span>
                         </div>
                         <p id="improvedSummaryText" style="font-size: 0.85rem; color: var(--text-primary); line-height: 1.6; margin: 0;">
@@ -141,7 +141,7 @@
             <div class="grid-1-1">
                 <article class="card">
                     <div class="card-header">
-                        <h2 class="card-title"><span>🔑</span> Critical Keywords to Add</h2>
+                        <h2 class="card-title"><span style="color: var(--accent); margin-right: 6px;"><i class="bi bi-key"></i></span> Critical Keywords to Add</h2>
                     </div>
                     <p style="font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 14px;">
                         Include these industry keywords within your skills or project descriptions:
@@ -164,7 +164,7 @@
 
                 <article class="card">
                     <div class="card-header">
-                        <h2 class="card-title"><span>📋</span> ATS Formatting Checklist</h2>
+                        <h2 class="card-title"><span style="color: var(--primary); margin-right: 6px;"><i class="bi bi-ui-checks"></i></span> ATS Formatting Checklist</h2>
                     </div>
                     <ul class="insight-bullet-list">
                         <li>

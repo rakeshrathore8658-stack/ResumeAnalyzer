@@ -1,4 +1,3 @@
-
 /**
  * SmartHire - Dashboard JavaScript
  * File: dashboard.js
@@ -8,50 +7,10 @@
 
 document.addEventListener("DOMContentLoaded", function () {
 
-    // 1. Mobile sidebar toggle
-    const sidebar = document.getElementById("dashboardSidebar");
-    const menuButton = document.getElementById("sidebarMenuButton");
+    // Note: Mobile & desktop sidebar toggling is centralized in app.js
+    // to prevent duplicate click handling and toggle cancellation.
 
-    if (sidebar && menuButton) {
-        menuButton.addEventListener("click", function () {
-            const isOpen = sidebar.classList.toggle("is-open");
-
-            document.body.classList.toggle("sidebar-open", isOpen);
-
-            menuButton.setAttribute(
-                "aria-expanded",
-                String(isOpen)
-            );
-        });
-
-        // Close sidebar when clicking outside on mobile
-        document.addEventListener("click", function (event) {
-            if (!window.matchMedia("(max-width: 768px)").matches) {
-                return;
-            }
-
-            if (
-                sidebar.classList.contains("is-open") &&
-                !sidebar.contains(event.target) &&
-                !menuButton.contains(event.target)
-            ) {
-                sidebar.classList.remove("is-open");
-                document.body.classList.remove("sidebar-open");
-                menuButton.setAttribute("aria-expanded", "false");
-            }
-        });
-
-        // Reset sidebar on desktop screen
-        window.addEventListener("resize", function () {
-            if (window.innerWidth > 768) {
-                sidebar.classList.remove("is-open");
-                document.body.classList.remove("sidebar-open");
-                menuButton.setAttribute("aria-expanded", "false");
-            }
-        });
-    }
-
-    // 2. Dashboard chart bars
+    // 1. Dashboard chart bars
     const chartBars = document.querySelectorAll(
         ".chart-bar[data-value], .chart-bar[data-height]"
     );
@@ -66,7 +25,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    // 3. Optional dashboard table search
+    // 2. Optional dashboard table search
     const searchInput = document.querySelector(
         "[data-dashboard-search], #dashboardSearch, #recentAnalysisSearch"
     );

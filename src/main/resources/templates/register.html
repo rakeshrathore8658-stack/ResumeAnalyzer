@@ -7,6 +7,7 @@
     <meta name="description" content="Create your SmartHire account. Choose your role as a Job Seeker to optimize resumes or as an HR Recruiter to hire top talent.">
     <title>Register | SmartHire</title>
     
+    <link rel="stylesheet" th:href="@{/css/bootstrap-icons.min.css}">
     <link rel="stylesheet" th:href="@{/css/style.css}">
 
     <!-- Early Theme Detection Script (Prevents flash of white in dark mode) -->
@@ -28,6 +29,9 @@
             grid-template-columns: 0.9fr 1.1fr;
             background: var(--bg-primary);
             color: var(--text-primary);
+            width: 100%;
+            max-width: 100vw;
+            overflow-x: hidden;
         }
 
         /* Keep left visual dark navy in both light and dark mode */
@@ -78,6 +82,10 @@
             color: var(--accent);
             font-size: 1.5rem;
             letter-spacing: -2px;
+        }
+
+        .register-mobile-brand {
+            display: none;
         }
 
         .register-visual-content {
@@ -151,6 +159,8 @@
             background: var(--bg-primary);
             color: var(--text-primary);
             overflow-y: auto;
+            width: 100%;
+            box-sizing: border-box;
             transition: background var(--transition-normal), color var(--transition-normal);
         }
 
@@ -186,6 +196,7 @@
         /* Role Switcher Cards */
         .role-selector-container {
             margin-bottom: 24px;
+            width: 100%;
         }
 
         .role-selector-label {
@@ -202,6 +213,7 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 12px;
+            width: 100%;
         }
 
         .role-option-card {
@@ -215,6 +227,7 @@
             flex-direction: column;
             gap: 4px;
             color: var(--text-primary);
+            box-sizing: border-box;
         }
 
         .role-option-card:hover {
@@ -261,6 +274,7 @@
         /* Form elements */
         .form-group {
             margin-bottom: 16px;
+            width: 100%;
         }
 
         .form-label {
@@ -273,12 +287,12 @@
 
         .form-control, .form-select {
             width: 100%;
-            padding: 10px 14px;
+            padding: 11px 14px;
             border: 1px solid var(--border-strong);
             border-radius: var(--radius-md);
             background: var(--bg-input);
             color: var(--text-primary);
-            font-size: 0.88rem;
+            font-size: 0.92rem;
             box-sizing: border-box;
             outline: none;
             transition: border-color var(--transition-fast), background var(--transition-fast);
@@ -293,10 +307,16 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 12px;
+            width: 100%;
         }
 
         .password-wrapper {
             position: relative;
+            width: 100%;
+        }
+
+        .password-wrapper .form-control {
+            padding-right: 58px; /* Leave space for Show toggle button */
         }
 
         .password-toggle {
@@ -308,8 +328,9 @@
             border: none;
             color: var(--text-secondary);
             cursor: pointer;
-            font-size: 0.8rem;
+            font-size: 0.82rem;
             font-weight: 600;
+            padding: 4px;
         }
 
         .password-strength {
@@ -327,34 +348,55 @@
             transition: width 200ms ease;
         }
 
-        .theme-toggle {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            border: 1px solid var(--border-color);
-            background: var(--bg-secondary);
-            display: grid;
-            place-items: center;
-            cursor: pointer;
-            font-size: 1.1rem;
-            transition: all var(--transition-fast);
-        }
-
-        .theme-toggle:hover {
-            background: var(--bg-hover);
-            border-color: var(--border-strong);
-        }
-
+        /* Responsive Media Queries */
         @media (max-width: 900px) {
             .register-page {
                 grid-template-columns: 1fr;
+                min-height: 100vh;
             }
             .register-visual {
-                min-height: auto;
-                padding: 32px 24px;
+                display: none !important; /* Hide left visual banner on mobile to prevent sticky overlap */
+            }
+            .register-mobile-brand {
+                display: block;
             }
             .register-panel {
-                padding: 32px 20px;
+                padding: 28px 20px;
+                min-height: 100vh;
+                justify-content: flex-start;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .register-panel {
+                padding: 20px 14px;
+            }
+            .register-grid {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+            .form-control, .form-select {
+                font-size: 16px; /* Prevents auto-zoom on iOS/Android touch keyboards */
+                padding: 10px 12px;
+            }
+            .password-wrapper .form-control {
+                padding-right: 56px;
+            }
+            .role-option-card {
+                padding: 10px 12px;
+            }
+            .role-option-card small {
+                font-size: 0.7rem;
+            }
+            .btn-block {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .role-options-grid {
+                grid-template-columns: 1fr;
+                gap: 8px;
             }
         }
     </style>
@@ -364,7 +406,7 @@
 
 <main class="register-page">
 
-    <!-- LEFT VISUAL BRANDING (Always Dark Navy) -->
+    <!-- LEFT VISUAL BRANDING (Desktop Only) -->
     <section class="register-visual">
         <a class="register-brand" th:href="@{/}" aria-label="SmartHire Home">
             <span class="brand-mark" aria-hidden="true">///</span>
@@ -382,21 +424,21 @@
 
             <div class="register-benefits" id="seekerBenefits">
                 <div class="register-benefit">
-                    <span class="register-benefit-icon" aria-hidden="true">✦</span>
+                    <span class="register-benefit-icon" aria-hidden="true"><i class="bi bi-cpu"></i></span>
                     <div>
                         <strong>Instant ATS Compatibility Scoring</strong>
                         <small>Check resume structure, keywords, and readability.</small>
                     </div>
                 </div>
                 <div class="register-benefit">
-                    <span class="register-benefit-icon" aria-hidden="true">🎯</span>
+                    <span class="register-benefit-icon" aria-hidden="true"><i class="bi bi-bullseye"></i></span>
                     <div>
                         <strong>Skills Gap Analysis & Career Match</strong>
                         <small>Compare against Java, MERN, Cloud, and Data profiles.</small>
                     </div>
                 </div>
                 <div class="register-benefit">
-                    <span class="register-benefit-icon" aria-hidden="true">📈</span>
+                    <span class="register-benefit-icon" aria-hidden="true"><i class="bi bi-graph-up-arrow"></i></span>
                     <div>
                         <strong>Actionable Resume Roadmaps</strong>
                         <small>Step-by-step suggestions to boost recruiter callbacks.</small>
@@ -406,21 +448,21 @@
 
             <div class="register-benefits" id="hrBenefits" hidden>
                 <div class="register-benefit">
-                    <span class="register-benefit-icon" aria-hidden="true">💼</span>
+                    <span class="register-benefit-icon" aria-hidden="true"><i class="bi bi-briefcase"></i></span>
                     <div>
                         <strong>Job Requisition Management</strong>
                         <small>Post open vacancies with targeted skill requirements.</small>
                     </div>
                 </div>
                 <div class="register-benefit">
-                    <span class="register-benefit-icon" aria-hidden="true">🤖</span>
+                    <span class="register-benefit-icon" aria-hidden="true"><i class="bi bi-robot"></i></span>
                     <div>
                         <strong>Bulk AI Resume Candidate Screening</strong>
                         <small>Automatically rank applicants by role match percentage.</small>
                     </div>
                 </div>
                 <div class="register-benefit">
-                    <span class="register-benefit-icon" aria-hidden="true">📅</span>
+                    <span class="register-benefit-icon" aria-hidden="true"><i class="bi bi-calendar-event"></i></span>
                     <div>
                         <strong>Interview Pipeline & Structured Feedback</strong>
                         <small>Coordinate interview rounds and standardized scorecards.</small>
@@ -440,9 +482,26 @@
             <a th:href="@{/}" style="color: var(--text-secondary); text-decoration: none; font-size: 0.88rem; font-weight: 600;">
                 ← Back to Home
             </a>
+            <!-- Mobile Brand shown on <= 900px -->
+            <div class="register-mobile-brand">
+                <a class="register-brand" th:href="@{/}" style="color: var(--text-primary) !important;">
+                    <span class="brand-mark" style="color: var(--accent);">///</span>
+                    <span style="font-size: 1.35rem; font-weight: 800; color: var(--text-primary);">SmartHire<span style="color: var(--accent);">.</span></span>
+                </a>
+            </div>
         </div>
 
         <div class="register-box">
+
+            <!-- REGISTRATION ERROR NOTIFICATION -->
+            <div class="alert alert-danger" th:if="${errorMessage}" style="margin-bottom: 22px; display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: var(--radius-md); background: var(--danger-bg); color: var(--danger); border: 1px solid rgba(220, 38, 38, 0.3);">
+                <span style="font-size: 1.3rem; display: flex;" aria-hidden="true"><i class="bi bi-exclamation-triangle-fill"></i></span>
+                <div>
+                    <strong style="display: block; font-size: 0.9rem;">Registration Failed</strong>
+                    <span style="font-size: 0.8rem;" th:text="${errorMessage}">Please check your submission and try again.</span>
+                </div>
+            </div>
+
             <span class="eyebrow" style="color: var(--accent); font-weight: 800; font-size: 0.75rem; letter-spacing: 0.08em;">JOIN SMARTHIRE</span>
             <h2 class="register-heading">Create Account</h2>
             <p class="register-description">Select your role to configure your personalized dashboard.</p>
@@ -454,7 +513,7 @@
                     <!-- Option 1: Job Seeker -->
                     <div class="role-option-card selected" id="cardJobSeeker">
                         <div class="role-option-header">
-                            <span class="role-icon">👤</span>
+                            <span class="role-icon" style="color: var(--accent);"><i class="bi bi-person-badge"></i></span>
                             <strong>Job Seeker</strong>
                         </div>
                         <small>Analyze resumes & get job ready</small>
@@ -463,7 +522,7 @@
                     <!-- Option 2: HR / Recruiter -->
                     <div class="role-option-card" id="cardHrRecruiter">
                         <div class="role-option-header">
-                            <span class="role-icon">💼</span>
+                            <span class="role-icon" style="color: var(--accent);"><i class="bi bi-briefcase"></i></span>
                             <strong>HR / Recruiter</strong>
                         </div>
                         <small>Post jobs & hire top talent</small>
@@ -481,10 +540,17 @@
                     <input type="text" id="fullName" name="fullName" class="form-control" placeholder="Enter your full name" required minlength="2">
                 </div>
 
-                <!-- Email Address -->
-                <div class="form-group">
-                    <label class="form-label" for="email" id="emailLabel">Email Address</label>
-                    <input type="email" id="email" name="email" class="form-control" placeholder="you@example.com" required>
+                <!-- Email & Phone Number Grid -->
+                <div class="register-grid">
+                    <div class="form-group">
+                        <label class="form-label" for="email" id="emailLabel">Email Address</label>
+                        <input type="email" id="email" name="email" class="form-control" placeholder="you@example.com" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="phoneNumber">Phone Number</label>
+                        <input type="tel" id="phoneNumber" name="phoneNumber" class="form-control" placeholder="+91 " pattern="[0-9+ -]{7,20}">
+                    </div>
                 </div>
 
                 <!-- Password and Confirm Password -->
@@ -572,32 +638,32 @@
 
         function setRole(role) {
             const isHr = role === "HR";
-            roleInput.value = isHr ? "HR" : "USER";
+            if (roleInput) roleInput.value = isHr ? "HR" : "USER";
 
-            cardJobSeeker.classList.toggle("selected", !isHr);
-            cardHrRecruiter.classList.toggle("selected", isHr);
+            if (cardJobSeeker) cardJobSeeker.classList.toggle("selected", !isHr);
+            if (cardHrRecruiter) cardHrRecruiter.classList.toggle("selected", isHr);
 
-            seekerField.hidden = isHr;
-            hrFields.hidden = !isHr;
+            if (seekerField) seekerField.hidden = isHr;
+            if (hrFields) hrFields.hidden = !isHr;
 
-            seekerBenefits.hidden = isHr;
-            hrBenefits.hidden = !isHr;
+            if (seekerBenefits) seekerBenefits.hidden = isHr;
+            if (hrBenefits) hrBenefits.hidden = !isHr;
 
             if (isHr) {
-                visualTitle.innerHTML = "Hire the best talent <br><span>smarter & faster.</span>";
-                visualDesc.textContent = "Create job vacancies, screen resumes with AI match scores, and streamline your recruitment pipeline.";
-                btnSubmit.textContent = "Register as Recruiter & Open Dashboard →";
-                emailLabel.textContent = "Work Email Address";
+                if (visualTitle) visualTitle.innerHTML = "Hire the best talent <br><span>smarter & faster.</span>";
+                if (visualDesc) visualDesc.textContent = "Create job vacancies, screen resumes with AI match scores, and streamline your recruitment pipeline.";
+                if (btnSubmit) btnSubmit.textContent = "Register as Recruiter & Open Dashboard →";
+                if (emailLabel) emailLabel.textContent = "Work Email Address";
             } else {
-                visualTitle.innerHTML = "Build a stronger <br><span>career profile.</span>";
-                visualDesc.textContent = "Create your account to unlock instant ATS resume scoring, uncover skills gap insights, and target your dream job roles.";
-                btnSubmit.textContent = "Register as Job Seeker & Open Dashboard →";
-                emailLabel.textContent = "Email Address";
+                if (visualTitle) visualTitle.innerHTML = "Build a stronger <br><span>career profile.</span>";
+                if (visualDesc) visualDesc.textContent = "Create your account to unlock instant ATS resume scoring, uncover skills gap insights, and target your dream job roles.";
+                if (btnSubmit) btnSubmit.textContent = "Register as Job Seeker & Open Dashboard →";
+                if (emailLabel) emailLabel.textContent = "Email Address";
             }
         }
 
-        cardJobSeeker.addEventListener("click", () => setRole("USER"));
-        cardHrRecruiter.addEventListener("click", () => setRole("HR"));
+        if (cardJobSeeker) cardJobSeeker.addEventListener("click", () => setRole("USER"));
+        if (cardHrRecruiter) cardHrRecruiter.addEventListener("click", () => setRole("HR"));
 
         const urlParams = new URLSearchParams(window.location.search);
         if (urlParams.get("role") === "HR") {
@@ -629,8 +695,6 @@
                 }
             });
         }
-
-
     });
 </script>
 
