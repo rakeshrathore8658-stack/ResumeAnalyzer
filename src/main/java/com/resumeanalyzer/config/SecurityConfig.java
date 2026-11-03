@@ -88,7 +88,7 @@ public class SecurityConfig {
                         .authenticationEntryPoint(authEntryPoint)
                 )
 
-                // Public pages and dashboard inspection
+                // Public pages and assets
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/",
@@ -103,13 +103,16 @@ public class SecurityConfig {
                                 "/images/**",
                                 "/favicon.ico",
                                 "/api/**",
-                                "/dashboard", "/dashboard/**",
+                                "/error"
+                        ).permitAll()
+                        .requestMatchers(
+                                "/dashboard",
+                                "/dashboard/**",
                                 "/analyzer",
                                 "/history",
                                 "/ats-checker",
-                                "/job-roles",
-                                "/error"
-                        ).permitAll()
+                                "/job-roles"
+                        ).authenticated()
                         .anyRequest().authenticated()
                 )
 

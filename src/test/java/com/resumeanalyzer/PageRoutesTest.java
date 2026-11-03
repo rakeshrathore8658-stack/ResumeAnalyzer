@@ -105,6 +105,26 @@ class PageRoutesTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("dashboard/settings"));
 
+        // Settings Preferences update & theme AJAX
+        User testUser = new User("Settings User", "settings@user.com", null, "pass", "USER", null, null);
+        Mockito.when(userRepository.findByEmail("settings@user.com")).thenReturn(Optional.of(testUser));
+
+        mockMvc.perform(post("/dashboard/settings/preferences")
+                        .param("themeChoice", "dark")
+                        .param("notifResumeScan", "true")
+                        .param("notifJobInsights", "false")
+                        .param("notifInterviewUpdates", "true")
+                        .sessionAttr("userEmail", "settings@user.com"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/dashboard/settings?saved=true"));
+
+        mockMvc.perform(post("/dashboard/settings/theme")
+                        .param("theme", "dark")
+                        .sessionAttr("userEmail", "settings@user.com"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.success").value(true))
+                .andExpect(jsonPath("$.theme").value("dark"));
+
         mockMvc.perform(get("/dashboard/notifications"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("dashboard/notifications"));
@@ -180,6 +200,31 @@ class PageRoutesTest {
         mockMvc.perform(get("/dashboard/applications").sessionAttr("userRole", "HR"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("dashboard/hr/applications"));
+
+        // Stage filters for Shortlisted and Offered
+        mockMvc.perform(get("/dashboard/applications").param("stage", "Shortlisted").sessionAttr("userRole", "HR"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("dashboard/hr/applications"))
+                .andExpect(model().attribute("selectedStage", "Shortlisted"));
+
+        mockMvc.perform(get("/dashboard/applications").param("stage", "Offered").sessionAttr("userRole", "HR"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("dashboard/hr/applications"))
+                .andExpect(model().attribute("selectedStage", "Offered"));
+
+        // Update stage POST
+        com.resumeanalyzer.entity.ResumeAnalysis dummyAnalysis = new com.resumeanalyzer.entity.ResumeAnalysis();
+        dummyAnalysis.setId(55L);
+        dummyAnalysis.setCandidateName("Test Candidate");
+        dummyAnalysis.setCandidateEmail("cand@test.com");
+        Mockito.when(resumeAnalysisRepository.findById(55L)).thenReturn(Optional.of(dummyAnalysis));
+
+        mockMvc.perform(post("/dashboard/applications/55/stage")
+                        .param("stage", "Offered")
+                        .param("filter", "Offered")
+                        .sessionAttr("userRole", "HR"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/dashboard/applications?saved=true&stage=Offered"));
 
         mockMvc.perform(get("/dashboard/shortlist").sessionAttr("userRole", "HR"))
                 .andExpect(status().isOk())

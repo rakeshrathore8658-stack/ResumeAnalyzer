@@ -398,12 +398,16 @@ public class PageController {
     @GetMapping("/dashboard/settings")
     public String settings(
             @RequestParam(value = "passwordUpdated", required = false) String passwordUpdated,
+            @RequestParam(value = "saved", required = false) String saved,
             @RequestParam(value = "error", required = false) String error,
             Model model) {
         HttpSession session = getSession();
         String role = getSessionRole(session);
         setupCommonModel(model, session, role);
 
+        if (saved != null) {
+            model.addAttribute("successMessage", "Account settings & notification preferences saved successfully.");
+        }
         if (passwordUpdated != null) {
             model.addAttribute("successMessage", "Your security password has been updated successfully.");
         }
@@ -417,6 +421,64 @@ public class PageController {
             }
         }
         return "dashboard/settings";
+    }
+
+    @PostMapping("/dashboard/settings/preferences")
+    public String updatePreferences(
+            @RequestParam(value = "themeChoice", defaultValue = "light") String themeChoice,
+            @RequestParam(value = "notifResumeScan", required = false) Boolean notifResumeScan,
+            @RequestParam(value = "notifJobInsights", required = false) Boolean notifJobInsights,
+            @RequestParam(value = "notifInterviewUpdates", required = false) Boolean notifInterviewUpdates) {
+
+        HttpSession session = getSession();
+        String email = (session != null) ? (String) session.getAttribute("userEmail") : null;
+        if (email == null || email.isBlank()) {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            if (auth != null && auth.isAuthenticated() && !(auth instanceof AnonymousAuthenticationToken) && !"anonymousUser".equalsIgnoreCase(auth.getName())) {
+                email = auth.getName();
+            }
+        }
+
+        if (email != null && !email.isBlank()) {
+            userRepository.findByEmail(email.trim().toLowerCase()).ifPresent(user -> {
+                user.setThemePreference("dark".equalsIgnoreCase(themeChoice) ? "dark" : "light");
+                user.setNotifResumeScan(Boolean.TRUE.equals(notifResumeScan));
+                user.setNotifJobInsights(Boolean.TRUE.equals(notifJobInsights));
+                user.setNotifInterviewUpdates(Boolean.TRUE.equals(notifInterviewUpdates));
+                userRepository.save(user);
+
+                if (session != null) {
+                    session.setAttribute("theme", user.getThemePreference());
+                }
+            });
+        }
+
+        return "redirect:/dashboard/settings?saved=true";
+    }
+
+    @PostMapping("/dashboard/settings/theme")
+    @ResponseBody
+    public org.springframework.http.ResponseEntity<?> updateThemeAjax(
+            @RequestParam("theme") String theme) {
+        String safeTheme = "dark".equalsIgnoreCase(theme) ? "dark" : "light";
+        HttpSession session = getSession();
+        if (session != null) {
+            session.setAttribute("theme", safeTheme);
+        }
+        String email = (session != null) ? (String) session.getAttribute("userEmail") : null;
+        if (email == null || email.isBlank()) {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            if (auth != null && auth.isAuthenticated() && !(auth instanceof AnonymousAuthenticationToken) && !"anonymousUser".equalsIgnoreCase(auth.getName())) {
+                email = auth.getName();
+            }
+        }
+        if (email != null && !email.isBlank()) {
+            userRepository.findByEmail(email.trim().toLowerCase()).ifPresent(u -> {
+                u.setThemePreference(safeTheme);
+                userRepository.save(u);
+            });
+        }
+        return org.springframework.http.ResponseEntity.ok(java.util.Map.of("success", true, "theme", safeTheme));
     }
 
     @PostMapping("/dashboard/settings/password")
@@ -1119,11 +1181,37 @@ public class PageController {
             String norm = stageParam.trim().toLowerCase();
             candidateAnalyses = candidateAnalyses.stream()
                     .filter(a -> {
-                        String st = a.getStage() != null ? a.getStage().toLowerCase() : "under review";
-                        if ("under review".equals(norm) || "awaiting review".equals(norm) || "review".equals(norm)) {
-                            return "under review".equals(st) || a.getStage() == null;
+                        if ("shortlisted".equals(norm) || norm.contains("shortlist")) {
+                            return a.isShortlisted()
+                                    || (a.getStage() != null && a.getStage().toLowerCase().contains("shortlist"))
+                                    || (a.getDisplayStage() != null && a.getDisplayStage().toLowerCase().contains("shortlist"));
                         }
-                        return st.contains(norm) || norm.contains(st);
+                        if ("offered".equals(norm) || norm.contains("offer")) {
+                            return (a.getStage() != null && a.getStage().toLowerCase().contains("offer"))
+                                    || (a.getDisplayStage() != null && a.getDisplayStage().toLowerCase().contains("offer"))
+                                    || (a.getStatus() != null && a.getStatus().toLowerCase().contains("offer"))
+                                    || (a.getRecommendation() != null && (a.getRecommendation().toLowerCase().contains("offer")
+                                        || "strong hire".equalsIgnoreCase(a.getRecommendation().trim())
+                                        || "hire".equalsIgnoreCase(a.getRecommendation().trim())));
+                        }
+                        if ("interviewing".equals(norm) || "interview".equals(norm) || norm.contains("interview")) {
+                            return (a.getStage() != null && a.getStage().toLowerCase().contains("interview"))
+                                    || a.getInterviewDate() != null
+                                    || (a.getDisplayStage() != null && a.getDisplayStage().toLowerCase().contains("interview"));
+                        }
+                        if ("hired".equals(norm) || norm.contains("hire")) {
+                            return (a.getStage() != null && a.getStage().toLowerCase().contains("hired"))
+                                    || (a.getStatus() != null && a.getStatus().toLowerCase().contains("hire"))
+                                    || (a.getDisplayStage() != null && a.getDisplayStage().toLowerCase().contains("hire"));
+                        }
+                        if ("under review".equals(norm) || "awaiting review".equals(norm) || "review".equals(norm)) {
+                            String st = a.getStage() != null ? a.getStage().toLowerCase() : "under review";
+                            return "under review".equals(st) || a.getStage() == null
+                                    || (a.getDisplayStage() != null && "under review".equalsIgnoreCase(a.getDisplayStage()));
+                        }
+                        String st = a.getStage() != null ? a.getStage().toLowerCase() : "";
+                        String ds = a.getDisplayStage() != null ? a.getDisplayStage().toLowerCase() : "";
+                        return st.contains(norm) || norm.contains(st) || ds.contains(norm);
                     })
                     .toList();
             model.addAttribute("selectedStage", stageParam);
@@ -1144,13 +1232,23 @@ public class PageController {
     @PostMapping("/dashboard/applications/{id}/stage")
     public String updateApplicationStage(
             @PathVariable("id") Long id,
-            @RequestParam("stage") String stage) {
+            @RequestParam("stage") String stage,
+            @RequestParam(value = "filter", required = false) String currentFilter) {
         resumeAnalysisRepository.findById(id).ifPresent(analysis -> {
             analysis.setStage(stage);
             if ("Shortlisted".equalsIgnoreCase(stage)) {
                 analysis.setShortlisted(true);
+            } else if ("Offered".equalsIgnoreCase(stage)) {
+                analysis.setShortlisted(true);
+                analysis.setStatus("Offered");
+            } else if ("Hired".equalsIgnoreCase(stage)) {
+                analysis.setShortlisted(true);
+                analysis.setStatus("Hired");
+            } else if ("Interviewing".equalsIgnoreCase(stage)) {
+                analysis.setShortlisted(true);
             } else if ("Rejected".equalsIgnoreCase(stage)) {
                 analysis.setShortlisted(false);
+                analysis.setStatus("Rejected");
             }
             resumeAnalysisRepository.save(analysis);
 
@@ -1163,7 +1261,11 @@ public class PageController {
                 notificationService.sendNotification(candEmail, analysis.getCandidateName(), title, msg, "STAGE_CHANGE", "/dashboard/analyzerhistory");
             }
         });
-        return "redirect:/dashboard/applications?saved=true";
+        String redirectUrl = "/dashboard/applications?saved=true";
+        if (currentFilter != null && !currentFilter.isBlank()) {
+            redirectUrl += "&stage=" + java.net.URLEncoder.encode(currentFilter, java.nio.charset.StandardCharsets.UTF_8);
+        }
+        return "redirect:" + redirectUrl;
     }
 
     @GetMapping({"/dashboard/shortlist", "/dashboard/shortlists"})
@@ -1483,7 +1585,7 @@ public class PageController {
 
     @GetMapping("/settings")
     public String legacySettings(Model model) {
-        return settings(null, null, model);
+        return settings(null, null, null, model);
     }
 
     // ==========================================
@@ -1563,12 +1665,36 @@ public class PageController {
             activeCompany = null;
         }
 
+        String activeTheme = "light";
+        if (authenticatedUser != null && authenticatedUser.getThemePreference() != null) {
+            activeTheme = authenticatedUser.getThemePreference();
+        } else if (session != null && session.getAttribute("theme") != null) {
+            activeTheme = (String) session.getAttribute("theme");
+        }
+
+        if (session != null) {
+            session.setAttribute("theme", activeTheme);
+        }
+
         model.addAttribute("userRole", activeRole);
-        model.addAttribute("theme", "light");
+        model.addAttribute("theme", activeTheme);
+        model.addAttribute("activeTheme", activeTheme);
         model.addAttribute("userName", activeName);
         model.addAttribute("userEmail", activeEmail);
         if (activeCompany != null) {
             model.addAttribute("companyName", activeCompany);
+        }
+
+        if (authenticatedUser != null) {
+            model.addAttribute("userThemePreference", authenticatedUser.getThemePreference());
+            model.addAttribute("notifResumeScan", authenticatedUser.isNotifResumeScan());
+            model.addAttribute("notifJobInsights", authenticatedUser.isNotifJobInsights());
+            model.addAttribute("notifInterviewUpdates", authenticatedUser.isNotifInterviewUpdates());
+        } else {
+            model.addAttribute("userThemePreference", activeTheme);
+            model.addAttribute("notifResumeScan", true);
+            model.addAttribute("notifJobInsights", true);
+            model.addAttribute("notifInterviewUpdates", true);
         }
 
         if (!"HR".equalsIgnoreCase(activeRole)) {

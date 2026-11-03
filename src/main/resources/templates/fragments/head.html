@@ -7,6 +7,25 @@
     
     <title th:text="${title != null ? title + ' | SmartHire' : 'SmartHire - AI Resume Analyzer & Recruitment Platform'}">SmartHire</title>
     
+    <!-- Immediate Theme Application from User Account & DB -->
+    <meta name="user-theme" th:content="${theme != null ? theme : (userThemePreference != null ? userThemePreference : '')}">
+    <script>
+        (function () {
+            try {
+                var meta = document.querySelector('meta[name="user-theme"]');
+                var serverTheme = meta ? meta.getAttribute('content') : null;
+                var targetTheme = (serverTheme === "dark" || serverTheme === "light")
+                    ? serverTheme
+                    : (localStorage.getItem("smarthire-theme") || "light");
+                document.documentElement.setAttribute("data-theme", targetTheme);
+                document.documentElement.style.colorScheme = targetTheme;
+                if (serverTheme === "dark" || serverTheme === "light") {
+                    localStorage.setItem("smarthire-theme", serverTheme);
+                }
+            } catch (e) { }
+        })();
+    </script>
+    
     <!-- Application Stylesheets -->
     <link rel="stylesheet" th:href="@{/css/bootstrap-icons.min.css}">
     <link rel="stylesheet" th:href="@{/css/style.css}">

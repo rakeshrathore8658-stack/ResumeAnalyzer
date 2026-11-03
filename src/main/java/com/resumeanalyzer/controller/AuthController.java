@@ -53,10 +53,12 @@ public class AuthController {
 
     private void establishUserSession(HttpServletRequest request, HttpServletResponse response, HttpSession session, User user, String activeRole) {
         if (session != null) {
+            session.setMaxInactiveInterval(30 * 24 * 60 * 60); // 30 days session persistence
             session.setAttribute("userRole", activeRole);
             session.setAttribute("userName", user.getFullName());
             session.setAttribute("userEmail", user.getEmail());
             session.setAttribute("phoneNumber", user.getPhoneNumber());
+            session.setAttribute("theme", (user.getThemePreference() != null && !user.getThemePreference().isBlank()) ? user.getThemePreference() : "light");
             if (user.getCompanyName() != null) {
                 session.setAttribute("companyName", user.getCompanyName());
             }

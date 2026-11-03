@@ -14,8 +14,24 @@
 
     /**
      * Read saved theme preference.
+     * Priority:
+     * 1. root element data-theme (applied by server / head script)
+     * 2. meta[name="user-theme"] server injection
+     * 3. localStorage preference
+     * 4. default light
      */
     function getSavedTheme() {
+        const rootTheme = root.getAttribute("data-theme");
+        if (rootTheme === "dark" || rootTheme === "light") {
+            return rootTheme;
+        }
+        try {
+            const meta = document.querySelector('meta[name="user-theme"]');
+            const metaTheme = meta ? meta.getAttribute("content") : null;
+            if (metaTheme === "dark" || metaTheme === "light") {
+                return metaTheme;
+            }
+        } catch (e) {}
         try {
             const savedTheme = localStorage.getItem(THEME_KEY);
             if (savedTheme === "dark" || savedTheme === "light") {
@@ -42,14 +58,26 @@
             button.setAttribute("title", isDark ? "Switch to light mode" : "Switch to dark mode");
         });
 
+        // Also synchronize settings page radio inputs if present
+        document.querySelectorAll("input[name='themeRadio']").forEach(radio => {
+            radio.checked = (radio.value === validTheme);
+        });
+
         if (save) {
             try {
                 localStorage.setItem(THEME_KEY, validTheme);
             } catch (e) {
                 console.warn("Could not save theme preference.");
             }
+            if (window.fetch) {
+                fetch('/dashboard/settings/theme?theme=' + encodeURIComponent(validTheme), { method: 'POST' }).catch(() => {});
+            }
         }
     }
+
+    // Expose helpers globally for seamless page integration
+    window.applyTheme = applyTheme;
+    window.toggleTheme = toggleTheme;
 
     /**
      * Toggle Theme between Light & Dark.

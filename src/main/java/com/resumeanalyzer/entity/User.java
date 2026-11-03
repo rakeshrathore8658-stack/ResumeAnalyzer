@@ -50,6 +50,18 @@ public class User {
     @Column(name = "terms_accepted", nullable = false)
     private Boolean termsAccepted = true;
 
+    @Column(name = "theme_preference", length = 20)
+    private String themePreference = "light";
+
+    @Column(name = "notif_resume_scan")
+    private Boolean notifResumeScan = true;
+
+    @Column(name = "notif_job_insights")
+    private Boolean notifJobInsights = true;
+
+    @Column(name = "notif_interview_updates")
+    private Boolean notifInterviewUpdates = true;
+
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
@@ -174,5 +186,37 @@ public class User {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public String getThemePreference() {
+        return (themePreference != null && !themePreference.isBlank()) ? themePreference : "light";
+    }
+
+    public void setThemePreference(String themePreference) {
+        this.themePreference = ("dark".equalsIgnoreCase(themePreference)) ? "dark" : "light";
+    }
+
+    public boolean isNotifResumeScan() {
+        return notifResumeScan == null || notifResumeScan;
+    }
+
+    public void setNotifResumeScan(Boolean notifResumeScan) {
+        this.notifResumeScan = (notifResumeScan != null) ? notifResumeScan : false;
+    }
+
+    public boolean isNotifJobInsights() {
+        return notifJobInsights == null || notifJobInsights;
+    }
+
+    public void setNotifJobInsights(Boolean notifJobInsights) {
+        this.notifJobInsights = (notifJobInsights != null) ? notifJobInsights : false;
+    }
+
+    public boolean isNotifInterviewUpdates() {
+        return notifInterviewUpdates == null || notifInterviewUpdates;
+    }
+
+    public void setNotifInterviewUpdates(Boolean notifInterviewUpdates) {
+        this.notifInterviewUpdates = (notifInterviewUpdates != null) ? notifInterviewUpdates : false;
     }
 }
