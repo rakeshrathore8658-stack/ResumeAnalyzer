@@ -14,6 +14,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
+import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,6 +34,7 @@ import java.util.Optional;
 public class AuthController {
 
     private final AuthService authService;
+    private final SecurityContextRepository securityContextRepository = new HttpSessionSecurityContextRepository();
 
     public AuthController(AuthService authService) {
         this.authService = authService;
@@ -49,7 +51,7 @@ public class AuthController {
                 .build();
     }
 
-    private void establishUserSession(HttpSession session, User user, String activeRole) {
+    private void establishUserSession(HttpServletRequest request, HttpServletResponse response, HttpSession session, User user, String activeRole) {
         if (session != null) {
             session.setAttribute("userRole", activeRole);
             session.setAttribute("userName", user.getFullName());
@@ -77,6 +79,10 @@ public class AuthController {
         if (session != null) {
             session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, context);
         }
+
+        if (request != null && response != null) {
+            securityContextRepository.saveContext(context, request, response);
+        }
     }
 
     // ==========================================
@@ -96,12 +102,6 @@ public class AuthController {
             request.getSession(true);
         }
 
-        // Ensure default demo accounts exist in database for quick testing
-        try {
-            authService.ensureDemoUsersExist();
-        } catch (Exception ignored) {
-        }
-
         String targetRole = (role != null && !role.isBlank()) ? role.trim().toUpperCase() : "USER";
         model.addAttribute("selectedRole", targetRole);
 
@@ -113,6 +113,7 @@ public class AuthController {
             @RequestParam(value = "username", required = false) String username,
             @RequestParam(value = "password", required = false) String password,
             @RequestParam(value = "role", defaultValue = "USER") String selectedRole,
+            HttpServletRequest request,
             HttpServletResponse response,
             HttpSession session,
             RedirectAttributes redirectAttributes) {
@@ -151,7 +152,7 @@ public class AuthController {
             }
 
             // Authentication succeeded and portal role matches!
-            establishUserSession(session, user, activeRole);
+            establishUserSession(request, response, session, user, activeRole);
             return redirectTo("/dashboard");
         }
 
@@ -171,32 +172,7 @@ public class AuthController {
             return redirectTo("/login?error=invalid_credentials&role=" + activeRole + "&username=" + email);
         }
 
-        // 3. Fallback for demo users
-        if ("alex.morgan@email.com".equalsIgnoreCase(email)) {
-            if (!"USER".equalsIgnoreCase(activeRole)) {
-                return redirectTo("/login?error=portal_mismatch&role=" + activeRole + "&username=" + email);
-            }
-            if (!"password123".equals(password)) {
-                return redirectTo("/login?error=invalid_credentials&role=" + activeRole + "&username=" + email);
-            }
-            authService.ensureDemoUsersExist();
-            authService.findByEmail(email).ifPresent(u -> establishUserSession(session, u, "USER"));
-            return redirectTo("/dashboard");
-        }
-
-        if ("sarah.j@company.com".equalsIgnoreCase(email)) {
-            if (!"HR".equalsIgnoreCase(activeRole)) {
-                return redirectTo("/login?error=portal_mismatch&role=" + activeRole + "&username=" + email);
-            }
-            if (!"password123".equals(password)) {
-                return redirectTo("/login?error=invalid_credentials&role=" + activeRole + "&username=" + email);
-            }
-            authService.ensureDemoUsersExist();
-            authService.findByEmail(email).ifPresent(u -> establishUserSession(session, u, "HR"));
-            return redirectTo("/dashboard");
-        }
-
-        // 4. Account not found
+        // 3. Account not found
         return redirectTo("/login?error=user_not_found&role=" + activeRole + "&username=" + email);
     }
 
@@ -224,6 +200,7 @@ public class AuthController {
     @PostMapping("/register")
     public Object handleRegister(
             @ModelAttribute("registerRequest") RegisterRequest request,
+            HttpServletRequest httpRequest,
             HttpServletResponse response,
             HttpSession session,
             Model model) {
@@ -246,7 +223,7 @@ public class AuthController {
 
         try {
             User registeredUser = authService.register(request);
-            establishUserSession(session, registeredUser, registeredUser.getRole());
+            establishUserSession(httpRequest, response, session, registeredUser, registeredUser.getRole());
             return redirectTo("/dashboard");
 
         } catch (IllegalArgumentException e) {

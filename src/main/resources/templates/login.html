@@ -453,7 +453,7 @@
                 <div class="form-group">
                     <label class="form-label" for="username" id="usernameLabel">Email Address</label>
                     <input type="text" id="username" name="username" class="form-control" placeholder="you@example.com" required
-                           th:value="${param.username != null ? param.username : (selectedRole == 'HR' ? 'sarah.j@company.com' : 'alex.morgan@email.com')}">
+                           th:value="${param.username != null ? param.username : ''}">
                 </div>
 
                 <!-- Password -->
@@ -533,17 +533,10 @@
             }
 
             // Update Email label, placeholder, submit button text and visual branding
-            const currentVal = usernameInput && usernameInput.value ? usernameInput.value.trim().toLowerCase() : "";
-            const isDemoUser = (!currentVal || currentVal === "alex.morgan@email.com" || currentVal === "sarah.j@company.com");
-
             if (isHr) {
                 if (usernameLabel) usernameLabel.textContent = "Work Email / Username";
                 if (usernameInput) {
                     usernameInput.placeholder = "recruiter@company.com";
-                    if (isDemoUser) {
-                        usernameInput.value = "sarah.j@company.com";
-                        if (pwdInput && !pwdInput.value) pwdInput.value = "password123";
-                    }
                 }
                 if (btnLoginSubmit) {
                     btnLoginSubmit.textContent = "Log In as HR Recruiter & Open Dashboard →";
@@ -558,10 +551,6 @@
                 if (usernameLabel) usernameLabel.textContent = "Email Address";
                 if (usernameInput) {
                     usernameInput.placeholder = "you@example.com";
-                    if (isDemoUser) {
-                        usernameInput.value = "alex.morgan@email.com";
-                        if (pwdInput && !pwdInput.value) pwdInput.value = "password123";
-                    }
                 }
                 if (btnLoginSubmit) {
                     btnLoginSubmit.textContent = "Log In as Job Seeker & Open Dashboard →";

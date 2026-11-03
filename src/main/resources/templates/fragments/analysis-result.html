@@ -25,6 +25,12 @@
                 Evaluated against <strong th:text="${analysis.targetJobRole}">Target Role</strong> using <strong th:text="${analysis.aiProvider != null ? #strings.toUpperCase(analysis.aiProvider) : 'AI'}">AI</strong> engine.
             </p>
             <p class="result-subtitle" th:if="${analysis == null}">Evaluated against target profile and industry ATS benchmarks.</p>
+            <!-- Candidate Identity Tag in Report (Extracted strictly from uploaded resume) -->
+            <div id="reportCandidateMeta" th:if="${analysis != null and analysis.candidateName != null and !#strings.isEmpty(analysis.candidateName)}" class="candidate-report-meta" style="margin-top: 8px; display: flex; align-items: center; gap: 14px; font-size: 0.88rem; color: var(--text-secondary); flex-wrap: wrap;">
+                <span><i class="bi bi-person-badge" style="color: var(--accent);"></i> Resume Candidate: <strong style="color: var(--text-primary);" th:text="${analysis.candidateName}">Candidate Name</strong></span>
+                <span th:if="${analysis.candidateEmail != null and !#strings.isEmpty(analysis.candidateEmail)}"><i class="bi bi-envelope"></i> <span th:text="${analysis.candidateEmail}">candidate@email.com</span></span>
+                <span th:if="${analysis.resumeFileName != null and !#strings.isEmpty(analysis.resumeFileName)}"><i class="bi bi-file-earmark-pdf"></i> <span th:text="${analysis.resumeFileName}">resume.pdf</span></span>
+            </div>
         </div>
         <div class="result-header-actions">
             <button type="button" class="btn btn-secondary btn-sm" onclick="window.print()">

@@ -323,4 +323,53 @@ class PageRoutesTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/login?logout=true"));
     }
+
+    @Test
+    @DisplayName("7. Identity Separation: Authenticated User identity is NEVER overwritten by Resume Candidate details")
+    void testIdentitySeparationFromResumeCandidate() throws Exception {
+        // Setup authenticated user Vicky
+        User vicky = new User("Vicky", "vicky@gmail.com", "+91 99999 88888", "hashed", "USER", "Java Developer", null);
+        Mockito.when(userRepository.findByEmail("vicky@gmail.com")).thenReturn(Optional.of(vicky));
+
+        // Setup candidate analysis in DB with candidate Ramu Kushwah
+        com.resumeanalyzer.entity.ResumeAnalysis ramuAnalysis = new com.resumeanalyzer.entity.ResumeAnalysis();
+        ramuAnalysis.setId(20L);
+        ramuAnalysis.setCandidateName("Ramu Kushwah");
+        ramuAnalysis.setCandidateEmail("ramu@gmail.com");
+        ramuAnalysis.setCandidateEmailNormalized("ramu@gmail.com");
+        ramuAnalysis.setOverallScore(85);
+        ramuAnalysis.setTargetJobRole("Java Developer");
+        Mockito.when(resumeAnalysisRepository.findById(20L)).thenReturn(Optional.of(ramuAnalysis));
+        Mockito.when(resumeAnalysisRepository.findTop10ByOrderByCreatedAtDesc()).thenReturn(java.util.List.of(ramuAnalysis));
+
+        // When Vicky views Resume Analyzer page with analysis id 20:
+        // Navbar and user identity in model MUST be Vicky, NOT Ramu Kushwah
+        mockMvc.perform(get("/dashboard/resumeanalyzer")
+                        .param("id", "20")
+                        .sessionAttr("userName", "Vicky")
+                        .sessionAttr("userEmail", "vicky@gmail.com")
+                        .sessionAttr("userRole", "USER"))
+                .andExpect(status().isOk())
+                .andExpect(model().attribute("userName", "Vicky"))
+                .andExpect(model().attribute("userEmail", "vicky@gmail.com"))
+                .andExpect(model().attribute("hasAnalysis", true))
+                .andExpect(model().attribute("analysis", ramuAnalysis));
+
+        // When Vicky views Profile page:
+        // Profile MUST show Vicky's details, NOT Ramu Kushwah
+        mockMvc.perform(get("/dashboard/profile")
+                        .sessionAttr("userName", "Vicky")
+                        .sessionAttr("userEmail", "vicky@gmail.com")
+                        .sessionAttr("userRole", "USER"))
+                .andExpect(status().isOk())
+                .andExpect(model().attribute("userName", "Vicky"))
+                .andExpect(model().attribute("userEmail", "vicky@gmail.com"));
+
+        // When unauthenticated/guest visits dashboard with no session:
+        // Seeker identity must default to generic User Account, NEVER Ramu Kushwah or demo identity
+        mockMvc.perform(get("/dashboard/resumeanalyzer"))
+                .andExpect(status().isOk())
+                .andExpect(model().attribute("userName", "User Account"))
+                .andExpect(model().attribute("userEmail", ""));
+    }
 }

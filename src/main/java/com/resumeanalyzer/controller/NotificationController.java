@@ -44,7 +44,7 @@ public class NotificationController {
         } catch (Exception ignored) {
         }
 
-        return "alex.morgan@email.com"; // Fallback demo seeker
+        return ""; // No fallback mock user
     }
 
     @GetMapping

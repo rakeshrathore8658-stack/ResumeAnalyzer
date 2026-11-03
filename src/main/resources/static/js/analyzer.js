@@ -528,6 +528,23 @@
                 resultSubtitle.innerHTML = `Evaluated against <strong>${escapeHtml(targetRole)}</strong> using <strong>${escapeHtml(analysisData.aiProvider.toUpperCase())}</strong> AI engine.`;
             }
 
+            const candidateName = uploadData?.candidateInfo?.name || analysisData.candidateName;
+            const candidateEmail = uploadData?.candidateInfo?.email || analysisData.candidateEmail;
+            const resumeFileName = uploadData?.fileName || analysisData.fileName || file?.name;
+            let candidateMeta = document.getElementById("reportCandidateMeta");
+            if (!candidateMeta && resultSubtitle && resultSubtitle.parentNode) {
+                candidateMeta = document.createElement("div");
+                candidateMeta.id = "reportCandidateMeta";
+                candidateMeta.className = "candidate-report-meta";
+                candidateMeta.style.cssText = "margin-top: 8px; display: flex; align-items: center; gap: 14px; font-size: 0.88rem; color: var(--text-secondary); flex-wrap: wrap;";
+                resultSubtitle.parentNode.appendChild(candidateMeta);
+            }
+            if (candidateMeta && candidateName) {
+                candidateMeta.innerHTML = `<span><i class="bi bi-person-badge" style="color: var(--accent);"></i> Resume Candidate: <strong style="color: var(--text-primary);">${escapeHtml(candidateName)}</strong></span>` +
+                    (candidateEmail ? `<span><i class="bi bi-envelope"></i> ${escapeHtml(candidateEmail)}</span>` : "") +
+                    (resumeFileName ? `<span><i class="bi bi-file-earmark-pdf"></i> ${escapeHtml(resumeFileName)}</span>` : "");
+            }
+
             const score = analysisData.overallScore !== undefined ? analysisData.overallScore : 75;
             const scores = analysisData.categoryScores || {
                 formatting: 90,

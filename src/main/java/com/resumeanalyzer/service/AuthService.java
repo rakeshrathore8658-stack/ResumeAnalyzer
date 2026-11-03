@@ -114,37 +114,10 @@ public class AuthService {
     }
 
     /**
-     * Ensures initial default demo users exist so users can easily test role login.
+     * Demo user auto-seeding removed so new databases remain clean without default mock users.
      */
     @Transactional
     public void ensureDemoUsersExist() {
-        // 1. Demo Job Seeker
-        String seekerEmail = "alex.morgan@email.com";
-        if (!userRepository.existsByEmail(seekerEmail)) {
-            User seeker = new User();
-            seeker.setFullName("Alex Morgan");
-            seeker.setEmail(seekerEmail);
-            seeker.setPhoneNumber("+91 98765 43210");
-            seeker.setPasswordHash(passwordEncoder.encode("password123"));
-            seeker.setRole("USER");
-            seeker.setCareerRole("Java Developer");
-            seeker.setTermsAccepted(true);
-            userRepository.save(seeker);
-        }
-
-        // 2. Demo HR Recruiter
-        String hrEmail = "sarah.j@company.com";
-        if (!userRepository.existsByEmail(hrEmail)) {
-            User hr = new User();
-            hr.setFullName("Sarah Jenkins");
-            hr.setEmail(hrEmail);
-            hr.setPhoneNumber("+91 91234 56789");
-            hr.setPasswordHash(passwordEncoder.encode("password123"));
-            hr.setRole("HR");
-            hr.setCareerRole("HR / Recruiter");
-            hr.setCompanyName("ITSoftLab Technologies");
-            hr.setTermsAccepted(true);
-            userRepository.save(hr);
-        }
+        // No-op: Do not auto-inject hardcoded demo users into the user's database
     }
 }

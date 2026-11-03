@@ -127,6 +127,7 @@
                         <tr th:if="${analysesList != null and !analysesList.isEmpty()}" th:each="item : ${analysesList}">
                             <td>
                                 <strong th:text="${item.resumeFileName}">Resume.pdf</strong>
+                                <small th:if="${item.candidateName != null and !#strings.isEmpty(item.candidateName)}" style="display: block; color: var(--text-secondary); font-size: 0.75rem;"><i class="bi bi-person"></i> <span th:text="${item.candidateName}">Candidate</span></small>
                                 <small style="display: block; color: var(--text-muted); font-size: 0.72rem;" th:text="${item.aiProvider != null ? 'Evaluated with ' + item.aiProvider : 'Evaluated with AI'}">Evaluated with AI</small>
                             </td>
                             <td><span class="badge badge-primary" th:text="${item.targetJobRole}">Java Developer</span></td>

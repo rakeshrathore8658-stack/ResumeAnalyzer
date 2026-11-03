@@ -10,6 +10,7 @@ import com.resumeanalyzer.service.JobService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.http.HttpHeaders;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -167,12 +168,33 @@ public class PageController {
             }
             model.addAttribute("upcomingInterviews", interviews);
         } else {
-            String sessionEmail = (session != null) ? (String) session.getAttribute("userEmail") : null;
-            String normEmail = com.resumeanalyzer.service.CandidateNormalizationUtils.normalizeEmail(sessionEmail);
-            List<ResumeAnalysis> userAnalyses = Collections.emptyList();
+            String activeUserEmail = (String) model.getAttribute("userEmail");
+            String normEmail = com.resumeanalyzer.service.CandidateNormalizationUtils.normalizeEmail(activeUserEmail);
+            List<ResumeAnalysis> userAnalyses = new ArrayList<>();
             if (normEmail != null) {
-                userAnalyses = resumeAnalysisRepository.findByCandidateEmailNormalizedOrderByCreatedAtDesc(normEmail);
+                userAnalyses.addAll(resumeAnalysisRepository.findByCandidateEmailNormalizedOrderByCreatedAtDesc(normEmail));
             }
+            if (activeUserEmail != null) {
+                Optional<User> uOpt = userRepository.findByEmail(activeUserEmail.trim().toLowerCase());
+                if (uOpt.isPresent()) {
+                    List<Resume> userResumes = resumeRepository.findByUserIdOrderByCreatedAtDesc(uOpt.get().getId());
+                    if (!userResumes.isEmpty()) {
+                        Set<Long> resumeIds = new HashSet<>();
+                        for (Resume r : userResumes) {
+                            if (r.getId() != null) resumeIds.add(r.getId());
+                        }
+                        List<ResumeAnalysis> linked = resumeAnalysisRepository.findAllByOrderByCreatedAtDesc().stream()
+                                .filter(ra -> ra.getResume() != null && resumeIds.contains(ra.getResume().getId()))
+                                .toList();
+                        for (ResumeAnalysis ra : linked) {
+                            if (userAnalyses.stream().noneMatch(c -> c.getId().equals(ra.getId()))) {
+                                userAnalyses.add(ra);
+                            }
+                        }
+                    }
+                }
+            }
+            userAnalyses.sort((a, b) -> b.getCreatedAt().compareTo(a.getCreatedAt()));
             if (userAnalyses.isEmpty()) {
                 userAnalyses = allAnalyses;
             }
@@ -214,21 +236,29 @@ public class PageController {
         String role = getSessionRole(session);
         setupCommonModel(model, session, role);
 
-        String userEmail = (session != null) ? (String) session.getAttribute("userEmail") : null;
+        String userEmail = (String) model.getAttribute("userEmail");
+        if (userEmail == null && session != null) {
+            userEmail = (String) session.getAttribute("userEmail");
+        }
         User currentUser = null;
-        if (userEmail != null) {
-            Optional<User> uOpt = userRepository.findByEmail(userEmail);
-            if (uOpt.isPresent()) {
-                currentUser = uOpt.get();
-                model.addAttribute("userEntity", currentUser);
-                model.addAttribute("userName", currentUser.getFullName());
-                model.addAttribute("userEmail", currentUser.getEmail());
-                model.addAttribute("userPhone", currentUser.getPhoneNumber());
-                model.addAttribute("userCompany", currentUser.getCompanyName());
-                model.addAttribute("userLocation", currentUser.getLocation());
-                model.addAttribute("userHeadline", currentUser.getHeadline());
-                model.addAttribute("careerRole", currentUser.getCareerRole());
+        if (userEmail != null && !userEmail.isBlank()) {
+            currentUser = userRepository.findByEmail(userEmail.trim().toLowerCase()).orElse(null);
+        }
+        if (currentUser == null) {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            if (auth != null && auth.isAuthenticated() && !(auth instanceof AnonymousAuthenticationToken) && !"anonymousUser".equalsIgnoreCase(auth.getName())) {
+                currentUser = userRepository.findByEmail(auth.getName().trim().toLowerCase()).orElse(null);
             }
+        }
+        if (currentUser != null) {
+            model.addAttribute("userEntity", currentUser);
+            model.addAttribute("userName", currentUser.getFullName());
+            model.addAttribute("userEmail", currentUser.getEmail());
+            model.addAttribute("userPhone", currentUser.getPhoneNumber());
+            model.addAttribute("userCompany", currentUser.getCompanyName());
+            model.addAttribute("userLocation", currentUser.getLocation());
+            model.addAttribute("userHeadline", currentUser.getHeadline());
+            model.addAttribute("careerRole", currentUser.getCareerRole());
         }
 
         // Resolve active resume and latest analysis dynamically
@@ -337,6 +367,12 @@ public class PageController {
 
         HttpSession session = getSession();
         String email = (session != null) ? (String) session.getAttribute("userEmail") : null;
+        if (email == null || email.isBlank()) {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            if (auth != null && auth.isAuthenticated() && !(auth instanceof AnonymousAuthenticationToken) && !"anonymousUser".equalsIgnoreCase(auth.getName())) {
+                email = auth.getName();
+            }
+        }
 
         if (email != null) {
             userRepository.findByEmail(email).ifPresent(user -> {
@@ -391,6 +427,12 @@ public class PageController {
 
         HttpSession session = getSession();
         String email = (session != null) ? (String) session.getAttribute("userEmail") : null;
+        if (email == null || email.isBlank()) {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            if (auth != null && auth.isAuthenticated() && !(auth instanceof AnonymousAuthenticationToken) && !"anonymousUser".equalsIgnoreCase(auth.getName())) {
+                email = auth.getName();
+            }
+        }
 
         if (email == null) {
             return "redirect:/login";
@@ -462,6 +504,12 @@ public class PageController {
     public String markAllNotificationsRead() {
         HttpSession session = getSession();
         String email = (session != null) ? (String) session.getAttribute("userEmail") : null;
+        if (email == null || email.isBlank()) {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            if (auth != null && auth.isAuthenticated() && !(auth instanceof AnonymousAuthenticationToken) && !"anonymousUser".equalsIgnoreCase(auth.getName())) {
+                email = auth.getName();
+            }
+        }
         if (email != null && notificationService != null) {
             notificationService.markAllRead(email);
         }
@@ -600,8 +648,16 @@ public class PageController {
                         .build();
             }
 
-            if (sessionEmail != null && !sessionEmail.isBlank() && resume.getUser() == null) {
-                userRepository.findByEmail(sessionEmail).ifPresent(resume::setUser);
+            // Link resume ownership to authenticated user
+            String loggedInEmail = sessionEmail;
+            if (loggedInEmail == null || loggedInEmail.isBlank()) {
+                Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+                if (auth != null && auth.isAuthenticated() && !(auth instanceof AnonymousAuthenticationToken) && !"anonymousUser".equalsIgnoreCase(auth.getName())) {
+                    loggedInEmail = auth.getName();
+                }
+            }
+            if (loggedInEmail != null && !loggedInEmail.isBlank()) {
+                userRepository.findByEmail(loggedInEmail.trim().toLowerCase()).ifPresent(resume::setUser);
             }
             Resume savedResume = resumeRepository.save(resume);
 
@@ -619,13 +675,16 @@ public class PageController {
                     geminiApiKey
             );
 
-            // Dispatch notification to user
+            // Dispatch notification to authenticated user (never to candidate email or candidate name)
             if (notificationService != null) {
-                String targetEmail = (normEmail != null && !normEmail.isBlank()) ? normEmail : sessionEmail;
+                String targetEmail = (loggedInEmail != null && !loggedInEmail.isBlank()) ? loggedInEmail : sessionEmail;
                 if (targetEmail != null && !targetEmail.isBlank()) {
+                    String recipientName = (session != null && session.getAttribute("userName") != null)
+                            ? (String) session.getAttribute("userName")
+                            : (resume.getUser() != null ? resume.getUser().getFullName() : "User");
                     notificationService.sendNotification(
                             targetEmail,
-                            candName,
+                            recipientName,
                             "Resume Scan Complete (" + analysisResult.getOverallScore() + "% Score)",
                             "Your resume achieved an ATS compatibility score of " + analysisResult.getOverallScore() + "% for target role: " + targetRole + ".",
                             "ANALYSIS",
@@ -1438,34 +1497,81 @@ public class PageController {
     }
 
     private void setupCommonModel(Model model, HttpSession session, String role) {
-        model.addAttribute("userRole", role);
-        model.addAttribute("theme", "light");
-
         String sessionName = (session != null) ? (String) session.getAttribute("userName") : null;
         String sessionEmail = (session != null) ? (String) session.getAttribute("userEmail") : null;
         String sessionCompany = (session != null) ? (String) session.getAttribute("companyName") : null;
 
-        String activeEmail;
-        if ("HR".equalsIgnoreCase(role)) {
-            model.addAttribute("userName", (sessionName != null && !sessionName.isBlank()) ? sessionName : "Sarah Jenkins");
-            activeEmail = (sessionEmail != null && !sessionEmail.isBlank()) ? sessionEmail : "sarah.j@company.com";
-            model.addAttribute("userEmail", activeEmail);
-            model.addAttribute("companyName", (sessionCompany != null && !sessionCompany.isBlank()) ? sessionCompany : "ITSoftLab Technologies");
-        } else {
-            String defaultSeekerName = "Alex Morgan";
-            String defaultSeekerEmail = "alex.morgan@email.com";
-            if (sessionName == null || sessionName.isBlank()) {
-                List<ResumeAnalysis> latest = resumeAnalysisRepository.findTop10ByOrderByCreatedAtDesc();
-                if (!latest.isEmpty() && latest.get(0).getCandidateName() != null && !latest.get(0).getCandidateName().isBlank()) {
-                    defaultSeekerName = latest.get(0).getCandidateName();
-                    if (latest.get(0).getCandidateEmail() != null && !latest.get(0).getCandidateEmail().isBlank()) {
-                        defaultSeekerEmail = latest.get(0).getCandidateEmail();
-                    }
-                }
+        // 1. Resolve strictly authenticated user from Spring Security Context
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User authenticatedUser = null;
+
+        if (auth != null && auth.isAuthenticated() && !(auth instanceof AnonymousAuthenticationToken) && !"anonymousUser".equalsIgnoreCase(auth.getName())) {
+            String principalEmail = auth.getName();
+            if (principalEmail != null && !principalEmail.isBlank()) {
+                authenticatedUser = userRepository.findByEmail(principalEmail.trim().toLowerCase()).orElse(null);
             }
-            model.addAttribute("userName", (sessionName != null && !sessionName.isBlank()) ? sessionName : defaultSeekerName);
-            activeEmail = (sessionEmail != null && !sessionEmail.isBlank()) ? sessionEmail : defaultSeekerEmail;
-            model.addAttribute("userEmail", activeEmail);
+        }
+
+        // 2. Fallback to session userEmail if SecurityContext had no match
+        if (authenticatedUser == null && sessionEmail != null && !sessionEmail.isBlank()) {
+            authenticatedUser = userRepository.findByEmail(sessionEmail.trim().toLowerCase()).orElse(null);
+        }
+
+        // 3. Keep HTTP session synchronized with genuine authenticated database user
+        if (authenticatedUser != null && session != null) {
+            session.setAttribute("userName", authenticatedUser.getFullName());
+            session.setAttribute("userEmail", authenticatedUser.getEmail());
+            if (authenticatedUser.getRole() != null) {
+                session.setAttribute("userRole", "HR".equalsIgnoreCase(role) ? "HR" : authenticatedUser.getRole());
+            }
+            if (authenticatedUser.getPhoneNumber() != null) {
+                session.setAttribute("phoneNumber", authenticatedUser.getPhoneNumber());
+            }
+            if (authenticatedUser.getCompanyName() != null) {
+                session.setAttribute("companyName", authenticatedUser.getCompanyName());
+            }
+            if (authenticatedUser.getCareerRole() != null) {
+                session.setAttribute("careerRole", authenticatedUser.getCareerRole());
+            }
+        }
+
+        // 4. Strict separation: Authenticated account identity vs guest demo fallback
+        // Extracted resume candidate details must NEVER overwrite logged-in user profile
+        String activeName;
+        String activeEmail;
+        String activeCompany;
+        String activeRole = (role != null && !role.isBlank()) ? role : "USER";
+
+        if (authenticatedUser != null) {
+            activeName = authenticatedUser.getFullName();
+            activeEmail = authenticatedUser.getEmail();
+            activeCompany = authenticatedUser.getCompanyName();
+            if (authenticatedUser.getRole() != null && !authenticatedUser.getRole().isBlank()) {
+                activeRole = ("HR".equalsIgnoreCase(role) || "RECRUITER".equalsIgnoreCase(role)) ? "HR" : authenticatedUser.getRole();
+            }
+        } else if (sessionEmail != null && !sessionEmail.isBlank()) {
+            activeName = (sessionName != null && !sessionName.isBlank()) ? sessionName : ("HR".equalsIgnoreCase(role) ? "HR Recruiter" : "Job Seeker");
+            activeEmail = sessionEmail;
+            activeCompany = (sessionCompany != null && !sessionCompany.isBlank()) ? sessionCompany : null;
+        } else if ("HR".equalsIgnoreCase(role)) {
+            activeName = (sessionName != null && !sessionName.isBlank()) ? sessionName : "HR Recruiter";
+            activeEmail = "";
+            activeCompany = (sessionCompany != null && !sessionCompany.isBlank()) ? sessionCompany : "";
+        } else {
+            activeName = (sessionName != null && !sessionName.isBlank()) ? sessionName : "User Account";
+            activeEmail = "";
+            activeCompany = null;
+        }
+
+        model.addAttribute("userRole", activeRole);
+        model.addAttribute("theme", "light");
+        model.addAttribute("userName", activeName);
+        model.addAttribute("userEmail", activeEmail);
+        if (activeCompany != null) {
+            model.addAttribute("companyName", activeCompany);
+        }
+
+        if (!"HR".equalsIgnoreCase(activeRole)) {
             model.addAttribute("totalAnalyses", 0);
             model.addAttribute("averageAtsScore", 0.0);
             model.addAttribute("averageSkillMatch", 0.0);
